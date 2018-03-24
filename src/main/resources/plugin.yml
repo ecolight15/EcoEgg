@@ -1,0 +1,8 @@
+name: EcoEgg
+main: jp.minecraftuser.ecoegg.EcoEgg
+version: ${project.version}
+depend: [EcoFramework]
+commands:
+  ece:
+    description: ecoegg command.
+    usage: /<command> xxx
