@@ -28,7 +28,14 @@
 #   - '§0BAT, §8BLAZE, §0CAVE_SPIDER, §8CHICKEN, §0COW, §8CREEPER, §0ENDERMAN, §8GHAST, §0MAGMA_CUBE, §8MUSHROOM_COW, §0OCELOT, §8PIG, §0PIG_ZOMBIE, §8SHEEP, §0SILVERFISH, §8SKELETON, §0SLIME, §8SQUID, §0VILLAGER, §8WITCH, §0WOLF, §8ZOMBIE'
 # □--------------------------------------□
 
-droptable: []
+
+droptable:
+  EnderDragon:
+    amount: 3
+    rate: 1
+  Witch:
+    amount: 1
+    rate: 100
 title: '魔道書「えこたまご」'
 name: '魔道書「えこたまご」'
 author: '神官えこ'
