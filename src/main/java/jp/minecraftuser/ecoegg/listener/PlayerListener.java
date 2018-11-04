@@ -520,7 +520,7 @@ public class PlayerListener extends ListenerFrame {
         }
 
         EntityType type;
-        //もし-MobTypeが-1ならgen_typeからモンスター名を取ってくる
+        //もし-MobTypeが-1ならgen_typeからモンスターの種類を取ってくる
         if (load.getMobType() != -1) {
             switch (load.getMobType()) {
                 case 65:
