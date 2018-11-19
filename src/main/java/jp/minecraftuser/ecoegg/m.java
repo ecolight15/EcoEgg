@@ -78,7 +78,7 @@ public final class m {
 
         return true;
     }
-    
+
     public static Logger log(){
         return logger;
     }
@@ -91,10 +91,10 @@ public final class m {
     public static String plg(String msg) {
         return "§d[EcoEgg] "+msg;
     }
-    
+
     public static ChatColor cnvSTR2COLOR(String color) {
         ChatColor result = ChatColor.WHITE;
-        if (color.equalsIgnoreCase("black")) {result = ChatColor.BLACK;} 
+        if (color.equalsIgnoreCase("black")) {result = ChatColor.BLACK;}
         else if(color.equalsIgnoreCase("dark_blue")) {result = ChatColor.DARK_BLUE;}
         else if(color.equalsIgnoreCase("dark_green")) {result = ChatColor.DARK_GREEN;}
         else if(color.equalsIgnoreCase("dark_aqua")) {result = ChatColor.DARK_AQUA;}
@@ -110,8 +110,8 @@ public final class m {
         else if(color.equalsIgnoreCase("light_purple")) {result = ChatColor.LIGHT_PURPLE;}
         else if(color.equalsIgnoreCase("yellow")) {result = ChatColor.YELLOW;}
         else if(color.equalsIgnoreCase("white")) {result = ChatColor.WHITE;}
-        
-        else if(color.equalsIgnoreCase("0")) {result = ChatColor.BLACK;} 
+
+        else if(color.equalsIgnoreCase("0")) {result = ChatColor.BLACK;}
         else if(color.equalsIgnoreCase("1")) {result = ChatColor.DARK_BLUE;}
         else if(color.equalsIgnoreCase("2")) {result = ChatColor.DARK_GREEN;}
         else if(color.equalsIgnoreCase("3")) {result = ChatColor.DARK_AQUA;}

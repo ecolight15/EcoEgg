@@ -1,7 +1,6 @@
 
 package jp.minecraftuser.ecoegg.listener;
 
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -127,6 +126,8 @@ public class PlayerListener extends ListenerFrame {
                     pl.sendMessage(m.plg("Color:" + dog.getCollarColor().name()));
                     pl.sendMessage(m.plg("===== 犬ステータスここまで ====="));
                     break;
+
+
             }
 
             event.setCancelled(true);
@@ -354,7 +355,7 @@ public class PlayerListener extends ListenerFrame {
         egg.setDurability(mobnum);
         LoaderMob save = new LoaderMob((EcoEgg) plg, le.getUniqueId());
         save.setUsed(false);
-        save.setMobType(le.getType().getTypeId());
+        save.setMobType(mobnum);
         save.setCustomName(le.getCustomName());
         save.setMaxHealth(le.getMaxHealth());
         save.setHealth(le.getHealth());
@@ -523,8 +524,7 @@ public class PlayerListener extends ListenerFrame {
         //もし-MobTypeが-1ならgen_typeからモンスターの種類を取ってくる
         if (load.getMobType() != -1) {
             switch (load.getMobType()) {
-                case 65:
-                    type = EntityType.BAT;
+                case 65: type = EntityType.BAT;
                     break;
                 case 61:
                     type = EntityType.BLAZE;
