@@ -190,97 +190,8 @@ public class PlayerListener extends ListenerFrame {
         if (!existMonsterEgg(ent)) {
             return;
         }
-        switch (ent.getType()) {
-            case EGG:
-                event.getPlayer().sendMessage("egg");
-                return;
-            case BAT:
-                mobnum = 65;
-                break;
-            case BLAZE:
-                mobnum = 61;
-                break;
-            case CAVE_SPIDER:
-                mobnum = 59;
-                break;
-            case CHICKEN:
-                mobnum = 93;
-                break;
-            case COW:
-                mobnum = 92;
-                break;
-            case CREEPER:
-                mobnum = 50;
-                break;
-            case ENDERMAN:
-                mobnum = 58;
-                break;
-            case GHAST:
-                mobnum = 56;
-                break;
-            case MAGMA_CUBE:
-                mobnum = 62;
-                break;
-            case MUSHROOM_COW:
-                mobnum = 96;
-                break;
-            case OCELOT:
-                mobnum = 98;
-                break;
-            case PIG:
-                mobnum = 90;
-                break;
-            case PIG_ZOMBIE:
-                mobnum = 57;
-                break;
-            case SHEEP:
-                mobnum = 91;
-                break;
-            case SILVERFISH:
-                mobnum = 60;
-                break;
-            case SKELETON:
-                mobnum = 51;
-                break;
-            case SLIME:
-                mobnum = 55;
-                break;
-            case SPIDER:
-                mobnum = 52;
-                break;
-            case SQUID:
-                mobnum = 94;
-                break;
-            case VILLAGER:
-                mobnum = 120;
-                break;
-            case WITCH:
-                mobnum = 66;
-                break;
-            case WOLF:
-                mobnum = 95;
-                break;
-            case ZOMBIE:
-                mobnum = 54;
-                break;
-            case HORSE:
-                mobnum = 100;
-                break;
-            case RABBIT:
-                mobnum = 101;
-                break;
-            case GUARDIAN:
-                mobnum = 68;
-                break;
-            case ENDERMITE:
-                mobnum = 67;
-                break;
-            default:
-                //上の条件に当てはまなければ-1
-                mobnum = -1;
-                break;
-            //return;
-        }
+
+        mobnum = (byte) ent.getType().getTypeId();
 
 
         //----------------------------------------------------------------------
@@ -352,7 +263,8 @@ public class PlayerListener extends ListenerFrame {
         MaterialData md = egg.getData();
         md.setData(mobnum);
         egg.setData(md);
-        egg.setDurability(mobnum);
+
+        //egg.setDurability(mobnum); <- 多分MOBの卵の種類選択 あとで書く
         LoaderMob save = new LoaderMob((EcoEgg) plg, le.getUniqueId());
         save.setUsed(false);
         save.setMobType(mobnum);
@@ -523,90 +435,7 @@ public class PlayerListener extends ListenerFrame {
         EntityType type;
         //もし-MobTypeが-1ならgen_typeからモンスターの種類を取ってくる
         if (load.getMobType() != -1) {
-            switch (load.getMobType()) {
-                case 65: type = EntityType.BAT;
-                    break;
-                case 61:
-                    type = EntityType.BLAZE;
-                    break;
-                case 59:
-                    type = EntityType.CAVE_SPIDER;
-                    break;
-                case 93:
-                    type = EntityType.CHICKEN;
-                    break;
-                case 92:
-                    type = EntityType.COW;
-                    break;
-                case 50:
-                    type = EntityType.CREEPER;
-                    break;
-                case 58:
-                    type = EntityType.ENDERMAN;
-                    break;
-                case 56:
-                    type = EntityType.GHAST;
-                    break;
-                case 62:
-                    type = EntityType.MAGMA_CUBE;
-                    break;
-                case 96:
-                    type = EntityType.MUSHROOM_COW;
-                    break;
-                case 98:
-                    type = EntityType.OCELOT;
-                    break;
-                case 90:
-                    type = EntityType.PIG;
-                    break;
-                case 57:
-                    type = EntityType.PIG_ZOMBIE;
-                    break;
-                case 91:
-                    type = EntityType.SHEEP;
-                    break;
-                case 60:
-                    type = EntityType.SILVERFISH;
-                    break;
-                case 51:
-                    type = EntityType.SKELETON;
-                    break;
-                case 55:
-                    type = EntityType.SLIME;
-                    break;
-                case 52:
-                    type = EntityType.SPIDER;
-                    break;
-                case 94:
-                    type = EntityType.SQUID;
-                    break;
-                case 120:
-                    type = EntityType.VILLAGER;
-                    break;
-                case 66:
-                    type = EntityType.WITCH;
-                    break;
-                case 95:
-                    type = EntityType.WOLF;
-                    break;
-                case 54:
-                    type = EntityType.ZOMBIE;
-                    break;
-                case 100:
-                    type = EntityType.HORSE;
-                    break;
-                case 101:
-                    type = EntityType.RABBIT;
-                    break;
-                case 68:
-                    type = EntityType.GUARDIAN;
-                    break;
-                case 67:
-                    type = EntityType.ENDERMITE;
-                    break;
-                default:
-                    return;
-            }
+            type = EntityType.fromId(load.getMobType());
         } else {
             type = EntityType.valueOf(load.getGenType());
         }
