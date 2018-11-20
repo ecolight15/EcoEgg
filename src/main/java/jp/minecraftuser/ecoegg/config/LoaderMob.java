@@ -6,10 +6,7 @@ import java.util.UUID;
 import jp.minecraftuser.ecoegg.EcoEgg;
 import org.bukkit.DyeColor;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.EnderDragon;
-import org.bukkit.entity.Horse;
-import org.bukkit.entity.Ocelot;
-import org.bukkit.entity.Rabbit;
+import org.bukkit.entity.*;
 
 /**
  * MOB卵ファイルR/Wクラス
@@ -103,7 +100,7 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
-    public void setVariant(Horse.Variant var) {
+    public void SetHorseVariant(Horse.Variant var) {
         list.set("variant", var.name());
         saveCnf();
     }
@@ -141,6 +138,25 @@ public class LoaderMob extends LoaderYaml {
     public void setBleed(boolean bleed) {
         list.set("bleed", bleed);
         saveCnf();
+    }
+
+    public void setParrotVariant(Parrot.Variant variant) {
+        list.set("parrotvariant", variant.name());
+        saveCnf();
+    }
+
+    public void setTropicalFishPattern(TropicalFish.Pattern pattern) {
+        list.set("tropicalfishpattern", pattern.name());
+
+    }
+
+    public void setTropicalFishBodyColor(DyeColor color) {
+        list.set("tropicalfishbodycolor", color.name());
+
+    }
+
+    public void setTropicalFishPatternColor(DyeColor color) {
+        list.set("tropicalfishpatterncolor", color.name());
     }
 
     public void setChild(boolean child) {
@@ -199,7 +215,7 @@ public class LoaderMob extends LoaderYaml {
         return Horse.Color.valueOf(list.getString("color"));
     }
 
-    public Horse.Variant getVariant() {
+    public Horse.Variant getHorseVariant() {
         return Horse.Variant.valueOf(list.getString("variant"));
     }
 
@@ -231,6 +247,25 @@ public class LoaderMob extends LoaderYaml {
         return list.getBoolean("bleed");
     }
 
+    public Parrot.Variant getParrotVariant() {
+        return Parrot.Variant.valueOf(list.getString("parrotvariant"));
+    }
+
+    public TropicalFish.Pattern getTropicalFishPattern() {
+
+        return TropicalFish.Pattern.valueOf(list.getString("tropicalfishpattern"));
+
+    }
+
+    public DyeColor getTropicalFishBodyColor() {
+        return DyeColor.valueOf(list.getString("tropicalfishbodycolor"));
+
+    }
+
+    public DyeColor getTropicalFishPatternColor() {
+        return DyeColor.valueOf(list.getString("tropicalfishpatterncolor"));
+    }
+
     public boolean getChild() {
         return list.getBoolean("child");
     }
@@ -243,6 +278,8 @@ public class LoaderMob extends LoaderYaml {
         return list.getLong("date");
     }
 
-    public String getGenType() { return list.getString("gen_type"); }
+    public String getGenType() {
+        return list.getString("gen_type");
+    }
 
 }

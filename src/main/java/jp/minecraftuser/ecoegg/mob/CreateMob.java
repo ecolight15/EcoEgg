@@ -44,6 +44,12 @@ public class CreateMob {
         if (entity instanceof Wolf) {
             createWolf();
         }
+        if (entity instanceof Parrot) {
+            createParrot();
+        }
+        if (entity instanceof TropicalFish) {
+            createTropical_Fish();
+        }
 
         if (entity instanceof Tameable) {
             ownerSet();
@@ -51,6 +57,7 @@ public class CreateMob {
         if (entity instanceof Animals) {
             createAnimal();
         }
+
 
 
         return this.entity;
@@ -79,6 +86,21 @@ public class CreateMob {
 
     }
 
+    private void createParrot() {
+        Parrot parrot = (Parrot) entity;
+        parrot.setVariant(load.getParrotVariant());
+
+    }
+
+    private void createTropical_Fish() {
+
+        TropicalFish tropicalFish = (TropicalFish) entity;
+        tropicalFish.setPattern(load.getTropicalFishPattern());
+        tropicalFish.setBodyColor(load.getTropicalFishBodyColor());
+        tropicalFish.setPatternColor(load.getTropicalFishPatternColor());
+
+    }
+
 
     private void createHorse() {
 
@@ -96,7 +118,7 @@ public class CreateMob {
         }
 
         horse.setJumpStrength(load.getJumpStrength());
-        horse.setVariant(load.getVariant());
+        horse.setVariant(load.getHorseVariant());
         horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(load.getSpeed());
         horse.setBreed(load.getBleed());
 

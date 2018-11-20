@@ -1,8 +1,6 @@
 package jp.minecraftuser.ecoegg.mob;
 
-import jp.minecraftuser.ecoegg.config.LoaderMob;
 import jp.minecraftuser.ecoegg.m;
-import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
 import org.bukkit.plugin.Plugin;
@@ -34,13 +32,13 @@ public class InfoMob {
             showHorse();
         }
         if (entity instanceof Ocelot) {
-            saveOcelot();
+            showOcelot();
         }
         if (entity instanceof Rabbit) {
-            saveRabbit();
+            showRabbit();
         }
         if (entity instanceof Wolf) {
-            saveWolf();
+            showWolf();
         }
         //テイムできるMOBならテイムできるよにする
         if (entity instanceof Tameable) {
@@ -54,7 +52,7 @@ public class InfoMob {
 
     }
 
-    private void saveRabbit() {
+    private void showRabbit() {
 
         Rabbit rabbit = (Rabbit) entity;
 
@@ -63,7 +61,7 @@ public class InfoMob {
 
     }
 
-    private void saveWolf() {
+    private void showWolf() {
 
         Wolf wolf = (Wolf) entity;
 
@@ -71,14 +69,13 @@ public class InfoMob {
         player.sendMessage(m.plg("Angry:" + wolf.isAngry()));
     }
 
-    private void saveOcelot() {
+    private void showOcelot() {
 
         Ocelot ocelot = (Ocelot) entity;
         player.sendMessage(m.plg("CatType:" + ocelot.getCatType().name()));
 
 
     }
-
 
     private void showHorse() {
 

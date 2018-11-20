@@ -52,6 +52,13 @@ public class SaveMob {
         if (entity instanceof Wolf) {
             saveWolf();
         }
+        if (entity instanceof Parrot) {
+            saveParrot();
+        }
+        if (entity instanceof TropicalFish) {
+            saveTropicalFish();
+        }
+
         //テイムできるMOBならテイムできるよにする
         if (entity instanceof Tameable) {
             ownerSave();
@@ -89,7 +96,22 @@ public class SaveMob {
         Ocelot ocelot = (Ocelot) entity;
 
         save.setCatType(ocelot.getCatType());
+    }
 
+    private void saveParrot() {
+
+        Parrot parrot = (Parrot) entity;
+
+        save.setParrotVariant(parrot.getVariant());
+    }
+
+    private void saveTropicalFish() {
+
+        TropicalFish tropicalFish = (TropicalFish) entity;
+
+        save.setTropicalFishPattern(tropicalFish.getPattern());
+        save.setTropicalFishBodyColor(tropicalFish.getBodyColor());
+        save.setTropicalFishPatternColor(tropicalFish.getPatternColor());
 
     }
 
@@ -124,7 +146,7 @@ public class SaveMob {
         }
         if (horse.getOwner() != null) save.setOwner(horse.getOwner().getName());
         save.setJumpStrength(horse.getJumpStrength());
-        save.setVariant(horse.getVariant());
+        save.SetHorseVariant(horse.getVariant());
         save.setSpeed(horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue());
         save.setBleed(horse.canBreed());
 

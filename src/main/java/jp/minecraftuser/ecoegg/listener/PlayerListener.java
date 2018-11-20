@@ -178,8 +178,6 @@ public class PlayerListener extends ListenerFrame {
                     reject = true;
                 }
             }
-
-
         }
         if ((reject) && (!pl.isOp())) {
             pl.sendMessage(m.plg("他のプレイヤーの動物には力が及びませんでした"));
@@ -202,7 +200,6 @@ public class PlayerListener extends ListenerFrame {
         ItemStack egg = new ItemStack(Material.matchMaterial("minecraft:" + ent.getType() + "_spawn_egg"));//雑い
 
         LoaderMob save = new LoaderMob((EcoEgg) plg, le.getUniqueId());
-
 
         SaveMob saveMob = new SaveMob(le, pl, loc, save, plg);
         saveMob.save();
