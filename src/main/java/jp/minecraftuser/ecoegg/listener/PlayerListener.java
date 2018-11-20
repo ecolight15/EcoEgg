@@ -30,6 +30,8 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
+import org.bukkit.material.MonsterEggs;
+import org.bukkit.material.SpawnEgg;
 
 /**
  * プレイヤー系イベントリスナクラス
@@ -257,14 +259,8 @@ public class PlayerListener extends ListenerFrame {
         //----------------------------------------------------------------------
         // MOBたまご生成
         //----------------------------------------------------------------------
-        ItemStack egg = new ItemStack(Material.PIG_SPAWN_EGG);
-        ItemMeta em = egg.getItemMeta();
+        ItemStack egg = new ItemStack(Material.matchMaterial("minecraft:" + ent.getType().getName() + "_spawn_egg"));//雑い
 
-        MaterialData md = egg.getData();
-        md.setData(mobnum);
-        egg.setData(md);
-
-        //egg.setDurability(mobnum); <- 多分MOBの卵の種類選択 あとで書く
         LoaderMob save = new LoaderMob((EcoEgg) plg, le.getUniqueId());
         save.setUsed(false);
         save.setMobType(mobnum);
@@ -426,8 +422,8 @@ public class PlayerListener extends ListenerFrame {
 
         // インターバルの監視
         Date date = new Date();
-        if (date.getTime() < load.getDate() + 1000 * 30) {
-            event.getPlayer().sendMessage(m.plg("再使用まであと " + (30 - (date.getTime() - load.getDate()) / 1000) + " 秒必要です"));
+        if (date.getTime() < load.getDate() + 1000 * 5) {
+            event.getPlayer().sendMessage(m.plg("再使用まであと " + (5 - (date.getTime() - load.getDate()) / 1000) + " 秒必要です"));
             event.setCancelled(true);
             return;
         }
@@ -637,7 +633,7 @@ public class PlayerListener extends ListenerFrame {
             case CHICKEN:
             case SQUID:
             case WOLF:
-                //mooshroom?
+            case MUSHROOM_COW:
             case OCELOT:
             case HORSE:
             case RABBIT:
