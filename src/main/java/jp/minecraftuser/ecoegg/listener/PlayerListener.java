@@ -190,6 +190,7 @@ public class PlayerListener extends ListenerFrame {
         byte mobnum = 0;
         //モンスターエッグに変換できない場合はキャンセル
         if (!existMonsterEgg(ent)) {
+            pl.sendMessage("モンスターエッグ非対応エンティティです" + ent.getType());
             return;
         }
 
@@ -259,7 +260,7 @@ public class PlayerListener extends ListenerFrame {
         //----------------------------------------------------------------------
         // MOBたまご生成
         //----------------------------------------------------------------------
-        ItemStack egg = new ItemStack(Material.matchMaterial("minecraft:" + ent.getType().getName() + "_spawn_egg"));//雑い
+        ItemStack egg = new ItemStack(Material.matchMaterial("minecraft:" + ent.getType() + "_spawn_egg"));//雑い
 
         LoaderMob save = new LoaderMob((EcoEgg) plg, le.getUniqueId());
         save.setUsed(false);
@@ -387,18 +388,17 @@ public class PlayerListener extends ListenerFrame {
         //----------------------------------------------------------------------
         // 卵の孵化処理
         //----------------------------------------------------------------------
-        ItemStack i = event.getItem();
-        if (i == null) return;
+        ItemStack item = event.getItem();
+        if (item == null) return;
 
         // モンスターエッグ以外は処理しない
-
-        if (!isMonsterEgg(i)) {
+        if (!isMonsterEgg(item)) {
             return;
         }
 
 
         // メタ取得
-        ItemMeta meta = i.getItemMeta();
+        ItemMeta meta = item.getItemMeta();
         if (meta == null) return;
         String itemname = meta.getDisplayName();
         if (itemname == null) return;
@@ -597,120 +597,13 @@ public class PlayerListener extends ListenerFrame {
     }
 
     public boolean existMonsterEgg(Entity e) {
-        switch (e.getType()) {
-            case ELDER_GUARDIAN:
-            case WITHER_SKELETON:
-            case STRAY:
-            case HUSK:
-            case ZOMBIE_VILLAGER:
-            case SKELETON_HORSE:
-            case ZOMBIE_HORSE:
-            case DONKEY:
-            case MULE:
-            case EVOKER:
-            case VEX:
-            case VINDICATOR:
-            case CREEPER:
-            case SKELETON:
-            case SPIDER:
-            case ZOMBIE:
-            case SLIME:
-            case GHAST:
-            case PIG_ZOMBIE:
-            case ENDERMAN:
-            case CAVE_SPIDER:
-            case SILVERFISH:
-            case BLAZE:
-            case MAGMA_CUBE:
-            case BAT:
-            case WITCH:
-            case ENDERMITE:
-            case GUARDIAN:
-            case SHULKER:
-            case PIG:
-            case SHEEP:
-            case COW:
-            case CHICKEN:
-            case SQUID:
-            case WOLF:
-            case MUSHROOM_COW:
-            case OCELOT:
-            case HORSE:
-            case RABBIT:
-            case POLAR_BEAR:
-            case LLAMA:
-            case PARROT:
-            case VILLAGER:
-            case COD:
-            case DOLPHIN:
-            case DROWNED:
-            case PHANTOM:
-            case PUFFERFISH:
-            case SALMON:
-            case TROPICAL_FISH:
-            case TURTLE:
-                return true;
 
-        }
-        return false;
+        return Material.matchMaterial("minecraft:" + e.getType().toString() + "_spawn_egg") != null;
+
     }
 
     public boolean isMonsterEgg(ItemStack item) {
-        switch (item.getType()) {
-            case ELDER_GUARDIAN_SPAWN_EGG:
-            case WITHER_SKELETON_SPAWN_EGG:
-            case STRAY_SPAWN_EGG:
-            case HUSK_SPAWN_EGG:
-            case ZOMBIE_VILLAGER_SPAWN_EGG:
-            case SKELETON_HORSE_SPAWN_EGG:
-            case ZOMBIE_HORSE_SPAWN_EGG:
-            case DONKEY_SPAWN_EGG:
-            case MULE_SPAWN_EGG:
-            case EVOKER_SPAWN_EGG:
-            case VEX_SPAWN_EGG:
-            case VINDICATOR_SPAWN_EGG:
-            case CREEPER_SPAWN_EGG:
-            case SKELETON_SPAWN_EGG:
-            case SPIDER_SPAWN_EGG:
-            case ZOMBIE_SPAWN_EGG:
-            case SLIME_SPAWN_EGG:
-            case GHAST_SPAWN_EGG:
-            case ZOMBIE_PIGMAN_SPAWN_EGG:
-            case ENDERMAN_SPAWN_EGG:
-            case CAVE_SPIDER_SPAWN_EGG:
-            case SILVERFISH_SPAWN_EGG:
-            case BLAZE_SPAWN_EGG:
-            case MAGMA_CUBE_SPAWN_EGG:
-            case BAT_SPAWN_EGG:
-            case WITCH_SPAWN_EGG:
-            case ENDERMITE_SPAWN_EGG:
-            case GUARDIAN_SPAWN_EGG:
-            case SHULKER_SPAWN_EGG:
-            case PIG_SPAWN_EGG:
-            case SHEEP_SPAWN_EGG:
-            case COW_SPAWN_EGG:
-            case CHICKEN_SPAWN_EGG:
-            case SQUID_SPAWN_EGG:
-            case WOLF_SPAWN_EGG:
-            case MOOSHROOM_SPAWN_EGG:
-            case OCELOT_SPAWN_EGG:
-            case HORSE_SPAWN_EGG:
-            case RABBIT_SPAWN_EGG:
-            case POLAR_BEAR_SPAWN_EGG:
-            case LLAMA_SPAWN_EGG:
-            case PARROT_SPAWN_EGG:
-            case VILLAGER_SPAWN_EGG:
-            case COD_SPAWN_EGG:
-            case DOLPHIN_SPAWN_EGG:
-            case DROWNED_SPAWN_EGG:
-            case PHANTOM_SPAWN_EGG:
-            case PUFFERFISH_SPAWN_EGG:
-            case SALMON_SPAWN_EGG:
-            case TROPICAL_FISH_SPAWN_EGG:
-            case TURTLE_SPAWN_EGG:
-                return true;
-        }
-        return false;
+        return item.getType().getKey().toString().matches(".*_spawn_egg");
     }
 
 
