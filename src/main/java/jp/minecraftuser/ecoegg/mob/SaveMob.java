@@ -1,5 +1,6 @@
 package jp.minecraftuser.ecoegg.mob;
 
+import jp.minecraftuser.ecoegg.SimpleTradeRecipes;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
 import jp.minecraftuser.ecoegg.m;
 import org.bukkit.Location;
@@ -7,7 +8,11 @@ import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.plugin.Plugin;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SaveMob {
 
@@ -57,6 +62,9 @@ public class SaveMob {
         }
         if (entity instanceof TropicalFish) {
             saveTropicalFish();
+        }
+        if (entity instanceof Villager) {
+            saveVillager();
         }
 
         //テイムできるMOBならテイムできるよにする
@@ -152,6 +160,15 @@ public class SaveMob {
 
 
     }
+
+    public void saveVillager() {
+        Villager villager = (Villager) entity;
+
+
+        save.setTradeList(new SimpleTradeRecipes(villager.getRecipes()));
+
+    }
+
 
     private void ownerSave() {
 

@@ -1,11 +1,17 @@
 package jp.minecraftuser.ecoegg.mob;
 
+import jp.minecraftuser.ecoegg.SimpleTradeRecipes;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CreateMob {
 
@@ -57,7 +63,9 @@ public class CreateMob {
         if (entity instanceof Animals) {
             createAnimal();
         }
-
+        if (entity instanceof Villager) {
+            createVillager();
+        }
 
 
         return this.entity;
@@ -103,9 +111,6 @@ public class CreateMob {
 
 
     private void createHorse() {
-
-        ownerSet();
-
         AbstractHorse horse = (AbstractHorse) entity;
         horse.setMaxDomestication(load.getMaxDomestication());
         horse.setDomestication(load.getDomestication());
@@ -122,8 +127,17 @@ public class CreateMob {
         horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(load.getSpeed());
         horse.setBreed(load.getBleed());
 
+    }
+
+
+    private void createVillager() {
+        Villager villager = (Villager) entity;
+        List<ItemStack> hoge = SimpleTradeRecipes.hoge((HashMap) load.getTradeList());
+        player.sendMessage(String.valueOf(hoge.size()));
+
 
     }
+
 
     private void ownerSet() {
         Tameable tame_entity = (Tameable) entity;

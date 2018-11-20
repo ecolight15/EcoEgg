@@ -3,7 +3,12 @@ package jp.minecraftuser.ecoegg.mob;
 import jp.minecraftuser.ecoegg.m;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
+import org.bukkit.event.entity.VillagerAcquireTradeEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.plugin.Plugin;
+
+import java.util.List;
 
 public class InfoMob {
     private LivingEntity entity;
@@ -40,13 +45,22 @@ public class InfoMob {
         if (entity instanceof Wolf) {
             showWolf();
         }
+        if (entity instanceof Parrot) {
+            showParrot();
+        }
+        if (entity instanceof TropicalFish) {
+            showTropicalFish();
+        }
         //テイムできるMOBならテイムできるよにする
         if (entity instanceof Tameable) {
             showOwner();
         }
         //動物なら年齢を登録
         if (entity instanceof Animals) {
-            showAge();
+            showAnimal();
+        }
+        if (entity instanceof Villager) {
+            showVillager();
         }
         player.sendMessage(m.plg("===== " + entity.getName() + "ステータスここまで ====="));
 
@@ -77,6 +91,20 @@ public class InfoMob {
 
     }
 
+    private void showParrot() {
+        Parrot parrot = (Parrot) entity;
+        player.sendMessage(m.plg("Variant:" + parrot.getVariant()));
+
+    }
+
+    public void showTropicalFish() {
+        TropicalFish tropicalFish = (TropicalFish) entity;
+        player.sendMessage(m.plg("Pattern:" + tropicalFish.getPattern()));
+        player.sendMessage(m.plg("BodyColor:" + tropicalFish.getBodyColor()));
+        player.sendMessage(m.plg("PatternColor:" + tropicalFish.getPatternColor()));
+
+    }
+
     private void showHorse() {
 
         // 馬ステータス表示
@@ -101,15 +129,36 @@ public class InfoMob {
 
     }
 
+    private void showVillager() {
+        Villager villager = (Villager) entity;
+        villager.getRecipes().forEach(merchantRecipe -> {
+            StringBuilder torihiki = new StringBuilder();
+            merchantRecipe.getIngredients().forEach(itemStack -> {
+                torihiki.append(itemStack.getType()).append("*").append(itemStack.getAmount());
+            });
+            torihiki.append("->");
+            ItemStack resultItem = merchantRecipe.getResult();
+            torihiki.append(resultItem.getType()).append("*").append(resultItem.getAmount());
+            torihiki.append("(").append(merchantRecipe.getUses()).append("/").append(merchantRecipe.getMaxUses()).append(")");
+            player.sendMessage(m.plg("Trade:" + torihiki));
+
+
+        });
+        villager.setRiches(1000);
+
+
+    }
+
     private void showOwner() {
         Tameable tame_entity = (Tameable) entity;
         if (tame_entity.getOwner() != null) player.sendMessage(m.plg("Owner:" + tame_entity.getOwner().getName()));
 
     }
 
-    private void showAge() {
+    private void showAnimal() {
         Animals animals = (Animals) entity;
         player.sendMessage(m.plg("Age:" + animals.getAge()));
+        player.sendMessage(m.plg("isChild:" + !animals.isAdult()));
 
 
     }

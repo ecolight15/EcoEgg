@@ -1,12 +1,16 @@
 
 package jp.minecraftuser.ecoegg.config;
 
+import java.util.List;
 import java.util.UUID;
 
 import jp.minecraftuser.ecoegg.EcoEgg;
+
+import jp.minecraftuser.ecoegg.SimpleTradeRecipes;
 import org.bukkit.DyeColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
+
 
 /**
  * MOB卵ファイルR/Wクラス
@@ -147,16 +151,24 @@ public class LoaderMob extends LoaderYaml {
 
     public void setTropicalFishPattern(TropicalFish.Pattern pattern) {
         list.set("tropicalfishpattern", pattern.name());
+        saveCnf();
 
     }
 
     public void setTropicalFishBodyColor(DyeColor color) {
         list.set("tropicalfishbodycolor", color.name());
+        saveCnf();
 
     }
 
     public void setTropicalFishPatternColor(DyeColor color) {
         list.set("tropicalfishpatterncolor", color.name());
+        saveCnf();
+    }
+
+    public void setTradeList(SimpleTradeRecipes recipes) {
+        list.set("simpletraderecipes", recipes);
+
     }
 
     public void setChild(boolean child) {
@@ -264,6 +276,10 @@ public class LoaderMob extends LoaderYaml {
 
     public DyeColor getTropicalFishPatternColor() {
         return DyeColor.valueOf(list.getString("tropicalfishpatterncolor"));
+    }
+
+    public Object getTradeList() {
+        return list.get("tradelist");
     }
 
     public boolean getChild() {
