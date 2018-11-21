@@ -1,12 +1,12 @@
 
 package jp.minecraftuser.ecoegg.config;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import jp.minecraftuser.ecoegg.EcoEgg;
-
-import jp.minecraftuser.ecoegg.SimpleTradeRecipes;
 import org.bukkit.DyeColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
@@ -166,9 +166,24 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
-    public void setTradeList(SimpleTradeRecipes recipes) {
-        list.set("simpletraderecipes", recipes);
+    public void setVillagerTradeList(List<Map> recipes) {
+        list.set("villagersimpletradelist", recipes);
+        saveCnf();
+    }
 
+    public void setVillagerRiches(int villagerRiches) {
+        list.set("villagerriches", villagerRiches);
+        saveCnf();
+    }
+
+    public void setVillagerProfession(Villager.Profession profession) {
+        list.set("villagerprofession", profession.name());
+        saveCnf();
+    }
+
+    public void setVillagerCareer(Villager.Career career) {
+        list.set("villagercareer", career.name());
+        saveCnf();
     }
 
     public void setChild(boolean child) {
@@ -179,7 +194,6 @@ public class LoaderMob extends LoaderYaml {
     public void setAngry(boolean angry) {
         list.set("angry", angry);
         saveCnf();
-
     }
 
     //--------------------------------------------------------------------------
@@ -198,7 +212,6 @@ public class LoaderMob extends LoaderYaml {
     public double getMaxHealth() {
         return list.getDouble("maxhealth");
     }
-
     public double getHealth() {
         return list.getDouble("health");
     }
@@ -278,9 +291,22 @@ public class LoaderMob extends LoaderYaml {
         return DyeColor.valueOf(list.getString("tropicalfishpatterncolor"));
     }
 
-    public Object getTradeList() {
-        return list.get("tradelist");
+    public List<Map<?, ?>> getTradeList() {
+        return list.getMapList("villagersimpletradelist");
     }
+
+    public int getVillagerRiches() {
+        return list.getInt("villagerriches");
+    }
+
+    public Villager.Profession getVillagerProfession() {
+        return Villager.Profession.valueOf(list.getString("villagerprofession"));
+    }
+
+    public Villager.Career getVillagerCareer() {
+        return Villager.Career.valueOf(list.getString("villagercareer"));
+    }
+
 
     public boolean getChild() {
         return list.getBoolean("child");
@@ -297,5 +323,6 @@ public class LoaderMob extends LoaderYaml {
     public String getGenType() {
         return list.getString("gen_type");
     }
+
 
 }

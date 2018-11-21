@@ -141,10 +141,10 @@ public class InfoMob {
             torihiki.append(resultItem.getType()).append("*").append(resultItem.getAmount());
             torihiki.append("(").append(merchantRecipe.getUses()).append("/").append(merchantRecipe.getMaxUses()).append(")");
             player.sendMessage(m.plg("Trade:" + torihiki));
-
-
         });
-        villager.setRiches(1000);
+        player.sendMessage(m.plg("Career:" + villager.getCareer()));
+        player.sendMessage(m.plg("Profession:" + villager.getProfession()));
+        player.sendMessage(m.plg("Riches" + villager.getRiches()));
 
 
     }

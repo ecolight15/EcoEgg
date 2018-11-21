@@ -295,8 +295,8 @@ public class PlayerListener extends ListenerFrame {
 
         // インターバルの監視
         Date date = new Date();
-        if (date.getTime() < load.getDate() + 1000 * 5) {
-            event.getPlayer().sendMessage(m.plg("再使用まであと " + (5 - (date.getTime() - load.getDate()) / 1000) + " 秒必要です"));
+        if (date.getTime() < load.getDate() + 1000 * 1) {
+            event.getPlayer().sendMessage(m.plg("再使用まであと " + (1 - (date.getTime() - load.getDate()) / 1000) + " 秒必要です"));
             event.setCancelled(true);
             return;
         }

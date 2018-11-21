@@ -1,15 +1,15 @@
 package jp.minecraftuser.ecoegg.mob;
 
-import jp.minecraftuser.ecoegg.SimpleTradeRecipes;
+import jp.minecraftuser.ecoegg.SimpleTradeRecipe;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.plugin.Plugin;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -132,8 +132,22 @@ public class CreateMob {
 
     private void createVillager() {
         Villager villager = (Villager) entity;
-        List<ItemStack> hoge = SimpleTradeRecipes.hoge((HashMap) load.getTradeList());
-        player.sendMessage(String.valueOf(hoge.size()));
+
+        List<Map<?, ?>> serialize_tradeList = load.getTradeList();
+        List<MerchantRecipe> trade_list = new ArrayList<>();
+
+        serialize_tradeList.forEach(trade -> {
+            SimpleTradeRecipe simpleTradeRecipe = SimpleTradeRecipe.deserialize((Map<String, Object>) trade);
+            MerchantRecipe merchantRecipe = simpleTradeRecipe.create_MerchantRecipe();
+            trade_list.add(merchantRecipe);
+        });
+        //先にProfessionを登録すること;
+        villager.setProfession(load.getVillagerCareer().getProfession());
+        villager.setCareer(load.getVillagerCareer(),false);
+        villager.setRecipes(trade_list);
+        villager.setRiches(load.getVillagerRiches());
+
+
 
 
     }

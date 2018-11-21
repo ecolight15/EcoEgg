@@ -2,6 +2,7 @@
 package jp.minecraftuser.ecoegg;
 
 import java.util.HashMap;
+
 import jp.minecraftuser.ecoframework.CommandFrame;
 import jp.minecraftuser.ecoegg.command.EceBookCommand;
 import jp.minecraftuser.ecoegg.command.EceCommand;
@@ -14,12 +15,12 @@ import jp.minecraftuser.ecoegg.listener.CreatureListener;
 import jp.minecraftuser.ecoegg.listener.PlayerListener;
 import jp.minecraftuser.ecoframework.PluginFrame;
 import org.bukkit.Material;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
 /**
- *
  * @author ecolight
  */
 public class EcoEgg extends PluginFrame {
@@ -31,22 +32,26 @@ public class EcoEgg extends PluginFrame {
     public void onEnable() {
         m.msgLoad(null, this);
         initialize();
-        eceConf = (EcoEggConfig)getDefaultConfig();
-        infoList = new HashMap<>(); 
-        getLogger().info(getName()+" Enable");
+        eceConf = (EcoEggConfig) getDefaultConfig();
+        infoList = new HashMap<>();
+        getLogger().info(getName() + " Enable");
+        ConfigurationSerialization.registerClass(SimpleTradeRecipe.class);
+
     }
 
     @Override
-    public void onDisable()
-    {
+    public void onDisable() {
         disable();
-        getLogger().info(getName()+" Disable");
+        getLogger().info(getName() + " Disable");
     }
 
     @Override
     public void initializeConfig() {
         registerPluginConfig(new EcoEggConfig(this));
+
+
     }
+
 
     @Override
     public void initializeCommand() {
@@ -64,14 +69,14 @@ public class EcoEgg extends PluginFrame {
         registerPluginListener(new CreatureListener(this, "creature"));
         registerPluginListener(new PlayerListener(this, "player"));
     }
-    
+
     public ItemStack makeBook() {
         ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
-        BookMeta meta = (BookMeta)item.getItemMeta();
+        BookMeta meta = (BookMeta) item.getItemMeta();
         meta.setAuthor(eceConf.getAuthor());
         meta.setDisplayName(eceConf.getDispName());
         meta.setTitle(eceConf.getTitle());
-        for (String page: eceConf.getPages()) {
+        for (String page : eceConf.getPages()) {
             meta.addPage(page);
         }
         item.setItemMeta(meta);
@@ -81,24 +86,29 @@ public class EcoEgg extends PluginFrame {
     public void setGetter(Player pl) {
         this.getter = pl;
     }
+
     public Player getGetter() {
         return this.getter;
     }
+
     public void setParamUser(InfoParam param) {
         if (infoList.containsKey(param.getPlayer())) {
             infoList.remove(param.getPlayer());
         }
         infoList.put(param.getPlayer(), param);
     }
+
     public InfoParam getParamUser(Player pl) {
         InfoParam param = infoList.get(pl);
         if (param != null) infoList.remove(pl);
         return param;
     }
+
     public boolean chkInfoUser(Player pl) {
         if (!infoList.containsKey(pl)) return false;
         return (infoList.get(pl).getType() == CommandType.INFO);
     }
+
     public boolean chkSetUser(Player pl) {
         if (!infoList.containsKey(pl)) return false;
         return (infoList.get(pl).getType() == CommandType.SET);

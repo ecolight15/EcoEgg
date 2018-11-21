@@ -1,6 +1,6 @@
 package jp.minecraftuser.ecoegg.mob;
 
-import jp.minecraftuser.ecoegg.SimpleTradeRecipes;
+import jp.minecraftuser.ecoegg.SimpleTradeRecipe;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
 import jp.minecraftuser.ecoegg.m;
 import org.bukkit.Location;
@@ -8,11 +8,9 @@ import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class SaveMob {
 
@@ -163,9 +161,18 @@ public class SaveMob {
 
     public void saveVillager() {
         Villager villager = (Villager) entity;
+        List<Map> simpleTradeRecipeList = new LinkedList<>();
+
+        villager.getRecipes().forEach(recipe -> {
+            simpleTradeRecipeList.add(new SimpleTradeRecipe(recipe).serialize());
+        });
 
 
-        save.setTradeList(new SimpleTradeRecipes(villager.getRecipes()));
+        save.setVillagerTradeList(simpleTradeRecipeList);
+        save.setVillagerRiches(villager.getRiches());
+        save.setVillagerProfession(villager.getProfession());
+        save.setVillagerCareer(villager.getCareer());
+
 
     }
 
