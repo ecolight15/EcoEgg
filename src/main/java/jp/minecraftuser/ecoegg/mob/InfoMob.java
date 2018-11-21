@@ -117,7 +117,6 @@ public class InfoMob {
         if (horse.getCustomName() != null) player.sendMessage(m.plg("Name:" + horse.getCustomName()));
         player.sendMessage(m.plg("MaxHealth:" + horse.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()));
         player.sendMessage(m.plg("Health:" + horse.getHealth()));
-        if (horse.getOwner() != null) player.sendMessage(m.plg("Owner:" + horse.getOwner().getName()));
         player.sendMessage(m.plg("MaxDomestication:" + horse.getMaxDomestication()));
         player.sendMessage(m.plg("Domestication:" + horse.getDomestication()));
 
@@ -153,7 +152,7 @@ public class InfoMob {
         try {
             player.sendMessage("CareerLevel:" + getVillagerCareerLevel(villager));
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            player.sendMessage("CareerLevel:" + "取得に失敗");
+            e.printStackTrace();
         }
 
 

@@ -157,7 +157,8 @@ public class SaveMob {
         save.setJumpStrength(horse.getJumpStrength());
         save.SetHorseVariant(horse.getVariant());
         save.setSpeed(horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue());
-        save.setBleed(horse.canBreed());
+        save.setBreed(horse.canBreed());
+
 
 
     }
@@ -190,6 +191,7 @@ public class SaveMob {
         Tameable tame_entity = (Tameable) entity;
 
         if (tame_entity.getOwner() != null) save.setOwner(tame_entity.getOwner().getName());
+        save.setTamed(tame_entity.isTamed());
 
     }
 
@@ -199,7 +201,7 @@ public class SaveMob {
 
         save.setChild(!animals.isAdult());
         save.setAge(animals.getAge());
-        save.setBleed(animals.canBreed());
+        save.setBreed(animals.canBreed());
 
     }
 

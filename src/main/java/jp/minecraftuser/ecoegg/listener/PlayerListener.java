@@ -374,6 +374,7 @@ public class PlayerListener extends ListenerFrame {
         if (isFallingDamageCanceled(event)) {
             event.setCancelled(true);
         }
+
     }
 
     /**

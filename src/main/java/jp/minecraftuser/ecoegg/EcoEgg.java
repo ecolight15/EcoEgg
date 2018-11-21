@@ -3,13 +3,10 @@ package jp.minecraftuser.ecoegg;
 
 import java.util.HashMap;
 
+import jp.minecraftuser.ecoegg.command.*;
+import jp.minecraftuser.ecoegg.config.LoaderMob;
+import jp.minecraftuser.ecoegg.mob.SaveMob;
 import jp.minecraftuser.ecoframework.CommandFrame;
-import jp.minecraftuser.ecoegg.command.EceBookCommand;
-import jp.minecraftuser.ecoegg.command.EceCommand;
-import jp.minecraftuser.ecoegg.command.EceGetCommand;
-import jp.minecraftuser.ecoegg.command.EceInfoCommand;
-import jp.minecraftuser.ecoegg.command.EceReloadCommand;
-import jp.minecraftuser.ecoegg.command.EceSetCommand;
 import jp.minecraftuser.ecoegg.config.EcoEggConfig;
 import jp.minecraftuser.ecoegg.listener.CreatureListener;
 import jp.minecraftuser.ecoegg.listener.PlayerListener;
@@ -19,6 +16,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * @author ecolight
@@ -61,6 +59,7 @@ public class EcoEgg extends PluginFrame {
         cmd.addCommand(new EceGetCommand(this, "get"));
         cmd.addCommand(new EceSetCommand(this, "set"));
         cmd.addCommand(new EceBookCommand(this, "book"));
+        cmd.addCommand(new EceEggCommand(this, "egg"));
         registerPluginCommand(cmd);
     }
 
@@ -81,6 +80,20 @@ public class EcoEgg extends PluginFrame {
         }
         item.setItemMeta(meta);
         return item;
+    }
+
+    public ItemStack makeEgg(String title) {
+        ItemStack egg = new ItemStack(Material.PIG_SPAWN_EGG);//雑い
+
+        ItemMeta im = egg.getItemMeta();
+//        if (name != null) {
+//            im.setDisplayName("[EcoEgg]("+name+"),"+le.getUniqueId().getMostSignificantBits()+","+le.getUniqueId().getLeastSignificantBits());
+//        } else {
+        im.setDisplayName("[EcoEgg]," + title);
+//        }
+        egg.setItemMeta(im);
+        return egg;
+
     }
 
     public void setGetter(Player pl) {

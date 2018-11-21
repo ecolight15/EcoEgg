@@ -126,9 +126,11 @@ public class CreateMob {
         }
 
         horse.setJumpStrength(load.getJumpStrength());
-        horse.setVariant(load.getHorseVariant());
+        //horse.setVariant(load.getHorseVariant());
         horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(load.getSpeed());
-        horse.setBreed(load.getBleed());
+        horse.setBreed(load.getBreed());
+
+
 
     }
 
@@ -168,6 +170,7 @@ public class CreateMob {
         } else {
             if (owner != null) tame_entity.setOwner(plg.getServer().getOfflinePlayer(owner));
         }
+        tame_entity.setTamed(load.getTamed());
     }
 
     private void createAnimal() {
@@ -177,7 +180,8 @@ public class CreateMob {
         } else {
             animals.setAdult();
         }
-        animals.setBreed(load.getBleed());
+        animals.setBreed(load.getBreed());
+
     }
 
     private void setVillagerCareerLevel(Villager villager, int level) throws NoSuchFieldException, IllegalAccessException {

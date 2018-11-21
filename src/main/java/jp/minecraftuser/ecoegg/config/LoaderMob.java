@@ -139,8 +139,9 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
-    public void setBleed(boolean bleed) {
-        list.set("bleed", bleed);
+    //typoしてる
+    public void setBreed(boolean breed) {
+        list.set("bleed", breed);
         saveCnf();
     }
 
@@ -198,6 +199,11 @@ public class LoaderMob extends LoaderYaml {
 
     public void setAngry(boolean angry) {
         list.set("angry", angry);
+        saveCnf();
+    }
+
+    public void setTamed(boolean tamed) {
+        list.set("tamed", tamed);
         saveCnf();
     }
 
@@ -274,7 +280,8 @@ public class LoaderMob extends LoaderYaml {
         return Rabbit.Type.valueOf(list.getString("rabbittype"));
     }
 
-    public boolean getBleed() {
+    //typoしてる
+    public boolean getBreed() {
         return list.getBoolean("bleed");
     }
 
@@ -333,5 +340,10 @@ public class LoaderMob extends LoaderYaml {
 
     public int getVillagerCareerLevel() {
         return list.getInt("villagercareerlevel");
+    }
+
+
+    public boolean getTamed() {
+        return list.getBoolean("tamed");
     }
 }
