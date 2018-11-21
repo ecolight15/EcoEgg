@@ -3,13 +3,16 @@ package jp.minecraftuser.ecoegg.mob;
 import jp.minecraftuser.ecoegg.SimpleTradeRecipe;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
 import jp.minecraftuser.ecoegg.m;
+import net.minecraft.server.v1_13_R2.EntityVillager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class SaveMob {
@@ -172,6 +175,11 @@ public class SaveMob {
         save.setVillagerRiches(villager.getRiches());
         save.setVillagerProfession(villager.getProfession());
         save.setVillagerCareer(villager.getCareer());
+        try {
+            save.setVillagerCareerLevel(getVillagerCareerLevel(villager));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -193,6 +201,13 @@ public class SaveMob {
         save.setAge(animals.getAge());
         save.setBleed(animals.canBreed());
 
+    }
+
+    private int getVillagerCareerLevel(Villager villager) throws NoSuchFieldException, IllegalAccessException {
+        EntityVillager entityVillager = ((CraftVillager) villager).getHandle();
+        Field careerLevelField = EntityVillager.class.getDeclaredField("careerLevel");
+        careerLevelField.setAccessible(true);
+        return careerLevelField.getInt(entityVillager);
     }
 
 

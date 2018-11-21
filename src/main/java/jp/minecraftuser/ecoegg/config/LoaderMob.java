@@ -186,6 +186,11 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public void setVillagerCareerLevel(int careerLevel) {
+        list.set("villagercareerlevel", careerLevel);
+        saveCnf();
+    }
+
     public void setChild(boolean child) {
         list.set("child", child);
         saveCnf();
@@ -212,6 +217,7 @@ public class LoaderMob extends LoaderYaml {
     public double getMaxHealth() {
         return list.getDouble("maxhealth");
     }
+
     public double getHealth() {
         return list.getDouble("health");
     }
@@ -325,4 +331,7 @@ public class LoaderMob extends LoaderYaml {
     }
 
 
+    public int getVillagerCareerLevel() {
+        return list.getInt("villagercareerlevel");
+    }
 }

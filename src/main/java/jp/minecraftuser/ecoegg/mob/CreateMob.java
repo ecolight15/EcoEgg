@@ -2,13 +2,16 @@ package jp.minecraftuser.ecoegg.mob;
 
 import jp.minecraftuser.ecoegg.SimpleTradeRecipe;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
+import net.minecraft.server.v1_13_R2.EntityVillager;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.plugin.Plugin;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -143,12 +146,14 @@ public class CreateMob {
         });
         //先にProfessionを登録すること;
         villager.setProfession(load.getVillagerCareer().getProfession());
-        villager.setCareer(load.getVillagerCareer(),false);
+        villager.setCareer(load.getVillagerCareer(), false);
         villager.setRecipes(trade_list);
         villager.setRiches(load.getVillagerRiches());
-
-
-
+        try {
+            setVillagerCareerLevel(villager, load.getVillagerCareerLevel());
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            player.sendMessage(e.toString());
+        }
 
     }
 
@@ -173,6 +178,13 @@ public class CreateMob {
             animals.setAdult();
         }
         animals.setBreed(load.getBleed());
+    }
+
+    private void setVillagerCareerLevel(Villager villager, int level) throws NoSuchFieldException, IllegalAccessException {
+        EntityVillager entityVillager = ((CraftVillager) villager).getHandle();
+        Field careerLevelField = EntityVillager.class.getDeclaredField("careerLevel");
+        careerLevelField.setAccessible(true);
+        careerLevelField.set(entityVillager, level);
     }
 
 

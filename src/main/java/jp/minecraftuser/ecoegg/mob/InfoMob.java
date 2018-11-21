@@ -1,14 +1,18 @@
 package jp.minecraftuser.ecoegg.mob;
 
 import jp.minecraftuser.ecoegg.m;
+import net.minecraft.server.v1_13_R2.EntityVillager;
+import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
-import org.bukkit.event.entity.VillagerAcquireTradeEvent;
+
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.plugin.Plugin;
 
-import java.util.List;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 
 public class InfoMob {
     private LivingEntity entity;
@@ -146,6 +150,12 @@ public class InfoMob {
         player.sendMessage(m.plg("Profession:" + villager.getProfession()));
         player.sendMessage(m.plg("Riches" + villager.getRiches()));
 
+        try {
+            player.sendMessage("CareerLevel:" + getVillagerCareerLevel(villager));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            player.sendMessage("CareerLevel:" + "取得に失敗");
+        }
+
 
     }
 
@@ -159,7 +169,14 @@ public class InfoMob {
         Animals animals = (Animals) entity;
         player.sendMessage(m.plg("Age:" + animals.getAge()));
         player.sendMessage(m.plg("isChild:" + !animals.isAdult()));
-
-
     }
+
+    private int getVillagerCareerLevel(Villager villager) throws NoSuchFieldException, IllegalAccessException {
+        EntityVillager entityVillager = ((CraftVillager) villager).getHandle();
+        Field careerLevelField = EntityVillager.class.getDeclaredField("careerLevel");
+        careerLevelField.setAccessible(true);
+        return careerLevelField.getInt(entityVillager);
+    }
+
+
 }
