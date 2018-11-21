@@ -30,10 +30,11 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
-    public void saveGen(String name, String type, String date) {
+    public void saveGen(String name, String type, String date, String version) {
         list.set("gen_user", name);
         list.set("gen_type", type);
         list.set("gen_date", date);
+        list.set("gen_plugin_version", version);
         saveCnf();
     }
 
@@ -345,5 +346,8 @@ public class LoaderMob extends LoaderYaml {
 
     public boolean getTamed() {
         return list.getBoolean("tamed");
+    }
+    public String getPluginVersion(){
+        return list.getString("gen_plugin_version");
     }
 }

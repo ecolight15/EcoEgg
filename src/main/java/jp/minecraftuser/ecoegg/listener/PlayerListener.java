@@ -242,7 +242,7 @@ public class PlayerListener extends ListenerFrame {
         Date date = new Date();
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
-        save.saveGen(pl.getName(), ent.getType().name(), sdf1.format(date));
+        save.saveGen(pl.getName(), ent.getType().name(), sdf1.format(date),plg.getDescription().getVersion());
         save.saveDate(date.getTime());
 
         le.remove();
@@ -326,13 +326,12 @@ public class PlayerListener extends ListenerFrame {
         loc.setZ(loc.getZ() + 0.5);
 
         Player player = event.getPlayer();
-        LivingEntity entity = (LivingEntity) block.getWorld().spawnEntity(loc, type);
 
 
         // MOBスポーン後の処理
 
-        CreateMob createMob = new CreateMob(entity, player, block, load, plg);
-        createMob.create();
+        CreateMob createMob = new CreateMob(type, player, block, loc, load, plg);
+        LivingEntity entity = createMob.create();
 
 
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");

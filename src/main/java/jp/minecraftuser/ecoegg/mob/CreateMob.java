@@ -3,6 +3,7 @@ package jp.minecraftuser.ecoegg.mob;
 import jp.minecraftuser.ecoegg.SimpleTradeRecipe;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
 import net.minecraft.server.v1_13_R2.EntityVillager;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -19,21 +20,37 @@ import java.util.Map;
 public class CreateMob {
 
     private LivingEntity entity;
+    private EntityType type;
     private Player player;
     private Block b;
+    private Location loc;
     private LoaderMob load;
     private Plugin plg;
 
-    public CreateMob(LivingEntity ent, Player player, Block b, LoaderMob load, Plugin plg) {
-        this.entity = ent;
+
+    public CreateMob(EntityType type, Player player, Block b, Location loc, LoaderMob load, Plugin plg) {
+        this.type = type;
         this.player = player;
         this.b = b;
+        this.loc = loc;
         this.load = load;
         this.plg = plg;
+
 
     }
 
     public LivingEntity create() {
+
+
+        if (load.getPluginVersion() == null || Double.parseDouble(load.getPluginVersion()) < 0.3) {
+            player.sendMessage("旧式のモンスターエッグです");
+            if (type == EntityType.HORSE && Horse.Variant.valueOf(load.getHorseVariant().name()) != Horse.Variant.HORSE) {
+                CreateMob newCreateMob = new CreateMob(EntityType.valueOf(load.getHorseVariant().name()), player, b, loc, load, plg);
+                return entity = newCreateMob.create();
+            }
+        }
+
+        entity = (LivingEntity) player.getWorld().spawnEntity(loc, type);
         load.setUsed(true);
         entity.setMaxHealth(load.getMaxHealth());
         entity.setHealth(load.getHealth());
@@ -115,18 +132,20 @@ public class CreateMob {
 
     private void createHorse() {
         AbstractHorse horse = (AbstractHorse) entity;
-        horse.setMaxDomestication(load.getMaxDomestication());
-        horse.setDomestication(load.getDomestication());
-        horse.setAge(load.getAge());
 
         if (horse instanceof org.bukkit.entity.Horse) {
+
             org.bukkit.entity.Horse normal_horse = (org.bukkit.entity.Horse) horse;
             normal_horse.setStyle(load.getStyle());
             normal_horse.setColor(load.getColor());
         }
 
+        horse.setMaxDomestication(load.getMaxDomestication());
+        horse.setDomestication(load.getDomestication());
+        horse.setAge(load.getAge());
+
+
         horse.setJumpStrength(load.getJumpStrength());
-        //horse.setVariant(load.getHorseVariant());
         horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(load.getSpeed());
         horse.setBreed(load.getBreed());
 
