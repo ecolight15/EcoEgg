@@ -21,6 +21,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -319,7 +320,11 @@ public class PlayerListener extends ListenerFrame {
 
         // MOBスポーン処理
         Location loc = block.getLocation();
-        loc.setY(loc.getY() + 2);
+        BlockFace blockface = event.getBlockFace();
+        loc.add(blockface.getModX(), blockface.getModY(), blockface.getModZ());
+        loc.setX(loc.getX() + 0.5);
+        loc.setZ(loc.getZ() + 0.5);
+
         Player player = event.getPlayer();
         LivingEntity entity = (LivingEntity) block.getWorld().spawnEntity(loc, type);
 
