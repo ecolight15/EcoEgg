@@ -131,7 +131,6 @@ public class CreateMob {
         horse.setBreed(load.getBreed());
 
 
-
     }
 
 
@@ -162,6 +161,8 @@ public class CreateMob {
 
     private void ownerSet() {
         Tameable tame_entity = (Tameable) entity;
+
+
         String owner = load.getOwner();
         boolean ownerreset = false;
         if (b.getType() == Material.CARROT) ownerreset = true;
@@ -170,7 +171,13 @@ public class CreateMob {
         } else {
             if (owner != null) tame_entity.setOwner(plg.getServer().getOfflinePlayer(owner));
         }
-        tame_entity.setTamed(load.getTamed());
+        //もし保存されているtamedがtrueならtamedをtrueにする
+        //新規追加した設定なのでfalseが入っている場合は無視する
+        boolean tamed = load.getTamed();
+        if (tamed) {
+            tame_entity.setTamed(true);
+        }
+
     }
 
     private void createAnimal() {

@@ -160,7 +160,13 @@ public class InfoMob {
 
     private void showOwner() {
         Tameable tame_entity = (Tameable) entity;
-        if (tame_entity.getOwner() != null) player.sendMessage(m.plg("Owner:" + tame_entity.getOwner().getName()));
+
+        if (tame_entity.getOwner() != null) {
+            player.sendMessage(m.plg("Owner:" + tame_entity.getOwner().getName()));
+        } else {
+            player.sendMessage(m.plg("Owner:" + "null"));
+        }
+        player.sendMessage(m.plg("isTamed:" + tame_entity.isTamed()));
 
     }
 
