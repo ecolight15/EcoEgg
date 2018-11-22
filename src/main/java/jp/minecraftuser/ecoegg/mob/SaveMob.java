@@ -172,7 +172,6 @@ public class SaveMob {
             simpleTradeRecipeList.add(new SimpleTradeRecipe(recipe).serialize());
         });
 
-
         save.setVillagerTradeList(simpleTradeRecipeList);
         save.setVillagerRiches(villager.getRiches());
         save.setVillagerProfession(villager.getProfession());
@@ -185,6 +184,7 @@ public class SaveMob {
 
 
     }
+
 
 
     private void ownerSave() {

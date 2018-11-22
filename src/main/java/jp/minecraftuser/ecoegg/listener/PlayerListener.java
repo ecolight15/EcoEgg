@@ -242,7 +242,7 @@ public class PlayerListener extends ListenerFrame {
         Date date = new Date();
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
-        save.saveGen(pl.getName(), ent.getType().name(), sdf1.format(date),plg.getDescription().getVersion());
+        save.saveGen(pl.getName(), ent.getType().name(), sdf1.format(date), plg.getDescription().getVersion());
         save.saveDate(date.getTime());
 
         le.remove();
@@ -346,6 +346,7 @@ public class PlayerListener extends ListenerFrame {
      *
      * @param event
      */
+    /*
     @EventHandler(priority = EventPriority.LOWEST)
     public void PrepareItemCraft(PrepareItemCraftEvent event) {
         ItemStack is = event.getInventory().getResult();
@@ -361,6 +362,7 @@ public class PlayerListener extends ListenerFrame {
         is.setAmount(0);
         event.getInventory().setResult(is);
     }
+    */
 
     /**
      * エンティティダメージイベントハンドラ

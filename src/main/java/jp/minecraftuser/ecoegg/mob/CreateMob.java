@@ -36,20 +36,19 @@ public class CreateMob {
         this.load = load;
         this.plg = plg;
 
+        if (isOldFormatEgg()) {
+            player.sendMessage("旧式のモンスターエッグです");
+            if (type == EntityType.HORSE && Horse.Variant.valueOf(load.getHorseVariant().name()) != Horse.Variant.HORSE) {
+                EntityType new_entity_type = EntityType.valueOf(load.getHorseVariant().name());
+                player.sendMessage("EntityTypeを変更" + type + "->" + new_entity_type);
+                this.type = new_entity_type;
+            }
+        }
+
 
     }
 
     public LivingEntity create() {
-
-
-        if (load.getPluginVersion() == null || Double.parseDouble(load.getPluginVersion()) < 0.3) {
-            player.sendMessage("旧式のモンスターエッグです");
-            if (type == EntityType.HORSE && Horse.Variant.valueOf(load.getHorseVariant().name()) != Horse.Variant.HORSE) {
-                CreateMob newCreateMob = new CreateMob(EntityType.valueOf(load.getHorseVariant().name()), player, b, loc, load, plg);
-                return entity = newCreateMob.create();
-            }
-        }
-
         entity = (LivingEntity) player.getWorld().spawnEntity(loc, type);
         load.setUsed(true);
         entity.setMaxHealth(load.getMaxHealth());
@@ -154,7 +153,11 @@ public class CreateMob {
 
 
     private void createVillager() {
+
         Villager villager = (Villager) entity;
+        if (isOldFormatEgg()) {
+            return;
+        }
 
         List<Map<?, ?>> serialize_tradeList = load.getTradeList();
         List<MerchantRecipe> trade_list = new ArrayList<>();
@@ -175,6 +178,7 @@ public class CreateMob {
             player.sendMessage(e.toString());
         }
 
+
     }
 
 
@@ -190,12 +194,11 @@ public class CreateMob {
         } else {
             if (owner != null) tame_entity.setOwner(plg.getServer().getOfflinePlayer(owner));
         }
-        //もし保存されているtamedがtrueならtamedをtrueにする
-        //新規追加した設定なのでfalseが入っている場合は無視する
-        boolean tamed = load.getTamed();
-        if (tamed) {
+
+        if (!isOldFormatEgg()) {
             tame_entity.setTamed(true);
         }
+
 
     }
 
@@ -217,5 +220,7 @@ public class CreateMob {
         careerLevelField.set(entityVillager, level);
     }
 
-
+    private boolean isOldFormatEgg() {
+        return load.getPluginVersion() == null || Double.parseDouble(load.getPluginVersion()) < 0.3;
+    }
 }
