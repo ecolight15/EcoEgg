@@ -56,6 +56,7 @@ public class EcoEgg extends PluginFrame {
         CommandFrame cmd = new EceCommand(this, "ece");
         cmd.addCommand(new EceReloadCommand(this, "reload"));
         cmd.addCommand(new EceInfoCommand(this, "info"));
+        cmd.addCommand(new EceInfoEggCommand(this, "infoegg"));
         cmd.addCommand(new EceGetCommand(this, "get"));
         cmd.addCommand(new EceSetCommand(this, "set"));
         cmd.addCommand(new EceBookCommand(this, "book"));
@@ -84,13 +85,8 @@ public class EcoEgg extends PluginFrame {
 
     public ItemStack makeEgg(String title) {
         ItemStack egg = new ItemStack(Material.PIG_SPAWN_EGG);//雑い
-
         ItemMeta im = egg.getItemMeta();
-//        if (name != null) {
-//            im.setDisplayName("[EcoEgg]("+name+"),"+le.getUniqueId().getMostSignificantBits()+","+le.getUniqueId().getLeastSignificantBits());
-//        } else {
         im.setDisplayName("[EcoEgg]," + title);
-//        }
         egg.setItemMeta(im);
         return egg;
 

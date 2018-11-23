@@ -138,7 +138,6 @@ public class PlayerListener extends ListenerFrame {
 
         //モンスターエッグに変換できない場合はキャンセル
         if (!existMonsterEgg(ent)) {
-            pl.sendMessage("モンスターエッグ非対応エンティティです" + ent.getType());
             return;
         }
 
@@ -302,13 +301,7 @@ public class PlayerListener extends ListenerFrame {
             return;
         }
 
-        EntityType type;
-        //もし-MobTypeが-1ならgen_typeからモンスターの種類を取ってくる
-        if (load.getMobType() != -1) {
-            type = EntityType.fromId(load.getMobType());
-        } else {
-            type = EntityType.valueOf(load.getGenType());
-        }
+
 
         // 一応本のクリック判定をキャンセル？
 
@@ -319,20 +312,18 @@ public class PlayerListener extends ListenerFrame {
         }
 
         // MOBスポーン処理
+        Player player = event.getPlayer();
+
         Location loc = block.getLocation();
         BlockFace blockface = event.getBlockFace();
         loc.add(blockface.getModX(), blockface.getModY(), blockface.getModZ());
         loc.setX(loc.getX() + 0.5);
         loc.setZ(loc.getZ() + 0.5);
 
-        Player player = event.getPlayer();
-
-
-        // MOBスポーン後の処理
-
-        CreateMob createMob = new CreateMob(type, player, block, loc, load, plg);
+        CreateMob createMob = new CreateMob(player, block.getType(), loc, load, plg);
         LivingEntity entity = createMob.create();
 
+        // MOBスポーン後の処理
 
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         load.saveUse(player.getName(), entity.getType().name(), sdf1.format(date));

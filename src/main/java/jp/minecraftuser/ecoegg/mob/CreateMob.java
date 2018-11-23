@@ -6,7 +6,6 @@ import net.minecraft.server.v1_13_R2.EntityVillager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.MerchantRecipe;
@@ -22,40 +21,46 @@ public class CreateMob {
     private LivingEntity entity;
     private EntityType type;
     private Player player;
-    private Block b;
+    private Material material;
     private Location loc;
     private LoaderMob load;
     private Plugin plg;
 
 
-    public CreateMob(EntityType type, Player player, Block b, Location loc, LoaderMob load, Plugin plg) {
-        this.type = type;
+    public CreateMob(Player player, Material material, Location loc, LoaderMob load, Plugin plg) {
         this.player = player;
-        this.b = b;
+        this.material = material;
         this.loc = loc;
         this.load = load;
         this.plg = plg;
+    }
+
+    public LivingEntity create() {
+
+        //もしmob_typeが-1ならgen_typeからモンスターの種類を取ってくる
+        if (load.getMobType() != -1) {
+            type = EntityType.fromId(load.getMobType());
+        } else {
+            type = EntityType.valueOf(load.getGenType());
+        }
 
         if (isOldFormatEgg()) {
             player.sendMessage("旧式のモンスターエッグです");
             if (type == EntityType.HORSE && Horse.Variant.valueOf(load.getHorseVariant().name()) != Horse.Variant.HORSE) {
                 EntityType new_entity_type = EntityType.valueOf(load.getHorseVariant().name());
                 player.sendMessage("EntityTypeを変更" + type + "->" + new_entity_type);
-                this.type = new_entity_type;
+                type = new_entity_type;
             }
         }
 
-
-    }
-
-    public LivingEntity create() {
         entity = (LivingEntity) player.getWorld().spawnEntity(loc, type);
         load.setUsed(true);
         entity.setMaxHealth(load.getMaxHealth());
         entity.setHealth(load.getHealth());
-        String name = load.getCustomName();
-        if (name != null) entity.setCustomName(name);
 
+        String name = load.getCustomName();
+
+        if (name != null) entity.setCustomName(name);
 
         if (entity instanceof AbstractHorse) {
             createHorse();
@@ -77,7 +82,7 @@ public class CreateMob {
         }
 
         if (entity instanceof Tameable) {
-            ownerSet();
+            createOwner();
         }
         if (entity instanceof Animals) {
             createAnimal();
@@ -87,7 +92,7 @@ public class CreateMob {
         }
 
 
-        return this.entity;
+        return entity;
 
     }
 
@@ -156,6 +161,7 @@ public class CreateMob {
 
         Villager villager = (Villager) entity;
         if (isOldFormatEgg()) {
+            player.sendMessage("トレード内容復元処理をスキップしました");
             return;
         }
 
@@ -167,11 +173,13 @@ public class CreateMob {
             MerchantRecipe merchantRecipe = simpleTradeRecipe.create_MerchantRecipe();
             trade_list.add(merchantRecipe);
         });
+
         //先にProfessionを登録すること;
         villager.setProfession(load.getVillagerCareer().getProfession());
         villager.setCareer(load.getVillagerCareer(), false);
         villager.setRecipes(trade_list);
         villager.setRiches(load.getVillagerRiches());
+
         try {
             setVillagerCareerLevel(villager, load.getVillagerCareerLevel());
         } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -182,13 +190,13 @@ public class CreateMob {
     }
 
 
-    private void ownerSet() {
-        Tameable tame_entity = (Tameable) entity;
+    private void createOwner() {
 
+        Tameable tame_entity = (Tameable) entity;
 
         String owner = load.getOwner();
         boolean ownerreset = false;
-        if (b.getType() == Material.CARROT) ownerreset = true;
+        if (material == Material.CARROT) ownerreset = true;
         if (ownerreset) {
             if (owner != null) tame_entity.setOwner(player);
         } else {

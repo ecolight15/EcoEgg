@@ -44,7 +44,7 @@ public class SimpleTradeRecipe implements ConfigurationSerializable {
 
     @Override
     public Map<String, Object> serialize() {
-        Map<String, Object> map = new LinkedHashMap();
+        LinkedHashMap map = new LinkedHashMap();
         map.put("input_item_0", input_item_0.serialize());
         map.put("input_item_1", input_item_1.serialize());
         map.put("output_item", output_item.serialize());

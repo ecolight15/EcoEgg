@@ -135,19 +135,19 @@ public class InfoMob {
     private void showVillager() {
         Villager villager = (Villager) entity;
         villager.getRecipes().forEach(merchantRecipe -> {
-            StringBuilder torihiki = new StringBuilder();
+            StringBuilder trade_recipe = new StringBuilder();
             merchantRecipe.getIngredients().forEach(itemStack -> {
-                torihiki.append(itemStack.getType()).append("*").append(itemStack.getAmount());
+                trade_recipe.append(itemStack.getType()).append(" * ").append(itemStack.getAmount());
             });
-            torihiki.append("->");
+            trade_recipe.append(" -> ");
             ItemStack resultItem = merchantRecipe.getResult();
-            torihiki.append(resultItem.getType()).append("*").append(resultItem.getAmount());
-            torihiki.append("(").append(merchantRecipe.getUses()).append("/").append(merchantRecipe.getMaxUses()).append(")");
-            player.sendMessage(m.plg("Trade:" + torihiki));
+            trade_recipe.append(resultItem.getType()).append(" * ").append(resultItem.getAmount());
+            trade_recipe.append("(").append(merchantRecipe.getUses()).append("/").append(merchantRecipe.getMaxUses()).append(")");
+            player.sendMessage(m.plg("Trade:" + trade_recipe));
         });
         player.sendMessage(m.plg("Career:" + villager.getCareer()));
         player.sendMessage(m.plg("Profession:" + villager.getProfession()));
-        player.sendMessage(m.plg("Riches" + villager.getRiches()));
+        player.sendMessage(m.plg("Riches:" + villager.getRiches()));
 
         try {
             player.sendMessage("CareerLevel:" + getVillagerCareerLevel(villager));
