@@ -46,8 +46,9 @@ public class EceEggCommand extends CommandFrame {
     public boolean worker(CommandSender sender, String[] args) {
         if (args.length == 0) {
             sender.sendMessage(m.plg("引数が足りません"));
+            return true;
         }
-        String id = "," + args[0];
+        String id = args[0];
         id = id.replace("_", ",");
 
 

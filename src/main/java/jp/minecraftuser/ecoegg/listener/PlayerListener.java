@@ -271,14 +271,13 @@ public class PlayerListener extends ListenerFrame {
 
 
         // メタ取得
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) return;
-        String itemname = meta.getDisplayName();
-        if (itemname == null) return;
+
+        String item_name = item.getItemMeta().getDisplayName();
+
 
         // エコエッグの表記で始まるか
-        if (!itemname.startsWith("[EcoEgg]")) return;
-        String[] token = itemname.split(",");
+        if (!item_name.startsWith("[EcoEgg]")) return;
+        String[] token = item_name.split(",");
         String most = token[token.length - 2];
         String least = token[token.length - 1];
 
@@ -295,12 +294,11 @@ public class PlayerListener extends ListenerFrame {
 
         // インターバルの監視
         Date date = new Date();
-        if (date.getTime() < load.getDate() + 1000 * 1) {
-            event.getPlayer().sendMessage(m.plg("再使用まであと " + (1 - (date.getTime() - load.getDate()) / 1000) + " 秒必要です"));
+        if (date.getTime() < load.getDate() + 1000 * 10) {
+            event.getPlayer().sendMessage(m.plg("再使用まであと " + (10 - (date.getTime() - load.getDate()) / 1000) + " 秒必要です"));
             event.setCancelled(true);
             return;
         }
-
 
 
         // 一応本のクリック判定をキャンセル？
@@ -330,6 +328,7 @@ public class PlayerListener extends ListenerFrame {
 
         event.setCancelled(true);
         if (player.getGameMode() != GameMode.CREATIVE) player.setItemInHand(new ItemStack(Material.AIR));
+        player.sendMessage(m.plg(entity.getType().name() + "を出現させました"));
     }
 
     /**
@@ -396,7 +395,20 @@ public class PlayerListener extends ListenerFrame {
     }
 
     public boolean isMonsterEgg(ItemStack item) {
-        return item.getType().getKey().toString().matches(".*_spawn_egg");
+        if (item == null) {
+            return false;
+        }
+        if (!item.getType().getKey().toString().matches(".*_spawn_egg")) {
+            return false;
+        }
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) {
+            return false;
+        }
+        String item_name = meta.getDisplayName();
+        if (item_name == null) return false;
+
+        return item_name.startsWith("[EcoEgg]");
     }
 
 

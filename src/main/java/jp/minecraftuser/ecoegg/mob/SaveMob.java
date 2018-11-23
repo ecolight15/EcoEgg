@@ -45,7 +45,7 @@ public class SaveMob {
 
 
         //ウマとかラバとかロバとかゾンビウマとかスケルトンウマとか
-        //最初間違えてラマも登録してた()
+
         if (entity instanceof AbstractHorse) {
             saveHorse();
         }
@@ -68,9 +68,9 @@ public class SaveMob {
             saveVillager();
         }
 
-        //テイムできるMOBならテイムできるよにする
+
         if (entity instanceof Tameable) {
-            ownerSave();
+            saveOwner();
         }
         //動物なら年齢を登録
         if (entity instanceof Animals) {
@@ -187,7 +187,7 @@ public class SaveMob {
 
 
 
-    private void ownerSave() {
+    private void saveOwner() {
 
         Tameable tame_entity = (Tameable) entity;
 

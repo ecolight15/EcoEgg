@@ -35,8 +35,6 @@ public class InfoMob {
         player.sendMessage(m.plg("Health:" + entity.getHealth()));
 
 
-        //ウマとかラバとかロバとかゾンビウマとかスケルトンウマとか
-        //最初間違えてラマも登録してた()
         if (entity instanceof AbstractHorse) {
             showHorse();
         }
@@ -55,18 +53,17 @@ public class InfoMob {
         if (entity instanceof TropicalFish) {
             showTropicalFish();
         }
-        //テイムできるMOBならテイムできるよにする
+
         if (entity instanceof Tameable) {
             showOwner();
         }
-        //動物なら年齢を登録
         if (entity instanceof Animals) {
             showAnimal();
         }
         if (entity instanceof Villager) {
             showVillager();
         }
-        player.sendMessage(m.plg("===== " + entity.getName() + "ステータスここまで ====="));
+        player.sendMessage(m.plg("===== " + entity.getType() + "ステータスここまで ====="));
 
     }
 
