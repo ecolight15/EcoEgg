@@ -229,6 +229,6 @@ public class CreateMob {
     }
 
     private boolean isOldFormatEgg() {
-        return load.getPluginVersion() == null || Double.parseDouble(load.getPluginVersion()) < 0.3;
+        return load.getPluginVersion() == null;
     }
 }
