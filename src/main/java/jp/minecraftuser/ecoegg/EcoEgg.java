@@ -4,8 +4,6 @@ package jp.minecraftuser.ecoegg;
 import java.util.HashMap;
 
 import jp.minecraftuser.ecoegg.command.*;
-import jp.minecraftuser.ecoegg.config.LoaderMob;
-import jp.minecraftuser.ecoegg.mob.SaveMob;
 import jp.minecraftuser.ecoframework.CommandFrame;
 import jp.minecraftuser.ecoegg.config.EcoEggConfig;
 import jp.minecraftuser.ecoegg.listener.CreatureListener;
@@ -93,17 +91,15 @@ public class EcoEgg extends PluginFrame {
     }
 
     public void setGetter(Player pl) {
-        this.getter = pl;
+        getter = pl;
     }
 
     public Player getGetter() {
-        return this.getter;
+        return getter;
     }
 
     public void setParamUser(InfoParam param) {
-        if (infoList.containsKey(param.getPlayer())) {
-            infoList.remove(param.getPlayer());
-        }
+        infoList.remove(param.getPlayer());
         infoList.put(param.getPlayer(), param);
     }
 

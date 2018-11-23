@@ -82,7 +82,7 @@ public class CreateMob {
         }
 
         if (entity instanceof Tameable) {
-            createOwner();
+            setTame();
         }
         if (entity instanceof Animals) {
             createAnimal();
@@ -190,21 +190,22 @@ public class CreateMob {
     }
 
 
-    private void createOwner() {
+    private void setTame() {
 
         Tameable tame_entity = (Tameable) entity;
 
         String owner = load.getOwner();
         boolean ownerreset = false;
-        if (material == Material.CARROT) ownerreset = true;
+        if (material == Material.CARROTS) ownerreset = true;
         if (ownerreset) {
-            if (owner != null) tame_entity.setOwner(player);
+            player.sendMessage("オーナーをリセットしました");
+            tame_entity.setOwner(player);
         } else {
             if (owner != null) tame_entity.setOwner(plg.getServer().getOfflinePlayer(owner));
         }
 
         if (!isOldFormatEgg()) {
-            tame_entity.setTamed(true);
+            tame_entity.setTamed(load.getTamed());
         }
 
 
@@ -229,6 +230,6 @@ public class CreateMob {
     }
 
     private boolean isOldFormatEgg() {
-        return load.getPluginVersion() == null;
+        return load.getPluginVersion() == null;//雑い
     }
 }

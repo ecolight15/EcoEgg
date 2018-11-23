@@ -70,7 +70,7 @@ public class SaveMob {
 
 
         if (entity instanceof Tameable) {
-            saveOwner();
+            saveTame();
         }
         //動物なら年齢を登録
         if (entity instanceof Animals) {
@@ -160,17 +160,13 @@ public class SaveMob {
         save.setBreed(horse.canBreed());
 
 
-
-
     }
 
     public void saveVillager() {
         Villager villager = (Villager) entity;
         List<Map> simpleTradeRecipeList = new LinkedList<>();
 
-        villager.getRecipes().forEach(recipe -> {
-            simpleTradeRecipeList.add(new SimpleTradeRecipe(recipe).serialize());
-        });
+        villager.getRecipes().forEach(recipe -> simpleTradeRecipeList.add(new SimpleTradeRecipe(recipe).serialize()));
 
         save.setVillagerTradeList(simpleTradeRecipeList);
         save.setVillagerRiches(villager.getRiches());
@@ -186,8 +182,7 @@ public class SaveMob {
     }
 
 
-
-    private void saveOwner() {
+    private void saveTame() {
 
         Tameable tame_entity = (Tameable) entity;
 

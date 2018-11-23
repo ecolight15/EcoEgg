@@ -1,7 +1,6 @@
 
 package jp.minecraftuser.ecoegg.command;
 
-import javafx.scene.effect.Effect;
 import jp.minecraftuser.ecoegg.CommandType;
 import jp.minecraftuser.ecoegg.EcoEgg;
 import jp.minecraftuser.ecoegg.InfoParam;
@@ -16,8 +15,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.UUID;
 

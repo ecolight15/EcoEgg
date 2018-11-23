@@ -2,7 +2,6 @@ package jp.minecraftuser.ecoegg.mob;
 
 import jp.minecraftuser.ecoegg.m;
 import net.minecraft.server.v1_13_R2.EntityVillager;
-import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
@@ -11,7 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 
 public class InfoMob {
@@ -112,8 +110,6 @@ public class InfoMob {
         AbstractHorse horse = (AbstractHorse) entity;
 
         if (horse.getCustomName() != null) player.sendMessage(m.plg("Name:" + horse.getCustomName()));
-        player.sendMessage(m.plg("MaxHealth:" + horse.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()));
-        player.sendMessage(m.plg("Health:" + horse.getHealth()));
         player.sendMessage(m.plg("MaxDomestication:" + horse.getMaxDomestication()));
         player.sendMessage(m.plg("Domestication:" + horse.getDomestication()));
 
@@ -133,9 +129,7 @@ public class InfoMob {
         Villager villager = (Villager) entity;
         villager.getRecipes().forEach(merchantRecipe -> {
             StringBuilder trade_recipe = new StringBuilder();
-            merchantRecipe.getIngredients().forEach(itemStack -> {
-                trade_recipe.append(itemStack.getType()).append(" * ").append(itemStack.getAmount());
-            });
+            merchantRecipe.getIngredients().forEach(itemStack -> trade_recipe.append(itemStack.getType()).append(" * ").append(itemStack.getAmount()));
             trade_recipe.append(" -> ");
             ItemStack resultItem = merchantRecipe.getResult();
             trade_recipe.append(resultItem.getType()).append(" * ").append(resultItem.getAmount());

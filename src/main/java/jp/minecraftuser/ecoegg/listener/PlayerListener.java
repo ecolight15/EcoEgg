@@ -26,7 +26,6 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -66,6 +65,7 @@ public class PlayerListener extends ListenerFrame {
         //----------------------------------------------------------------------
         Player pl = event.getPlayer();
         Entity ent = event.getRightClicked();
+
 
         if (((EcoEgg) plg).chkInfoUser(pl)) {
             if (!existMonsterEgg(ent)) {
@@ -134,8 +134,6 @@ public class PlayerListener extends ListenerFrame {
         }
 
 
-        String dispname = "";
-
         //モンスターエッグに変換できない場合はキャンセル
         if (!existMonsterEgg(ent)) {
             return;
@@ -172,13 +170,16 @@ public class PlayerListener extends ListenerFrame {
         boolean reject = false;
 
         if (le instanceof Tameable) {
-            Tameable team_entity = (Tameable) le;
-            if (team_entity.getOwner() != null) {
-                if (!(team_entity.getOwner().getName().equals(pl.getName()))) {
+            Tameable tame_entity = (Tameable) le;
+
+
+            if (tame_entity.getOwner() != null && tame_entity.getOwner().getName() != null) {
+                if (!(tame_entity.getOwner().getName().equals(pl.getName()))) {
                     reject = true;
                 }
             }
         }
+
         if ((reject) && (!pl.isOp())) {
             pl.sendMessage(m.plg("他のプレイヤーの動物には力が及びませんでした"));
             if (pl.getGameMode() != GameMode.CREATIVE) {
@@ -269,11 +270,8 @@ public class PlayerListener extends ListenerFrame {
             return;
         }
 
-
         // メタ取得
-
         String item_name = item.getItemMeta().getDisplayName();
-
 
         // エコエッグの表記で始まるか
         if (!item_name.startsWith("[EcoEgg]")) return;
@@ -384,8 +382,7 @@ public class PlayerListener extends ListenerFrame {
         if (pas == null) return false;
         if (pas.getType() != EntityType.PLAYER) return false;
         Player pl = (Player) pas;
-        if (!pl.isOp()) return false;
-        return true;
+        return pl.isOp();
     }
 
     public boolean existMonsterEgg(Entity e) {
