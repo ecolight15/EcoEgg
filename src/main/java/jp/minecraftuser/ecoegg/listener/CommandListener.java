@@ -97,10 +97,6 @@ public class CommandListener extends ListenerFrame {
                             horse.setColor(param.getHorseColor());
                             Utl.sendPluginMessage(plg, ent, "色[" + horse.getColor().name() + "]を設定しました");
                             break;
-                        case VARIANT:
-                            horse.setVariant(param.getHorseVariant());
-                            Utl.sendPluginMessage(plg, ent, "Variant[" + horse.getVariant().name() + "]を設定しました");
-                            break;
                     }
                     break;
             }

@@ -44,5 +44,5 @@ public class EceReloadCommand extends CommandFrame {
         sender.sendMessage("[" + plg.getName()+"] コンフィグリロード");
         return true;
     }
-    
+
 }
