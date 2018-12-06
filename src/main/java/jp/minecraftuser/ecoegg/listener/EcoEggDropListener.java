@@ -91,19 +91,6 @@ public class EcoEggDropListener extends ListenerFrame  {
         }
     }
 
-    /**
-     * MOBスポーンイベントハンドラ
-     * @param event 
-     */
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void CreatureSpawn(CreatureSpawnEvent event) {
-        LivingEntity ent = event.getEntity();
-        if (ent == null) return;
-        String custom_name = ent.getCustomName();
-        if (custom_name == null) return;
-        if (custom_name.startsWith("[EcoEgg]")) {
-            event.setCancelled(true);
-        }
-    }
+
 
 }
