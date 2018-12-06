@@ -43,7 +43,7 @@ public class EceInfoCommand extends CommandFrame {
     @Override
     public boolean worker(CommandSender sender, String[] args) {
         ((EcoEgg)plg).setParamUser(new InfoParam((Player) sender, CommandType.INFO));
-        sender.sendMessage(m.plg("対象の動物(馬/犬/猫)を右クリックして下さい"));
+        sender.sendMessage(m.plg("対象を右クリックして下さい"));
         return true;
     }
     

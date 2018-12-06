@@ -1,15 +1,15 @@
 
 package jp.minecraftuser.ecoegg.config;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import jp.minecraftuser.ecoegg.EcoEgg;
 import org.bukkit.DyeColor;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.EnderDragon;
-import org.bukkit.entity.Horse;
-import org.bukkit.entity.Ocelot;
-import org.bukkit.entity.Rabbit;
+import org.bukkit.entity.*;
+
 
 /**
  * MOB卵ファイルR/Wクラス
@@ -29,10 +29,11 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
-    public void saveGen(String name, String type, String date) {
+    public void saveGen(String name, String type, String date, String version) {
         list.set("gen_user", name);
         list.set("gen_type", type);
         list.set("gen_date", date);
+        list.set("gen_plugin_version", version);
         saveCnf();
     }
 
@@ -103,7 +104,7 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
-    public void setVariant(Horse.Variant var) {
+    public void SetHorseVariant(Horse.Variant var) {
         list.set("variant", var.name());
         saveCnf();
     }
@@ -138,8 +139,56 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
-    public void setBleed(boolean bleed) {
-        list.set("bleed", bleed);
+    //typoしてる
+    public void setBreed(boolean breed) {
+        list.set("bleed", breed);
+        saveCnf();
+    }
+
+    public void setParrotVariant(Parrot.Variant variant) {
+        list.set("parrotvariant", variant.name());
+        saveCnf();
+    }
+
+    public void setTropicalFishPattern(TropicalFish.Pattern pattern) {
+        list.set("tropicalfishpattern", pattern.name());
+        saveCnf();
+
+    }
+
+    public void setTropicalFishBodyColor(DyeColor color) {
+        list.set("tropicalfishbodycolor", color.name());
+        saveCnf();
+
+    }
+
+    public void setTropicalFishPatternColor(DyeColor color) {
+        list.set("tropicalfishpatterncolor", color.name());
+        saveCnf();
+    }
+
+    public void setVillagerTradeList(List<Map> recipes) {
+        list.set("villagersimpletradelist", recipes);
+        saveCnf();
+    }
+
+    public void setVillagerRiches(int villagerRiches) {
+        list.set("villagerriches", villagerRiches);
+        saveCnf();
+    }
+
+    public void setVillagerProfession(Villager.Profession profession) {
+        list.set("villagerprofession", profession.name());
+        saveCnf();
+    }
+
+    public void setVillagerCareer(Villager.Career career) {
+        list.set("villagercareer", career.name());
+        saveCnf();
+    }
+
+    public void setVillagerCareerLevel(int careerLevel) {
+        list.set("villagercareerlevel", careerLevel);
         saveCnf();
     }
 
@@ -151,7 +200,11 @@ public class LoaderMob extends LoaderYaml {
     public void setAngry(boolean angry) {
         list.set("angry", angry);
         saveCnf();
+    }
 
+    public void setTamed(boolean tamed) {
+        list.set("tamed", tamed);
+        saveCnf();
     }
 
     //--------------------------------------------------------------------------
@@ -199,7 +252,7 @@ public class LoaderMob extends LoaderYaml {
         return Horse.Color.valueOf(list.getString("color"));
     }
 
-    public Horse.Variant getVariant() {
+    public Horse.Variant getHorseVariant() {
         return Horse.Variant.valueOf(list.getString("variant"));
     }
 
@@ -227,9 +280,46 @@ public class LoaderMob extends LoaderYaml {
         return Rabbit.Type.valueOf(list.getString("rabbittype"));
     }
 
-    public boolean getBleed() {
+    //typoしてる
+    public boolean getBreed() {
         return list.getBoolean("bleed");
     }
+
+    public Parrot.Variant getParrotVariant() {
+        return Parrot.Variant.valueOf(list.getString("parrotvariant"));
+    }
+
+    public TropicalFish.Pattern getTropicalFishPattern() {
+
+        return TropicalFish.Pattern.valueOf(list.getString("tropicalfishpattern"));
+
+    }
+
+    public DyeColor getTropicalFishBodyColor() {
+        return DyeColor.valueOf(list.getString("tropicalfishbodycolor"));
+
+    }
+
+    public DyeColor getTropicalFishPatternColor() {
+        return DyeColor.valueOf(list.getString("tropicalfishpatterncolor"));
+    }
+
+    public List<Map<?, ?>> getTradeList() {
+        return list.getMapList("villagersimpletradelist");
+    }
+
+    public int getVillagerRiches() {
+        return list.getInt("villagerriches");
+    }
+
+    public Villager.Profession getVillagerProfession() {
+        return Villager.Profession.valueOf(list.getString("villagerprofession"));
+    }
+
+    public Villager.Career getVillagerCareer() {
+        return Villager.Career.valueOf(list.getString("villagercareer"));
+    }
+
 
     public boolean getChild() {
         return list.getBoolean("child");
@@ -243,6 +333,20 @@ public class LoaderMob extends LoaderYaml {
         return list.getLong("date");
     }
 
-    public String getGenType() { return list.getString("gen_type"); }
+    public String getGenType() {
+        return list.getString("gen_type");
+    }
 
+
+    public int getVillagerCareerLevel() {
+        return list.getInt("villagercareerlevel");
+    }
+
+
+    public boolean getTamed() {
+        return list.getBoolean("tamed");
+    }
+    public String getPluginVersion(){
+        return list.getString("gen_plugin_version");
+    }
 }

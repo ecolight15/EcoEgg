@@ -1,6 +1,7 @@
 name: EcoEgg
 main: jp.minecraftuser.ecoegg.EcoEgg
 version: ${project.version}
+api-version: 1.13
 depend: [EcoFramework]
 commands:
   ece:
