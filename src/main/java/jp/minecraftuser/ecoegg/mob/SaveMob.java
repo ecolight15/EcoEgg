@@ -31,7 +31,7 @@ public class SaveMob {
         this.plg = plg;
     }
 
-    public LivingEntity save() {
+    public void save() {
         save.setUsed(false);
         save.setMobType((byte) entity.getType().getTypeId());
         save.setCustomName(entity.getCustomName());
@@ -70,7 +70,6 @@ public class SaveMob {
             saveAnimal();
         }
 
-        return this.entity;
     }
 
     private void saveRabbit() {

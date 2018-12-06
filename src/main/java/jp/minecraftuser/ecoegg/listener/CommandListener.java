@@ -68,7 +68,7 @@ public class CommandListener extends ListenerFrame {
             }
             InfoParam param;
             switch (ent.getType()) {
-            case HORSE:
+                case HORSE:
                     Horse horse = (Horse) ent;
                     param = ((EcoEgg) plg).getParamUser(pl);
                     switch (param.getOpt()) {
