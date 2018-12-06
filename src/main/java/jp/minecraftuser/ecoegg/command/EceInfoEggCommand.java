@@ -2,6 +2,7 @@
 package jp.minecraftuser.ecoegg.command;
 
 import jp.minecraftuser.ecoegg.EcoEgg;
+import jp.minecraftuser.ecoegg.EcoEggUtil;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
 import jp.minecraftuser.ecoegg.mob.CreateMob;
 import jp.minecraftuser.ecoegg.mob.InfoMob;
@@ -14,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.UUID;
+
 import jp.minecraftuser.ecoframework.Utl;
 
 /**
@@ -55,7 +57,7 @@ public class EceInfoEggCommand extends CommandFrame {
         // モンスターエッグ以外は処理しない
         Player player = ((Player) sender).getPlayer();
         ItemStack item = player.getItemInHand();
-        if (item == null || !isMonsterEgg(item)) {
+        if (!EcoEggUtil.isMonsterEgg(item)) {
             Utl.sendPluginMessage(plg, sender, "モンスターエッグを持った状態でコマンドを入力してください");
             return true;
         }
@@ -77,23 +79,6 @@ public class EceInfoEggCommand extends CommandFrame {
         entity.remove();
 
         return true;
-    }
-
-    public boolean isMonsterEgg(ItemStack item) {
-        if (item == null) {
-            return false;
-        }
-        if (!item.getType().getKey().toString().matches(".*_spawn_egg")) {
-            return false;
-        }
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) {
-            return false;
-        }
-        String item_name = meta.getDisplayName();
-        if (item_name == null) return false;
-
-        return item_name.startsWith("[EcoEgg]");
     }
 
 
