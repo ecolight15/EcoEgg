@@ -3,8 +3,8 @@ package jp.minecraftuser.ecoegg.command;
 
 import jp.minecraftuser.ecoegg.EcoEgg;
 import jp.minecraftuser.ecoframework.PluginFrame;
-import jp.minecraftuser.ecoegg.m;
 import jp.minecraftuser.ecoframework.CommandFrame;
+import jp.minecraftuser.ecoframework.Utl;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -40,9 +40,8 @@ public class EceBookCommand extends CommandFrame {
      */
     @Override
     public boolean worker(CommandSender sender, String[] args) {
-        
         ((Player)sender).getInventory().setItemInMainHand(((EcoEgg)plg).makeBook());
-        sender.sendMessage(m.plg("えこたまご入手"));
+        Utl.sendPluginMessage(plg, sender, "えこたまご入手");
         return true;
     }
     

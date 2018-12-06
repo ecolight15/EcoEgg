@@ -2,9 +2,9 @@
 package jp.minecraftuser.ecoegg.command;
 
 import jp.minecraftuser.ecoegg.EcoEgg;
-import jp.minecraftuser.ecoegg.m;
 import jp.minecraftuser.ecoframework.CommandFrame;
 import jp.minecraftuser.ecoframework.PluginFrame;
+import jp.minecraftuser.ecoframework.Utl;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -44,16 +44,12 @@ public class EceEggCommand extends CommandFrame {
      */
     @Override
     public boolean worker(CommandSender sender, String[] args) {
-        if (args.length == 0) {
-            sender.sendMessage(m.plg("引数が足りません"));
-            return true;
-        }
+        if (!checkRange(sender, args, 1, 1)) return true;
         String id = args[0];
         id = id.replace("_", ",");
 
-
         ((Player) sender).getInventory().setItemInMainHand(((EcoEgg) plg).makeEgg(id));
-        sender.sendMessage(m.plg("モンスターエッグ入手"));
+        Utl.sendPluginMessage(plg, sender, "モンスターエッグ入手");
         return true;
     }
 

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import jp.minecraftuser.ecoegg.DropParam;
-import jp.minecraftuser.ecoegg.m;
+import jp.minecraftuser.ecoegg.EcoEggUtil;
 import jp.minecraftuser.ecoframework.ConfigFrame;
 import jp.minecraftuser.ecoframework.PluginFrame;
 import org.bukkit.configuration.Configuration;
@@ -38,10 +38,10 @@ public class EcoEggConfig extends ConfigFrame {
                 if (mobs.length == 2) {
                     // MOB指定確定(mobs[1]がMOB名)
                     // MOB名からEntityTypeに変更
-                    EntityType ent = m.cnvSTR2ENTITY(mobs[1]);
+                    EntityType ent = EcoEggUtil.cnvSTR2ENTITY(mobs[1]);
                     // 変換失敗または既に追加済みの場合は次の定義へ
                     if ((ent == null) || (dropTable.containsKey(ent))) {
-                        m.Warn("無効なMOB指定が存在します["+mobs[1]+"]");
+                        log.warning("無効なMOB指定が存在します["+mobs[1]+"]");
                         continue;
                     }
                     // 取得値の初期値を設定しておく

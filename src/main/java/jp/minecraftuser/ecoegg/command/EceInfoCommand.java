@@ -5,8 +5,8 @@ import jp.minecraftuser.ecoegg.CommandType;
 import jp.minecraftuser.ecoegg.EcoEgg;
 import jp.minecraftuser.ecoegg.InfoParam;
 import jp.minecraftuser.ecoframework.PluginFrame;
-import jp.minecraftuser.ecoegg.m;
 import jp.minecraftuser.ecoframework.CommandFrame;
+import jp.minecraftuser.ecoframework.Utl;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -43,7 +43,7 @@ public class EceInfoCommand extends CommandFrame {
     @Override
     public boolean worker(CommandSender sender, String[] args) {
         ((EcoEgg)plg).setParamUser(new InfoParam((Player) sender, CommandType.INFO));
-        sender.sendMessage(m.plg("対象を右クリックして下さい"));
+        Utl.sendPluginMessage(plg, sender, "対象を右クリックして下さい");
         return true;
     }
     

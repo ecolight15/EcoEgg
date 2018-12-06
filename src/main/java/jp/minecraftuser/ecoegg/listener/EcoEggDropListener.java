@@ -2,11 +2,11 @@
 package jp.minecraftuser.ecoegg.listener;
 
 import java.util.Random;
+import java.util.logging.Level;
 import jp.minecraftuser.ecoegg.DropParam;
 import jp.minecraftuser.ecoegg.EcoEgg;
 import jp.minecraftuser.ecoframework.PluginFrame;
 import jp.minecraftuser.ecoegg.config.EcoEggConfig;
-import jp.minecraftuser.ecoegg.m;
 import jp.minecraftuser.ecoframework.ListenerFrame;
 import org.bukkit.Location;
 import org.bukkit.enchantments.Enchantment;
@@ -20,17 +20,17 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * MOBリスナクラス
+ * EcoEggドロップリスナクラス
  * @author ecolight
  */
-public class CreatureListener extends ListenerFrame  {
+public class EcoEggDropListener extends ListenerFrame  {
     private static EcoEggConfig eceConf = null;
     /**
      * コンストラクタ
      * @param plg_ プラグインインスタンス
      * @param name_ 名前
      */
-    public CreatureListener(PluginFrame plg_, String name_) {
+    public EcoEggDropListener(PluginFrame plg_, String name_) {
         super(plg_, name_);
         eceConf = (EcoEggConfig)conf;
     }
@@ -54,7 +54,7 @@ public class CreatureListener extends ListenerFrame  {
         Player pl = event.getEntity().getKiller();
         int loopcnt = 1;
         if (pl != null) {
-            ItemStack i = pl.getItemInHand();
+            ItemStack i = pl.getInventory().getItemInMainHand();
             if (i != null) {
                 if (i.getEnchantments().containsKey(Enchantment.LOOT_BONUS_MOBS)) {
                     switch (i.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS)) {
@@ -72,7 +72,7 @@ public class CreatureListener extends ListenerFrame  {
         // アイテム情報生成
         for (int cnt = 0; cnt < loopcnt; cnt++) {
             //------------------------------------------------------------------
-            // 1/1000の確立(configで変更可能)
+            // 指定した確立でドロップする(configで変更可能)
             //------------------------------------------------------------------
             Random rnd = new Random();
             if (rnd.nextInt(param.getRate()) != 0) return;
@@ -86,7 +86,7 @@ public class CreatureListener extends ListenerFrame  {
                 Location loc = ent.getLocation();
                 if (ent.getType() == EntityType.ENDER_DRAGON) loc.setY(loc.getY()+20);
                 ent.getWorld().dropItem(loc, ((EcoEgg)plg).makeBook());
-                m.info("EggBookDrop:"+ent.getLocation().toString());
+                log.log(Level.INFO, "EggBookDrop:{0}", ent.getLocation().toString());
             }
         }
     }
@@ -99,9 +99,9 @@ public class CreatureListener extends ListenerFrame  {
     public void CreatureSpawn(CreatureSpawnEvent event) {
         LivingEntity ent = event.getEntity();
         if (ent == null) return;
-        String name = ent.getCustomName();
-        if (name == null) return;
-        if (name.startsWith("[EcoEgg]")) {
+        String custom_name = ent.getCustomName();
+        if (custom_name == null) return;
+        if (custom_name.startsWith("[EcoEgg]")) {
             event.setCancelled(true);
         }
     }

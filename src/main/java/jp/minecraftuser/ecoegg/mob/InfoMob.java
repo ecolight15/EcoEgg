@@ -1,37 +1,34 @@
 package jp.minecraftuser.ecoegg.mob;
 
-import jp.minecraftuser.ecoegg.m;
 import net.minecraft.server.v1_13_R2.EntityVillager;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
 
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Field;
-
+import jp.minecraftuser.ecoframework.PluginFrame;
+import jp.minecraftuser.ecoframework.Utl;
 
 public class InfoMob {
+    private PluginFrame plg;
     private LivingEntity entity;
     private Player player;
 
-
-    public InfoMob(LivingEntity ent, Player player, Plugin plg) {
+    public InfoMob(LivingEntity ent, Player player, PluginFrame plg_) {
+        this.plg = plg_;
         this.entity = ent;
         this.player = player;
-
-
     }
 
     public void show() {
 
-        player.sendMessage(m.plg("===== " + entity.getType() + "ステータス表示 ====="));
-        player.sendMessage(m.plg("EntityName:" + entity.getType()));
-        player.sendMessage(m.plg("CustomName:" + entity.getName()));
-        player.sendMessage(m.plg("MaxHealth:" + entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()));
-        player.sendMessage(m.plg("Health:" + entity.getHealth()));
-
+        Utl.sendPluginMessage(plg, player, "===== " + entity.getType() + "ステータス表示 =====");
+        Utl.sendPluginMessage(plg, player, "EntityName:" + entity.getType());
+        Utl.sendPluginMessage(plg, player, "CustomName:" + entity.getName());
+        Utl.sendPluginMessage(plg, player, "MaxHealth:" + entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+        Utl.sendPluginMessage(plg, player, "Health:" + entity.getHealth());
 
         if (entity instanceof AbstractHorse) {
             showHorse();
@@ -61,47 +58,36 @@ public class InfoMob {
         if (entity instanceof Villager) {
             showVillager();
         }
-        player.sendMessage(m.plg("===== " + entity.getType() + "ステータスここまで ====="));
+        Utl.sendPluginMessage(plg, player, "===== " + entity.getType() + "ステータスここまで =====");
 
     }
 
     private void showRabbit() {
-
         Rabbit rabbit = (Rabbit) entity;
-
-        player.sendMessage(m.plg("RabbitType:" + rabbit.getRabbitType().name()));
-
-
+        Utl.sendPluginMessage(plg, player, "RabbitType:" + rabbit.getRabbitType().name());
     }
 
     private void showWolf() {
-
         Wolf wolf = (Wolf) entity;
-
-        player.sendMessage(m.plg("Color:" + wolf.getCollarColor().name()));
-        player.sendMessage(m.plg("Angry:" + wolf.isAngry()));
+        Utl.sendPluginMessage(plg, player, "Color:" + wolf.getCollarColor().name());
+        Utl.sendPluginMessage(plg, player, "Angry:" + wolf.isAngry());
     }
 
     private void showOcelot() {
-
         Ocelot ocelot = (Ocelot) entity;
-        player.sendMessage(m.plg("CatType:" + ocelot.getCatType().name()));
-
-
+        Utl.sendPluginMessage(plg, player, "CatType:" + ocelot.getCatType().name());
     }
 
     private void showParrot() {
         Parrot parrot = (Parrot) entity;
-        player.sendMessage(m.plg("Variant:" + parrot.getVariant()));
-
-    }
+        Utl.sendPluginMessage(plg, player, "Variant:" + parrot.getVariant());
+   }
 
     public void showTropicalFish() {
         TropicalFish tropicalFish = (TropicalFish) entity;
-        player.sendMessage(m.plg("Pattern:" + tropicalFish.getPattern()));
-        player.sendMessage(m.plg("BodyColor:" + tropicalFish.getBodyColor()));
-        player.sendMessage(m.plg("PatternColor:" + tropicalFish.getPatternColor()));
-
+        Utl.sendPluginMessage(plg, player, "Pattern:" + tropicalFish.getPattern());
+        Utl.sendPluginMessage(plg, player, "BodyColor:" + tropicalFish.getBodyColor());
+        Utl.sendPluginMessage(plg, player, "PatternColor:" + tropicalFish.getPatternColor());
     }
 
     private void showHorse() {
@@ -109,20 +95,18 @@ public class InfoMob {
         // 馬ステータス表示
         AbstractHorse horse = (AbstractHorse) entity;
 
-        if (horse.getCustomName() != null) player.sendMessage(m.plg("Name:" + horse.getCustomName()));
-        player.sendMessage(m.plg("MaxDomestication:" + horse.getMaxDomestication()));
-        player.sendMessage(m.plg("Domestication:" + horse.getDomestication()));
+        if (horse.getCustomName() != null) Utl.sendPluginMessage(plg, player, "Name:" + horse.getCustomName());
+        Utl.sendPluginMessage(plg, player, "MaxDomestication:" + horse.getMaxDomestication());
+        Utl.sendPluginMessage(plg, player, "Domestication:" + horse.getDomestication());
 
         if (horse instanceof Horse) {
             Horse normal_Horse = (Horse) horse;
-            player.sendMessage(m.plg("Style:" + normal_Horse.getStyle().name()));
-            player.sendMessage(m.plg("Color:" + normal_Horse.getColor().name()));
+            Utl.sendPluginMessage(plg, player, "Style:" + normal_Horse.getStyle().name());
+            Utl.sendPluginMessage(plg, player, "Color:" + normal_Horse.getColor().name());
         }
-        player.sendMessage(m.plg("Variant:" + horse.getVariant().name()));
-        player.sendMessage(m.plg("JumpStrength:" + horse.getAttribute(Attribute.HORSE_JUMP_STRENGTH).getBaseValue()));
-        player.sendMessage(m.plg("Speed:" + horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue()));
-
-
+        Utl.sendPluginMessage(plg, player, "Variant:" + horse.getVariant().name());
+        Utl.sendPluginMessage(plg, player, "JumpStrength:" + horse.getAttribute(Attribute.HORSE_JUMP_STRENGTH).getBaseValue());
+        Utl.sendPluginMessage(plg, player, "Speed:" + horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue());
     }
 
     private void showVillager() {
@@ -134,37 +118,35 @@ public class InfoMob {
             ItemStack resultItem = merchantRecipe.getResult();
             trade_recipe.append(resultItem.getType()).append(" * ").append(resultItem.getAmount());
             trade_recipe.append("(").append(merchantRecipe.getUses()).append("/").append(merchantRecipe.getMaxUses()).append(")");
-            player.sendMessage(m.plg("Trade:" + trade_recipe));
+            Utl.sendPluginMessage(plg, player, "Trade:" + trade_recipe);
         });
-        player.sendMessage(m.plg("Career:" + villager.getCareer()));
-        player.sendMessage(m.plg("Profession:" + villager.getProfession()));
-        player.sendMessage(m.plg("Riches:" + villager.getRiches()));
+        Utl.sendPluginMessage(plg, player, "Career:" + villager.getCareer());
+        Utl.sendPluginMessage(plg, player, "Profession:" + villager.getProfession());
+        Utl.sendPluginMessage(plg, player, "Riches:" + villager.getRiches());
 
         try {
             player.sendMessage("CareerLevel:" + getVillagerCareerLevel(villager));
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
-
-
     }
 
     private void showOwner() {
         Tameable tame_entity = (Tameable) entity;
 
         if (tame_entity.getOwner() != null) {
-            player.sendMessage(m.plg("Owner:" + tame_entity.getOwner().getName()));
+            Utl.sendPluginMessage(plg, player, "Owner:" + tame_entity.getOwner().getName());
         } else {
-            player.sendMessage(m.plg("Owner:" + "null"));
+            Utl.sendPluginMessage(plg, player, "Owner:" + "null");
         }
-        player.sendMessage(m.plg("isTamed:" + tame_entity.isTamed()));
+        Utl.sendPluginMessage(plg, player, "isTamed:" + tame_entity.isTamed());
 
     }
 
     private void showAnimal() {
         Animals animals = (Animals) entity;
-        player.sendMessage(m.plg("Age:" + animals.getAge()));
-        player.sendMessage(m.plg("isChild:" + !animals.isAdult()));
+        Utl.sendPluginMessage(plg, player, "Age:" + animals.getAge());
+        Utl.sendPluginMessage(plg, player, "isChild:" + !animals.isAdult());
     }
 
     private int getVillagerCareerLevel(Villager villager) throws NoSuchFieldException, IllegalAccessException {
@@ -173,6 +155,4 @@ public class InfoMob {
         careerLevelField.setAccessible(true);
         return careerLevelField.getInt(entityVillager);
     }
-
-
 }

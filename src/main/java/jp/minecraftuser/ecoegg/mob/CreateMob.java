@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 public class CreateMob {
-
     private LivingEntity entity;
     private EntityType type;
     private Player player;
@@ -25,7 +24,6 @@ public class CreateMob {
     private Location loc;
     private LoaderMob load;
     private Plugin plg;
-
 
     public CreateMob(Player player, Material material, Location loc, LoaderMob load, Plugin plg) {
         this.player = player;
@@ -36,7 +34,6 @@ public class CreateMob {
     }
 
     public LivingEntity create() {
-
         //もしmob_typeが-1ならgen_typeからモンスターの種類を取ってくる
         if (load.getMobType() != -1) {
             type = EntityType.fromId(load.getMobType());
@@ -90,53 +87,39 @@ public class CreateMob {
         if (entity instanceof Villager) {
             createVillager();
         }
-
-
         return entity;
-
     }
 
     private void createRabbit() {
-
         Rabbit rabbit = (Rabbit) entity;
-
         rabbit.setRabbitType(load.getRabbitType());
-
     }
 
     private void createWolf() {
         Wolf wolf = (Wolf) entity;
-
         wolf.setCollarColor(load.getCollar());
         wolf.setAngry(load.getAngry());
-
     }
 
     private void createOcelot() {
         Ocelot ocelot = (Ocelot) entity;
         ocelot.setCatType(load.getCatType());
-
     }
 
     private void createParrot() {
         Parrot parrot = (Parrot) entity;
         parrot.setVariant(load.getParrotVariant());
-
     }
 
     private void createTropical_Fish() {
-
         TropicalFish tropicalFish = (TropicalFish) entity;
         tropicalFish.setPattern(load.getTropicalFishPattern());
         tropicalFish.setBodyColor(load.getTropicalFishBodyColor());
         tropicalFish.setPatternColor(load.getTropicalFishPatternColor());
-
     }
-
 
     private void createHorse() {
         AbstractHorse horse = (AbstractHorse) entity;
-
         if (horse instanceof org.bukkit.entity.Horse) {
 
             org.bukkit.entity.Horse normal_horse = (org.bukkit.entity.Horse) horse;
@@ -148,17 +131,12 @@ public class CreateMob {
         horse.setDomestication(load.getDomestication());
         horse.setAge(load.getAge());
 
-
         horse.setJumpStrength(load.getJumpStrength());
         horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(load.getSpeed());
         horse.setBreed(load.getBreed());
-
-
     }
 
-
     private void createVillager() {
-
         Villager villager = (Villager) entity;
         if (isOldFormatEgg()) {
             player.sendMessage("トレード内容復元処理をスキップしました");
@@ -185,17 +163,13 @@ public class CreateMob {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             player.sendMessage(e.toString());
         }
-
-
     }
 
-
     private void setTame() {
-
         Tameable tame_entity = (Tameable) entity;
-
         String owner = load.getOwner();
         boolean ownerreset = false;
+
         if (material == Material.CARROTS) ownerreset = true;
         if (ownerreset) {
             player.sendMessage("オーナーをリセットしました");
@@ -207,8 +181,6 @@ public class CreateMob {
         if (!isOldFormatEgg()) {
             tame_entity.setTamed(load.getTamed());
         }
-
-
     }
 
     private void createAnimal() {
@@ -219,7 +191,6 @@ public class CreateMob {
             animals.setAdult();
         }
         animals.setBreed(load.getBreed());
-
     }
 
     private void setVillagerCareerLevel(Villager villager, int level) throws NoSuchFieldException, IllegalAccessException {

@@ -6,8 +6,8 @@ import jp.minecraftuser.ecoegg.EcoEgg;
 import jp.minecraftuser.ecoegg.InfoParam;
 import jp.minecraftuser.ecoegg.OptionType;
 import jp.minecraftuser.ecoframework.PluginFrame;
-import jp.minecraftuser.ecoegg.m;
 import jp.minecraftuser.ecoframework.CommandFrame;
+import jp.minecraftuser.ecoframework.Utl;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
@@ -75,7 +75,7 @@ public class EceSetCommand extends CommandFrame {
         }
         ((EcoEgg)plg).setParamUser(param);
 
-        sender.sendMessage(m.plg("対象の動物(馬)を右クリックして下さい"));
+        Utl.sendPluginMessage(plg, sender, "対象の動物(馬)を右クリックして下さい");
         return true;
     }
     

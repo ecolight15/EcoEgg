@@ -2,9 +2,9 @@
 package jp.minecraftuser.ecoegg.command;
 
 import jp.minecraftuser.ecoegg.EcoEgg;
-import jp.minecraftuser.ecoegg.m;
 import jp.minecraftuser.ecoframework.CommandFrame;
 import jp.minecraftuser.ecoframework.PluginFrame;
+import jp.minecraftuser.ecoframework.Utl;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -40,7 +40,7 @@ public class EceGetCommand extends CommandFrame {
      */
     @Override
     public boolean worker(CommandSender sender, String[] args) {
-        sender.sendMessage(m.plg("対象を右クリック"));
+        Utl.sendPluginMessage(plg, sender, "対象を右クリックして下さい");
         ((EcoEgg)plg).setGetter((Player) sender);
         return true;
     }

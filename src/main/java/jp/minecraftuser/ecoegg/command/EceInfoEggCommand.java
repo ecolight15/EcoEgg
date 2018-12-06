@@ -1,11 +1,8 @@
 
 package jp.minecraftuser.ecoegg.command;
 
-import jp.minecraftuser.ecoegg.CommandType;
 import jp.minecraftuser.ecoegg.EcoEgg;
-import jp.minecraftuser.ecoegg.InfoParam;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
-import jp.minecraftuser.ecoegg.m;
 import jp.minecraftuser.ecoegg.mob.CreateMob;
 import jp.minecraftuser.ecoegg.mob.InfoMob;
 import jp.minecraftuser.ecoframework.CommandFrame;
@@ -17,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.UUID;
+import jp.minecraftuser.ecoframework.Utl;
 
 /**
  * ece infoコマンドクラス
@@ -54,17 +52,14 @@ public class EceInfoEggCommand extends CommandFrame {
      */
     @Override
     public boolean worker(CommandSender sender, String[] args) {
-        ((EcoEgg) plg).setParamUser(new InfoParam((Player) sender, CommandType.INFO));
-
+        // モンスターエッグ以外は処理しない
         Player player = ((Player) sender).getPlayer();
         ItemStack item = player.getItemInHand();
-
-
-        // モンスターエッグ以外は処理しない
         if (item == null || !isMonsterEgg(item)) {
-            player.sendMessage(m.plg("モンスターエッグを持った状態でコマンドを入力してください"));
+            Utl.sendPluginMessage(plg, sender, "モンスターエッグを持った状態でコマンドを入力してください");
             return true;
         }
+
         String item_name = item.getItemMeta().getDisplayName();
         String[] token = item_name.split(",");
         String most = token[token.length - 2];
@@ -80,7 +75,6 @@ public class EceInfoEggCommand extends CommandFrame {
         infoMob.show();
 
         entity.remove();
-
 
         return true;
     }

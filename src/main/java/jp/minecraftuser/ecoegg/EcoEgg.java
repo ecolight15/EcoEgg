@@ -6,8 +6,11 @@ import java.util.HashMap;
 import jp.minecraftuser.ecoegg.command.*;
 import jp.minecraftuser.ecoframework.CommandFrame;
 import jp.minecraftuser.ecoegg.config.EcoEggConfig;
-import jp.minecraftuser.ecoegg.listener.CreatureListener;
-import jp.minecraftuser.ecoegg.listener.PlayerListener;
+import jp.minecraftuser.ecoegg.listener.CancelUseEggListener;
+import jp.minecraftuser.ecoegg.listener.EcoEggDropListener;
+import jp.minecraftuser.ecoegg.listener.CommandListener;
+import jp.minecraftuser.ecoegg.listener.DamageCancelListener;
+import jp.minecraftuser.ecoegg.listener.HatchingListener;
 import jp.minecraftuser.ecoframework.PluginFrame;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -26,11 +29,9 @@ public class EcoEgg extends PluginFrame {
 
     @Override
     public void onEnable() {
-        m.msgLoad(null, this);
         initialize();
         eceConf = (EcoEggConfig) getDefaultConfig();
         infoList = new HashMap<>();
-        getLogger().info(getName() + " Enable");
         ConfigurationSerialization.registerClass(SimpleTradeRecipe.class);
 
     }
@@ -38,16 +39,12 @@ public class EcoEgg extends PluginFrame {
     @Override
     public void onDisable() {
         disable();
-        getLogger().info(getName() + " Disable");
     }
 
     @Override
     public void initializeConfig() {
         registerPluginConfig(new EcoEggConfig(this));
-
-
     }
-
 
     @Override
     public void initializeCommand() {
@@ -64,8 +61,11 @@ public class EcoEgg extends PluginFrame {
 
     @Override
     public void initializeListener() {
-        registerPluginListener(new CreatureListener(this, "creature"));
-        registerPluginListener(new PlayerListener(this, "player"));
+        registerPluginListener(new CancelUseEggListener(this, "cancel"));
+        registerPluginListener(new CommandListener(this, "command"));
+        registerPluginListener(new DamageCancelListener(this, "damage"));
+        registerPluginListener(new EcoEggDropListener(this, "drop"));
+        registerPluginListener(new HatchingListener(this, "hatching"));
     }
 
     public ItemStack makeBook() {
@@ -87,7 +87,6 @@ public class EcoEgg extends PluginFrame {
         im.setDisplayName("[EcoEgg]," + title);
         egg.setItemMeta(im);
         return egg;
-
     }
 
     public void setGetter(Player pl) {
