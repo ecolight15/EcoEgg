@@ -39,8 +39,8 @@ public class EcoEggUtil {
      * @param e エンティティを渡す
      * @return モンスターエッグかどうかの真偽値を返す
      */
-    public static boolean existMonsterEgg(Entity e) {
-        return Material.matchMaterial("minecraft:" + e.getType().toString() + "_spawn_egg") != null;
+    public static boolean existMonsterEgg(Entity e){
+        return Material.matchMaterial("minecraft:" + e.getType().getName() + "_spawn_egg") != null;
     }
 
     /**

@@ -2,6 +2,8 @@ package jp.minecraftuser.ecoegg.mob;
 
 import jp.minecraftuser.ecoegg.SimpleTradeRecipe;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
+import jp.minecraftuser.ecoframework.PluginFrame;
+import jp.minecraftuser.ecoframework.Utl;
 import net.minecraft.server.v1_13_R2.EntityVillager;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -9,7 +11,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -21,9 +22,10 @@ public class SaveMob {
 
     private Location loc;
     private LoaderMob save;
-    private Plugin plg;
+    private PluginFrame plg;
+    private boolean cancel;
 
-    public SaveMob(LivingEntity ent, Player player, Location loc, LoaderMob save, Plugin plg) {
+    public SaveMob(LivingEntity ent, Player player, Location loc, LoaderMob save, PluginFrame plg) {
         this.entity = ent;
         this.player = player;
         this.loc = loc;
@@ -31,7 +33,7 @@ public class SaveMob {
         this.plg = plg;
     }
 
-    public LivingEntity save() {
+    public void save() {
         save.setUsed(false);
         save.setMobType((byte) entity.getType().getTypeId());
         save.setCustomName(entity.getCustomName());
@@ -70,7 +72,6 @@ public class SaveMob {
             saveAnimal();
         }
 
-        return this.entity;
     }
 
     private void saveRabbit() {
@@ -118,7 +119,7 @@ public class SaveMob {
             }
             entity.getWorld().dropItem(loc, item);
         }
-        
+
         // 保存
         save.setMaxDomestication(horse.getMaxDomestication());
         save.setDomestication(horse.getDomestication());
@@ -148,13 +149,14 @@ public class SaveMob {
         try {
             save.setVillagerCareerLevel(getVillagerCareerLevel(villager));
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
+            Utl.sendPluginMessage(plg, player, "CareerLevelの復元処理に失敗しました 管理者に報告してください");
+            cancel = true;
         }
     }
 
     private void saveTame() {
         Tameable tame_entity = (Tameable) entity;
-        
+
         // 保存
         if (tame_entity.getOwner() != null) save.setOwner(tame_entity.getOwner().getName());
         save.setTamed(tame_entity.isTamed());
@@ -174,5 +176,9 @@ public class SaveMob {
         Field careerLevelField = EntityVillager.class.getDeclaredField("careerLevel");
         careerLevelField.setAccessible(true);
         return careerLevelField.getInt(entityVillager);
+    }
+
+    public boolean isCancel() {
+        return cancel;
     }
 }

@@ -25,6 +25,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BookMeta;
@@ -83,7 +84,7 @@ public class HatchingListener extends ListenerFrame {
             ItemStack is = pl.getItemInHand();
             if (is.getType() != Material.WRITTEN_BOOK) return;
             // 魔道書の記述が正しいか
-            BookMeta meta = (BookMeta) pl.getItemInHand().getItemMeta();
+            BookMeta meta = (BookMeta) is.getItemMeta();
 
             if (!meta.getAuthor().equals(eceConf.getAuthor())) return;
             if (!meta.getTitle().equals(eceConf.getTitle())) return;
@@ -109,7 +110,7 @@ public class HatchingListener extends ListenerFrame {
         PlayerInventory pi = pl.getInventory();
         ItemStack is = pi.getItemInMainHand();
         if ((reject) && (!pl.isOp())) {
-            Utl.sendPluginMessage(plg, ent, "他のプレイヤーの動物には力が及びませんでした");
+            Utl.sendPluginMessage(plg, event.getPlayer(), "他のプレイヤーの動物には力が及びませんでした");
             if (pl.getGameMode() != GameMode.CREATIVE) {
                 if (is.getAmount() == 1) {
                     pi.setItemInMainHand(new ItemStack(Material.AIR));
@@ -125,10 +126,17 @@ public class HatchingListener extends ListenerFrame {
         //----------------------------------------------------------------------
         // MOBたまご生成
         //----------------------------------------------------------------------
-        ItemStack egg = new ItemStack(Material.matchMaterial("minecraft:" + ent.getType() + "_spawn_egg"));//雑い
+        event.setCancelled(true);
+        ItemStack egg;
+
+        egg = new ItemStack(Material.matchMaterial("minecraft:" + ent.getType().getName() + "_spawn_egg"));//雑い
+
         LoaderMob save = new LoaderMob((EcoEgg) plg, le.getUniqueId());
         SaveMob saveMob = new SaveMob(le, pl, loc, save, plg);
         saveMob.save();
+        if (saveMob.isCancel()) {
+            return;
+        }
 
         ItemMeta im = egg.getItemMeta();
         im.setDisplayName("[EcoEgg]," + le.getUniqueId().getMostSignificantBits() + "," + le.getUniqueId().getLeastSignificantBits());
@@ -146,8 +154,8 @@ public class HatchingListener extends ListenerFrame {
                 ii++;
             }
             if (ii == pi.getSize()) {
-                pl.sendMessage(ChatColor.AQUA + "[EcoEgg] インベントリに空きが無いので使用できません");
-                event.setCancelled(true);
+                Utl.sendPluginMessage(plg, pl, ChatColor.AQUA + "インベントリに空きが無いので使用できません");
+
                 return;
             } else {
                 is.setAmount(is.getAmount() - 1);
@@ -164,9 +172,10 @@ public class HatchingListener extends ListenerFrame {
 
         le.remove();
         pl.getWorld().strikeLightningEffect(loc);
-        pl.sendMessage(ChatColor.AQUA + "[EcoEgg] MOBをたまごに変換しました");
+
+        Utl.sendPluginMessage(plg, pl, ChatColor.AQUA + "MOBをたまごに変換しました");
         log.info("ChangeMobEgg[" + pl.getName() + "]" + pl.getLocation().toString() + ",MOB:" + (byte) ent.getType().getTypeId());
-        event.setCancelled(true);
+
     }
 
     /**
@@ -192,6 +201,7 @@ public class HatchingListener extends ListenerFrame {
 
         // エコエッグの表記で始まるか
         if (!item_name.startsWith("[EcoEgg]")) return;
+        event.setCancelled(true);
         String[] token = item_name.split(",");
         String most = token[token.length - 2];
         String least = token[token.length - 1];
@@ -203,22 +213,22 @@ public class HatchingListener extends ListenerFrame {
         if (load.getUsed() && (!event.getPlayer().isOp())) {
             log.info("使用済みたまご利用:" + most + "," + least + "[" + event.getPlayer().getName() + "]");
             Utl.sendPluginMessage(plg, event.getPlayer(), "管理者に通報されました：使用済みたまご利用:" + most + "," + least + "[" + event.getPlayer().getName() + "]");
-            event.setCancelled(true);
+
             return;
         }
 
         // インターバルの監視
         Date date = new Date();
-        if (date.getTime() < load.getDate() + 1000 * 10) {
-            Utl.sendPluginMessage(plg, event.getPlayer(), "再使用まであと " + (10 - (date.getTime() - load.getDate()) / 1000) + " 秒必要です");
-            event.setCancelled(true);
+        int wait_time = 10;
+        if (date.getTime() < load.getDate() + 1000 * wait_time) {
+            Utl.sendPluginMessage(plg, event.getPlayer(), "再使用まであと " + (wait_time - (date.getTime() - load.getDate()) / 1000) + " 秒必要です");
+
             return;
         }
 
         // 一応本のクリック判定をキャンセル？
         Block block = event.getClickedBlock();
         if (block == null) {
-            event.setCancelled(true);
             return;
         }
 
@@ -233,14 +243,25 @@ public class HatchingListener extends ListenerFrame {
 
         CreateMob createMob = new CreateMob(player, block.getType(), loc, load, plg);
         LivingEntity entity = createMob.create();
+        if (createMob.isCancel()) {
+            entity.remove();
+            return;
+        }
+
 
         // MOBスポーン後の処理
         // 保存yamlに使用済みをマークする
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         load.saveUse(player.getName(), entity.getType().name(), sdf1.format(date));
+        load.setUsed(true);
 
-        event.setCancelled(true);
-        if (player.getGameMode() != GameMode.CREATIVE) player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+        if (player.getGameMode() != GameMode.CREATIVE) {
+            if (event.getHand() == EquipmentSlot.HAND) {
+                player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+            } else {
+                player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
+            }
+        }
         Utl.sendPluginMessage(plg, event.getPlayer(), entity.getType().name() + "を出現させました");
     }
 }

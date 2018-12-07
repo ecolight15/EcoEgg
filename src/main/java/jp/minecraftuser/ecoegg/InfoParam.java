@@ -16,7 +16,6 @@ public class InfoParam {
     private String str = "";
     private Horse.Style hstyle = null; 
     private Horse.Color hcolor = null;
-    private Horse.Variant hvariant = null;
     
     public InfoParam(Player pl, CommandType type) {
         this.pl = pl;
@@ -34,8 +33,6 @@ public class InfoParam {
     public Horse.Style getHorseStyle() { return this.hstyle; }
     public void setHorseColor(Horse.Color color) { this.hcolor = color; }
     public Horse.Color getHorseColor() { return this.hcolor; }
-    public void setHorseVariant(Horse.Variant var) { this.hvariant = var; }
-    public Horse.Variant getHorseVariant() { return this.hvariant; }
     
     
 }

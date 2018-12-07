@@ -15,7 +15,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -91,19 +90,6 @@ public class EcoEggDropListener extends ListenerFrame  {
         }
     }
 
-    /**
-     * MOBスポーンイベントハンドラ
-     * @param event 
-     */
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void CreatureSpawn(CreatureSpawnEvent event) {
-        LivingEntity ent = event.getEntity();
-        if (ent == null) return;
-        String custom_name = ent.getCustomName();
-        if (custom_name == null) return;
-        if (custom_name.startsWith("[EcoEgg]")) {
-            event.setCancelled(true);
-        }
-    }
+
 
 }
