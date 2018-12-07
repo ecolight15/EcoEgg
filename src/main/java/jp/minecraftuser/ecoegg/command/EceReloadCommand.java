@@ -3,6 +3,7 @@ package jp.minecraftuser.ecoegg.command;
 
 import jp.minecraftuser.ecoframework.CommandFrame;
 import jp.minecraftuser.ecoframework.PluginFrame;
+import jp.minecraftuser.ecoframework.Utl;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -41,7 +42,7 @@ public class EceReloadCommand extends CommandFrame {
     public boolean worker(CommandSender sender, String[] args) {
         // リロード
         conf.reload();
-        sender.sendMessage("[" + plg.getName()+"] コンフィグリロード");
+        Utl.sendTagMessage(plg,sender,plg.getName(),"コンフィグリロード");
         return true;
     }
 

@@ -2,6 +2,7 @@ package jp.minecraftuser.ecoegg.mob;
 
 import jp.minecraftuser.ecoegg.SimpleTradeRecipe;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
+import jp.minecraftuser.ecoframework.PluginFrame;
 import net.minecraft.server.v1_13_R2.EntityVillager;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,9 +22,9 @@ public class SaveMob {
 
     private Location loc;
     private LoaderMob save;
-    private Plugin plg;
+    private PluginFrame plg;
 
-    public SaveMob(LivingEntity ent, Player player, Location loc, LoaderMob save, Plugin plg) {
+    public SaveMob(LivingEntity ent, Player player, Location loc, LoaderMob save, PluginFrame plg) {
         this.entity = ent;
         this.player = player;
         this.loc = loc;

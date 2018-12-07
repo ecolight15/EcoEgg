@@ -109,7 +109,7 @@ public class HatchingListener extends ListenerFrame {
         PlayerInventory pi = pl.getInventory();
         ItemStack is = pi.getItemInMainHand();
         if ((reject) && (!pl.isOp())) {
-            Utl.sendPluginMessage(plg, ent, "他のプレイヤーの動物には力が及びませんでした");
+            Utl.sendPluginMessage(plg, event.getPlayer(), "他のプレイヤーの動物には力が及びませんでした");
             if (pl.getGameMode() != GameMode.CREATIVE) {
                 if (is.getAmount() == 1) {
                     pi.setItemInMainHand(new ItemStack(Material.AIR));
@@ -146,7 +146,7 @@ public class HatchingListener extends ListenerFrame {
                 ii++;
             }
             if (ii == pi.getSize()) {
-                pl.sendMessage(ChatColor.AQUA + "[EcoEgg] インベントリに空きが無いので使用できません");
+                Utl.sendPluginMessage(plg, pl, ChatColor.AQUA + "インベントリに空きが無いので使用できません");
                 event.setCancelled(true);
                 return;
             } else {
@@ -164,7 +164,8 @@ public class HatchingListener extends ListenerFrame {
 
         le.remove();
         pl.getWorld().strikeLightningEffect(loc);
-        pl.sendMessage(ChatColor.AQUA + "[EcoEgg] MOBをたまごに変換しました");
+
+        Utl.sendPluginMessage(plg, pl, ChatColor.AQUA + "MOBをたまごに変換しました");
         log.info("ChangeMobEgg[" + pl.getName() + "]" + pl.getLocation().toString() + ",MOB:" + (byte) ent.getType().getTypeId());
         event.setCancelled(true);
     }
@@ -209,8 +210,9 @@ public class HatchingListener extends ListenerFrame {
 
         // インターバルの監視
         Date date = new Date();
-        if (date.getTime() < load.getDate() + 1000 * 10) {
-            Utl.sendPluginMessage(plg, event.getPlayer(), "再使用まであと " + (10 - (date.getTime() - load.getDate()) / 1000) + " 秒必要です");
+        int wait_time = 10;
+        if (date.getTime() < load.getDate() + 1000 * wait_time) {
+            Utl.sendPluginMessage(plg, event.getPlayer(), "再使用まであと " + (wait_time - (date.getTime() - load.getDate()) / 1000) + " 秒必要です");
             event.setCancelled(true);
             return;
         }
@@ -233,14 +235,22 @@ public class HatchingListener extends ListenerFrame {
 
         CreateMob createMob = new CreateMob(player, block.getType(), loc, load, plg);
         LivingEntity entity = createMob.create();
+        if (createMob.isCancel()) {
+            entity.remove();
+            event.setCancelled(true);
+            return;
+        }
+
 
         // MOBスポーン後の処理
         // 保存yamlに使用済みをマークする
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         load.saveUse(player.getName(), entity.getType().name(), sdf1.format(date));
+        load.setUsed(true);
 
         event.setCancelled(true);
-        if (player.getGameMode() != GameMode.CREATIVE) player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+        if (player.getGameMode() != GameMode.CREATIVE)
+            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         Utl.sendPluginMessage(plg, event.getPlayer(), entity.getType().name() + "を出現させました");
     }
 }

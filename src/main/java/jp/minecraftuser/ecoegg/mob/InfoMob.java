@@ -8,6 +8,7 @@ import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Field;
+
 import jp.minecraftuser.ecoframework.PluginFrame;
 import jp.minecraftuser.ecoframework.Utl;
 
@@ -81,7 +82,7 @@ public class InfoMob {
     private void showParrot() {
         Parrot parrot = (Parrot) entity;
         Utl.sendPluginMessage(plg, player, "Variant:" + parrot.getVariant());
-   }
+    }
 
     public void showTropicalFish() {
         TropicalFish tropicalFish = (TropicalFish) entity;
@@ -125,7 +126,7 @@ public class InfoMob {
         Utl.sendPluginMessage(plg, player, "Riches:" + villager.getRiches());
 
         try {
-            player.sendMessage("CareerLevel:" + getVillagerCareerLevel(villager));
+            Utl.sendPluginMessage(plg, player, "CareerLevel:" + getVillagerCareerLevel(villager));
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }

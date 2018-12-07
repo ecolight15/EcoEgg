@@ -3,6 +3,7 @@ package jp.minecraftuser.ecoegg.command;
 
 import jp.minecraftuser.ecoframework.CommandFrame;
 import jp.minecraftuser.ecoframework.PluginFrame;
+import jp.minecraftuser.ecoframework.Utl;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -39,8 +40,8 @@ public class EceCommand extends CommandFrame {
      */
     @Override
     public boolean worker(CommandSender sender, String[] args) {
-        sender.sendMessage("[" + plg.getName()+"] パラメータが不足しています");
+        Utl.sendTagMessage(plg,sender,plg.getName(),"パラメーターが不足しています");
         return true;
     }
-    
+
 }

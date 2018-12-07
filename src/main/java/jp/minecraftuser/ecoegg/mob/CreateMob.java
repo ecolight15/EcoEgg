@@ -2,6 +2,8 @@ package jp.minecraftuser.ecoegg.mob;
 
 import jp.minecraftuser.ecoegg.SimpleTradeRecipe;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
+import jp.minecraftuser.ecoframework.PluginFrame;
+import jp.minecraftuser.ecoframework.Utl;
 import net.minecraft.server.v1_13_R2.EntityVillager;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,9 +25,10 @@ public class CreateMob {
     private Material material;
     private Location loc;
     private LoaderMob load;
-    private Plugin plg;
+    private PluginFrame plg;
+    private boolean cancel = false;
 
-    public CreateMob(Player player, Material material, Location loc, LoaderMob load, Plugin plg) {
+    public CreateMob(Player player, Material material, Location loc, LoaderMob load, PluginFrame plg) {
         this.player = player;
         this.material = material;
         this.loc = loc;
@@ -42,16 +45,15 @@ public class CreateMob {
         }
 
         if (isOldFormatEgg()) {
-            player.sendMessage("旧式のモンスターエッグです");
+            Utl.sendPluginMessage(plg, player, "旧式のモンスターエッグです");
             if (type == EntityType.HORSE && Horse.Variant.valueOf(load.getHorseVariant().name()) != Horse.Variant.HORSE) {
                 EntityType new_entity_type = EntityType.valueOf(load.getHorseVariant().name());
-                player.sendMessage("EntityTypeを変更" + type + "->" + new_entity_type);
+                Utl.sendPluginMessage(plg, player, "EntityTypeを変更" + type + "->" + new_entity_type);
                 type = new_entity_type;
             }
         }
 
         entity = (LivingEntity) player.getWorld().spawnEntity(loc, type);
-        load.setUsed(true);
         entity.setMaxHealth(load.getMaxHealth());
         entity.setHealth(load.getHealth());
 
@@ -139,7 +141,7 @@ public class CreateMob {
     private void createVillager() {
         Villager villager = (Villager) entity;
         if (isOldFormatEgg()) {
-            player.sendMessage("トレード内容復元処理をスキップしました");
+            Utl.sendPluginMessage(plg, player, "トレード内容復元処理をスキップしました");
             return;
         }
 
@@ -161,7 +163,9 @@ public class CreateMob {
         try {
             setVillagerCareerLevel(villager, load.getVillagerCareerLevel());
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            player.sendMessage(e.toString());
+            cancel = true;
+            Utl.sendPluginMessage(plg, player, "CareerLevelの復元処理に失敗しました 管理者に報告してください");
+
         }
     }
 
@@ -172,7 +176,7 @@ public class CreateMob {
 
         if (material == Material.CARROTS) ownerreset = true;
         if (ownerreset) {
-            player.sendMessage("オーナーをリセットしました");
+            Utl.sendPluginMessage(plg, player, "オーナーをリセットしました");
             tame_entity.setOwner(player);
         } else {
             if (owner != null) tame_entity.setOwner(plg.getServer().getOfflinePlayer(owner));
@@ -202,5 +206,9 @@ public class CreateMob {
 
     private boolean isOldFormatEgg() {
         return load.getPluginVersion() == null;//雑い
+    }
+
+    public boolean isCancel() {
+        return this.cancel;
     }
 }
