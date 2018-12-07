@@ -25,6 +25,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BookMeta;
@@ -84,7 +85,7 @@ public class HatchingListener extends ListenerFrame {
             ItemStack is = pl.getItemInHand();
             if (is.getType() != Material.WRITTEN_BOOK) return;
             // 魔道書の記述が正しいか
-            BookMeta meta = (BookMeta) pl.getItemInHand().getItemMeta();
+            BookMeta meta = (BookMeta) is.getItemMeta();
 
             if (!meta.getAuthor().equals(eceConf.getAuthor())) return;
             if (!meta.getTitle().equals(eceConf.getTitle())) return;
@@ -256,7 +257,11 @@ public class HatchingListener extends ListenerFrame {
         load.setUsed(true);
 
         if (player.getGameMode() != GameMode.CREATIVE) {
-            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+            if (event.getHand() == EquipmentSlot.HAND) {
+                player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+            } else {
+                player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
+            }
         }
         Utl.sendPluginMessage(plg, event.getPlayer(), entity.getType().name() + "を出現させました");
     }
