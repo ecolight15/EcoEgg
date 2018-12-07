@@ -8,14 +8,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * EcoEggで使用するユーティリティ
- *
  * @author ecolight
  */
 public class EcoEggUtil {
 
     /**
      * モンスターエッグかどうかを判断する
-     *
      * @param item 判定するアイテムを渡す
      * @return モンスターエッグかどうかの真偽値を返す
      */
@@ -38,24 +36,15 @@ public class EcoEggUtil {
 
     /**
      * モンスターエッグのあるMOBか判定する
-     *
      * @param e エンティティを渡す
      * @return モンスターエッグかどうかの真偽値を返す
      */
-    public static boolean existMonsterEgg(Entity e) {
-        if (Material.matchMaterial("minecraft:" + e.getType().toString() + "_spawn_egg") != null) {
-            return true;
-        } else if (e.getType().toString().equalsIgnoreCase("pig_zombie")) {
-            return true;
-        } else {
-            return false;
-        }
-
+    public static boolean existMonsterEgg(Entity e){
+        return Material.matchMaterial("minecraft:" + e.getType().getName() + "_spawn_egg") != null;
     }
 
     /**
      * 文字列からエンティティタイプを取得する
-     *
      * @param name MOB名称を指定する
      * @return 対応するエンティティタイプを返却する
      */

@@ -24,7 +24,7 @@ public class CancelUseEggListener extends ListenerFrame  {
 
     /**
      * MOBスポーンイベントハンドラ
-     * @param event 
+     * @param event
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void CreatureSpawn(CreatureSpawnEvent event) {

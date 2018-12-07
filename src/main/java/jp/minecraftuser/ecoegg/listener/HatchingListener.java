@@ -128,11 +128,8 @@ public class HatchingListener extends ListenerFrame {
         //----------------------------------------------------------------------
         event.setCancelled(true);
         ItemStack egg;
-        if (ent.getType().toString().equalsIgnoreCase("pig_zombie")) {
-            egg = new ItemStack(Material.matchMaterial("minecraft:zombie_pigman_spawn_egg"));//雑い
-        } else {
-            egg = new ItemStack(Material.matchMaterial("minecraft:" + ent.getType() + "_spawn_egg"));//雑い
-        }
+
+        egg = new ItemStack(Material.matchMaterial("minecraft:" + ent.getType().getName() + "_spawn_egg"));//雑い
 
         LoaderMob save = new LoaderMob((EcoEgg) plg, le.getUniqueId());
         SaveMob saveMob = new SaveMob(le, pl, loc, save, plg);

@@ -11,7 +11,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.MerchantRecipe;
-import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -54,6 +53,12 @@ public class CreateMob {
         }
 
         entity = (LivingEntity) player.getWorld().spawnEntity(loc, type);
+        if(material == Material.SOUL_SAND){
+            Utl.sendPluginMessage(plg,player,"ノーマルのモンスターエッグとして使用しました");
+            return entity;
+        }
+
+
         entity.setMaxHealth(load.getMaxHealth());
         entity.setHealth(load.getHealth());
 
