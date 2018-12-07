@@ -52,11 +52,11 @@ public class CancelUseEggListener extends ListenerFrame {
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void CreatureRightClick(PlayerInteractEntityEvent event) {
-        Player plyaer = event.getPlayer();
-        ItemStack item = plyaer.getItemInHand();
+        Player player = event.getPlayer();
+        ItemStack item = player.getItemInHand();
         if(EcoEggUtil.isMonsterEgg(item)){
-            Utl.sendPluginMessage(plg,plyaer,"エンティティに対してモンスターエッグが使用されたので抑止しました");
-            Utl.sendPluginMessage(plg,plyaer,"おかしな子供を生みたい場合はオフハンドにもって使用してください");
+            Utl.sendPluginMessage(plg,player,"エンティティに対してモンスターエッグが使用されたので抑止しました");
+            Utl.sendPluginMessage(plg,player,"おかしな子供を生みたい場合はオフハンドにもって使用してください");
             event.setCancelled(true);
         }
 
