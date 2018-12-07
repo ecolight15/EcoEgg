@@ -65,6 +65,7 @@ public class HatchingListener extends ListenerFrame {
 
         //モンスターエッグに変換できない場合はキャンセル
         if (!EcoEggUtil.existMonsterEgg(ent)) {
+            Utl.sendPluginMessage(plg, pl, "EcoEgg非対応モンスターです");
             return;
         }
 
@@ -125,10 +126,20 @@ public class HatchingListener extends ListenerFrame {
         //----------------------------------------------------------------------
         // MOBたまご生成
         //----------------------------------------------------------------------
-        ItemStack egg = new ItemStack(Material.matchMaterial("minecraft:" + ent.getType() + "_spawn_egg"));//雑い
+        event.setCancelled(true);
+        ItemStack egg;
+        if (ent.getType().toString().equalsIgnoreCase("pig_zombie")) {
+            egg = new ItemStack(Material.matchMaterial("minecraft:zombie_pigman_spawn_egg"));//雑い
+        } else {
+            egg = new ItemStack(Material.matchMaterial("minecraft:" + ent.getType() + "_spawn_egg"));//雑い
+        }
+
         LoaderMob save = new LoaderMob((EcoEgg) plg, le.getUniqueId());
         SaveMob saveMob = new SaveMob(le, pl, loc, save, plg);
         saveMob.save();
+        if (saveMob.isCancel()) {
+            return;
+        }
 
         ItemMeta im = egg.getItemMeta();
         im.setDisplayName("[EcoEgg]," + le.getUniqueId().getMostSignificantBits() + "," + le.getUniqueId().getLeastSignificantBits());
@@ -147,7 +158,7 @@ public class HatchingListener extends ListenerFrame {
             }
             if (ii == pi.getSize()) {
                 Utl.sendPluginMessage(plg, pl, ChatColor.AQUA + "インベントリに空きが無いので使用できません");
-                event.setCancelled(true);
+
                 return;
             } else {
                 is.setAmount(is.getAmount() - 1);
@@ -167,7 +178,7 @@ public class HatchingListener extends ListenerFrame {
 
         Utl.sendPluginMessage(plg, pl, ChatColor.AQUA + "MOBをたまごに変換しました");
         log.info("ChangeMobEgg[" + pl.getName() + "]" + pl.getLocation().toString() + ",MOB:" + (byte) ent.getType().getTypeId());
-        event.setCancelled(true);
+
     }
 
     /**
@@ -193,6 +204,7 @@ public class HatchingListener extends ListenerFrame {
 
         // エコエッグの表記で始まるか
         if (!item_name.startsWith("[EcoEgg]")) return;
+        event.setCancelled(true);
         String[] token = item_name.split(",");
         String most = token[token.length - 2];
         String least = token[token.length - 1];
@@ -204,7 +216,7 @@ public class HatchingListener extends ListenerFrame {
         if (load.getUsed() && (!event.getPlayer().isOp())) {
             log.info("使用済みたまご利用:" + most + "," + least + "[" + event.getPlayer().getName() + "]");
             Utl.sendPluginMessage(plg, event.getPlayer(), "管理者に通報されました：使用済みたまご利用:" + most + "," + least + "[" + event.getPlayer().getName() + "]");
-            event.setCancelled(true);
+
             return;
         }
 
@@ -213,14 +225,13 @@ public class HatchingListener extends ListenerFrame {
         int wait_time = 10;
         if (date.getTime() < load.getDate() + 1000 * wait_time) {
             Utl.sendPluginMessage(plg, event.getPlayer(), "再使用まであと " + (wait_time - (date.getTime() - load.getDate()) / 1000) + " 秒必要です");
-            event.setCancelled(true);
+
             return;
         }
 
         // 一応本のクリック判定をキャンセル？
         Block block = event.getClickedBlock();
         if (block == null) {
-            event.setCancelled(true);
             return;
         }
 
@@ -237,7 +248,6 @@ public class HatchingListener extends ListenerFrame {
         LivingEntity entity = createMob.create();
         if (createMob.isCancel()) {
             entity.remove();
-            event.setCancelled(true);
             return;
         }
 
@@ -248,9 +258,9 @@ public class HatchingListener extends ListenerFrame {
         load.saveUse(player.getName(), entity.getType().name(), sdf1.format(date));
         load.setUsed(true);
 
-        event.setCancelled(true);
-        if (player.getGameMode() != GameMode.CREATIVE)
+        if (player.getGameMode() != GameMode.CREATIVE) {
             player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+        }
         Utl.sendPluginMessage(plg, event.getPlayer(), entity.getType().name() + "を出現させました");
     }
 }
