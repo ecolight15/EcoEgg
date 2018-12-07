@@ -66,7 +66,6 @@ public class HatchingListener extends ListenerFrame {
 
         //モンスターエッグに変換できない場合はキャンセル
         if (!EcoEggUtil.existMonsterEgg(ent)) {
-            Utl.sendPluginMessage(plg, pl, "EcoEgg非対応モンスターです");
             return;
         }
 
