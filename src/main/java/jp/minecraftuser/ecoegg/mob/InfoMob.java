@@ -130,13 +130,15 @@ public class InfoMob {
 
     private void showEntityEquipment() {
         EntityEquipment entityEquipment = entity.getEquipment();
-        Utl.sendPluginMessage(plg, player, "helmet:" + entityEquipment.getHelmet().getType().name());
-        Utl.sendPluginMessage(plg, player, "chestPlate:" + entityEquipment.getChestplate().getType().name());
-        Utl.sendPluginMessage(plg, player, "leggings:" + entityEquipment.getLeggings().getType().name());
-        Utl.sendPluginMessage(plg, player, "boots:" + entityEquipment.getBoots().getType().name());
-        Utl.sendPluginMessage(plg, player, "mainHand:" + entityEquipment.getHelmet().getType().name());
-        Utl.sendPluginMessage(plg, player, "offHand:" + entityEquipment.getItemInMainHand().getType().name());
-        Utl.sendPluginMessage(plg, player, "helmet:" + entityEquipment.getItemInOffHand().getType().name());
+        Utl.sendPluginMessage(plg, player, "----装備品ここから----");
+        Utl.sendPluginMessage(plg, player, "Helmet:" + entityEquipment.getHelmet().getType().name());
+        Utl.sendPluginMessage(plg, player, "ChestPlate:" + entityEquipment.getChestplate().getType().name());
+        Utl.sendPluginMessage(plg, player, "Leggings:" + entityEquipment.getLeggings().getType().name());
+        Utl.sendPluginMessage(plg, player, "Boots:" + entityEquipment.getBoots().getType().name());
+        Utl.sendPluginMessage(plg, player, "MainHand:" + entityEquipment.getHelmet().getType().name());
+        Utl.sendPluginMessage(plg, player, "OffHand:" + entityEquipment.getItemInMainHand().getType().name());
+        Utl.sendPluginMessage(plg, player, "Helmet:" + entityEquipment.getItemInOffHand().getType().name());
+        Utl.sendPluginMessage(plg, player, "----装備品ここまで----");
 
 
     }
@@ -145,7 +147,7 @@ public class InfoMob {
         Villager villager = (Villager) entity;
         villager.getRecipes().forEach(merchantRecipe -> {
             StringBuilder trade_recipe = new StringBuilder();
-            merchantRecipe.getIngredients().forEach(itemStack -> trade_recipe.append(itemStack.getType()).append(" * ").append(itemStack.getAmount()));
+            merchantRecipe.getIngredients().forEach(itemStack -> trade_recipe.append(itemStack.getType()).append(" * ").append(itemStack.getAmount()).append(" "));
             trade_recipe.append(" -> ");
             ItemStack resultItem = merchantRecipe.getResult();
             trade_recipe.append(resultItem.getType()).append(" * ").append(resultItem.getAmount());

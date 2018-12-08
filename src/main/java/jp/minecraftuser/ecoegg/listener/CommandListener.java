@@ -46,7 +46,7 @@ public class CommandListener extends ListenerFrame {
         Entity ent = event.getRightClicked();
 
         if (((EcoEgg) plg).chkInfoUser(pl)) {
-            if (!EcoEggUtil.existMonsterEgg(ent) || ent instanceof Player) {
+            if (!EcoEggUtil.existMonsterEgg(ent) && !(ent instanceof Player)) {
                 Utl.sendPluginMessage(plg, ent, "infoコマンドの対象外のエンティティです");
                 return;
             }
