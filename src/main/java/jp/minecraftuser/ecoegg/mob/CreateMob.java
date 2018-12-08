@@ -53,8 +53,8 @@ public class CreateMob {
         }
 
         entity = (LivingEntity) player.getWorld().spawnEntity(loc, type);
-        if(material == Material.SOUL_SAND){
-            Utl.sendPluginMessage(plg,player,"ノーマルのモンスターエッグとして使用しました");
+        if (material == Material.SOUL_SAND) {
+            Utl.sendPluginMessage(plg, player, "ノーマルのモンスターエッグとして使用しました");
             return entity;
         }
 
@@ -68,6 +68,9 @@ public class CreateMob {
 
         if (entity instanceof AbstractHorse) {
             createHorse();
+        }
+        if(entity instanceof Sheep){
+            createSheep();
         }
         if (entity instanceof Ocelot) {
             createOcelot();
@@ -95,6 +98,12 @@ public class CreateMob {
             createVillager();
         }
         return entity;
+    }
+
+    private void createSheep() {
+        Sheep sheep = (Sheep) entity;
+        sheep.setColor(load.getSheepColor());
+
     }
 
     private void createRabbit() {

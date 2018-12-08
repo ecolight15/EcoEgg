@@ -5,6 +5,7 @@ import jp.minecraftuser.ecoegg.config.LoaderMob;
 import jp.minecraftuser.ecoframework.PluginFrame;
 import jp.minecraftuser.ecoframework.Utl;
 import net.minecraft.server.v1_13_R2.EntityVillager;
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -44,6 +45,9 @@ public class SaveMob {
         if (entity instanceof AbstractHorse) {
             saveHorse();
         }
+        if (entity instanceof Sheep) {
+            saveSheep();
+        }
         if (entity instanceof Ocelot) {
             saveOcelot();
         }
@@ -74,6 +78,10 @@ public class SaveMob {
 
     }
 
+    private void saveSheep() {
+        Sheep sheep = (Sheep) entity;
+        save.setSheepColor(sheep.getColor());
+    }
 
     private void saveRabbit() {
         Rabbit rabbit = (Rabbit) entity;

@@ -34,6 +34,9 @@ public class InfoMob {
         if (entity instanceof AbstractHorse) {
             showHorse();
         }
+        if(entity instanceof Sheep){
+            showSheep();
+        }
         if (entity instanceof Ocelot) {
             showOcelot();
         }
@@ -61,6 +64,11 @@ public class InfoMob {
         }
         Utl.sendPluginMessage(plg, player, "===== " + entity.getType() + "ステータスここまで =====");
 
+    }
+
+    private void showSheep() {
+        Sheep sheep = (Sheep) entity;
+        Utl.sendPluginMessage(plg, player, "SheepColor:" + sheep.getColor());
     }
 
     private void showRabbit() {

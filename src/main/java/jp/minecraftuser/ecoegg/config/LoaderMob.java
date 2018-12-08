@@ -94,6 +94,11 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public void setSheepColor(DyeColor color) {
+        list.set("sheepcolor", color.name());
+        saveCnf();
+    }
+
     public void setStyle(Horse.Style style) {
         list.set("style", style.name());
         saveCnf();
@@ -245,6 +250,10 @@ public class LoaderMob extends LoaderYaml {
         return list.getInt("age");
     }
 
+    public DyeColor getSheepColor() {
+        return DyeColor.valueOf(list.getString("sheepcolor"));
+    }
+
     public Horse.Style getStyle() {
         return Horse.Style.valueOf(list.getString("style"));
     }
@@ -347,7 +356,8 @@ public class LoaderMob extends LoaderYaml {
     public boolean getTamed() {
         return list.getBoolean("tamed");
     }
-    public String getPluginVersion(){
+
+    public String getPluginVersion() {
         return list.getString("gen_plugin_version");
     }
 }
