@@ -99,7 +99,7 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
-    public void setColor(Horse.Color color) {
+    public void setHorseColor(Horse.Color color) {
         list.set("color", color.name());
         saveCnf();
     }
@@ -207,6 +207,7 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+
     //--------------------------------------------------------------------------
     public boolean getUsed() {
         return list.getBoolean("used");
@@ -248,7 +249,7 @@ public class LoaderMob extends LoaderYaml {
         return Horse.Style.valueOf(list.getString("style"));
     }
 
-    public Horse.Color getColor() {
+    public Horse.Color getHorseColor() {
         return Horse.Color.valueOf(list.getString("color"));
     }
 

@@ -74,6 +74,7 @@ public class SaveMob {
 
     }
 
+
     private void saveRabbit() {
         Rabbit rabbit = (Rabbit) entity;
         save.setRabbitType(rabbit.getRabbitType());
@@ -126,7 +127,7 @@ public class SaveMob {
         if (horse instanceof Horse) {
             Horse _horse = (Horse) horse;
             save.setStyle(_horse.getStyle());
-            save.setColor(_horse.getColor());
+            save.setHorseColor(_horse.getColor());
         }
         if (horse.getOwner() != null) save.setOwner(horse.getOwner().getName());
         save.setJumpStrength(horse.getJumpStrength());

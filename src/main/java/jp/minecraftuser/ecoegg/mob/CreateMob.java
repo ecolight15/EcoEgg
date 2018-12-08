@@ -131,7 +131,7 @@ public class CreateMob {
 
             org.bukkit.entity.Horse normal_horse = (org.bukkit.entity.Horse) horse;
             normal_horse.setStyle(load.getStyle());
-            normal_horse.setColor(load.getColor());
+            normal_horse.setColor(load.getHorseColor());
         }
 
         horse.setMaxDomestication(load.getMaxDomestication());
