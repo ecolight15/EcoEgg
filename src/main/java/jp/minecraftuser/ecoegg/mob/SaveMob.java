@@ -1,11 +1,11 @@
 package jp.minecraftuser.ecoegg.mob;
 
 import jp.minecraftuser.ecoegg.SimpleTradeRecipe;
+import jp.minecraftuser.ecoegg.SimpleEquipment;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
 import jp.minecraftuser.ecoframework.PluginFrame;
 import jp.minecraftuser.ecoframework.Utl;
 import net.minecraft.server.v1_13_R2.EntityVillager;
-import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -40,6 +40,8 @@ public class SaveMob {
         save.setCustomName(entity.getCustomName());
         save.setMaxHealth(entity.getMaxHealth());
         save.setHealth(entity.getHealth());
+
+
 
         //ウマとかラバとかロバとかゾンビウマとかスケルトンウマとか
         if (entity instanceof Zombie) {
@@ -78,7 +80,9 @@ public class SaveMob {
         if (entity instanceof Animals) {
             saveAnimal();
         }
-
+        if(entity instanceof Zombie || entity instanceof Skeleton){
+            saveEntityEquipment();
+        }
     }
 
     private void saveZombie() {
@@ -150,6 +154,13 @@ public class SaveMob {
         save.SetHorseVariant(horse.getVariant());
         save.setSpeed(horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue());
         save.setBreed(horse.canBreed());
+    }
+
+    private void saveEntityEquipment() {
+        SimpleEquipment simpleEquipment = new SimpleEquipment(entity.getEquipment());
+        List<Map> tmp = new LinkedList<>();
+        tmp.add(simpleEquipment.serialize());
+        save.setEntityEquipment(tmp);
     }
 
     public void saveVillager() {

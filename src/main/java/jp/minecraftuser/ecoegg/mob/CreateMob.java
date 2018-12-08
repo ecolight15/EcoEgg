@@ -1,6 +1,7 @@
 package jp.minecraftuser.ecoegg.mob;
 
 import jp.minecraftuser.ecoegg.SimpleTradeRecipe;
+import jp.minecraftuser.ecoegg.SimpleEquipment;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
 import jp.minecraftuser.ecoframework.PluginFrame;
 import jp.minecraftuser.ecoframework.Utl;
@@ -10,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.MerchantRecipe;
 
 import java.lang.reflect.Field;
@@ -65,13 +67,15 @@ public class CreateMob {
         String name = load.getCustomName();
 
         if (name != null) entity.setCustomName(name);
-        if(entity instanceof Zombie){
+
+
+        if (entity instanceof Zombie) {
             createZombie();
         }
         if (entity instanceof AbstractHorse) {
             createHorse();
         }
-        if(entity instanceof Sheep){
+        if (entity instanceof Sheep) {
             createSheep();
         }
         if (entity instanceof Ocelot) {
@@ -99,14 +103,24 @@ public class CreateMob {
         if (entity instanceof Villager) {
             createVillager();
         }
+        if (entity instanceof Zombie || entity instanceof Skeleton) {
+            createEntityEquipment();
+        }
         return entity;
     }
-    private void createZombie(){
+
+    private void createZombie() {
+        if (isOldFormatEgg()) {
+            Utl.sendPluginMessage(plg, player, "チルド復元処理をスキップしました");
+        }
         Zombie zombie = (Zombie) entity;
         zombie.setBaby(load.getChild());
     }
 
     private void createSheep() {
+        if (isOldFormatEgg()) {
+            Utl.sendPluginMessage(plg, player, "色復元処理をスキップしました");
+        }
         Sheep sheep = (Sheep) entity;
         sheep.setColor(load.getSheepColor());
 
@@ -156,6 +170,19 @@ public class CreateMob {
         horse.setJumpStrength(load.getJumpStrength());
         horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(load.getSpeed());
         horse.setBreed(load.getBreed());
+    }
+
+    private void createEntityEquipment() {
+        if (isOldFormatEgg()) {
+            Utl.sendPluginMessage(plg, player, "持ち物復元処理をスキップしました");
+            return;
+        }
+
+        EntityEquipment entityEquipment = entity.getEquipment();
+        List<Map<?, ?>> serialize_entityEquipment = load.getEntityEquipment();
+        SimpleEquipment simpleEquipment = SimpleEquipment.deserialize((Map<String, Object>) serialize_entityEquipment.get(0));
+        simpleEquipment.create_EntityEquipment(entityEquipment);//ここで設定
+
     }
 
     private void createVillager() {

@@ -5,6 +5,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
 
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Field;
@@ -24,7 +25,6 @@ public class InfoMob {
     }
 
     public void show() {
-
         Utl.sendPluginMessage(plg, player, "===== " + entity.getType() + "ステータス表示 =====");
         Utl.sendPluginMessage(plg, player, "EntityName:" + entity.getType());
         Utl.sendPluginMessage(plg, player, "CustomName:" + entity.getName());
@@ -55,7 +55,6 @@ public class InfoMob {
         if (entity instanceof TropicalFish) {
             showTropicalFish();
         }
-
         if (entity instanceof Tameable) {
             showOwner();
         }
@@ -64,6 +63,9 @@ public class InfoMob {
         }
         if (entity instanceof Villager) {
             showVillager();
+        }
+        if (entity instanceof Zombie || entity instanceof Skeleton) {
+            showEntityEquipment();
         }
         Utl.sendPluginMessage(plg, player, "===== " + entity.getType() + "ステータスここまで =====");
 
@@ -124,6 +126,19 @@ public class InfoMob {
         Utl.sendPluginMessage(plg, player, "Variant:" + horse.getVariant().name());
         Utl.sendPluginMessage(plg, player, "JumpStrength:" + horse.getAttribute(Attribute.HORSE_JUMP_STRENGTH).getBaseValue());
         Utl.sendPluginMessage(plg, player, "Speed:" + horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue());
+    }
+
+    private void showEntityEquipment() {
+        EntityEquipment entityEquipment = entity.getEquipment();
+        Utl.sendPluginMessage(plg, player, "helmet:" + entityEquipment.getHelmet().getType().name());
+        Utl.sendPluginMessage(plg, player, "chestPlate:" + entityEquipment.getChestplate().getType().name());
+        Utl.sendPluginMessage(plg, player, "leggings:" + entityEquipment.getLeggings().getType().name());
+        Utl.sendPluginMessage(plg, player, "boots:" + entityEquipment.getBoots().getType().name());
+        Utl.sendPluginMessage(plg, player, "mainHand:" + entityEquipment.getHelmet().getType().name());
+        Utl.sendPluginMessage(plg, player, "offHand:" + entityEquipment.getItemInMainHand().getType().name());
+        Utl.sendPluginMessage(plg, player, "helmet:" + entityEquipment.getItemInOffHand().getType().name());
+
+
     }
 
     private void showVillager() {

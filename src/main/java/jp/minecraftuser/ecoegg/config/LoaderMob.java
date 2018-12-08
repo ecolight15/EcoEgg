@@ -172,6 +172,11 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public void setEntityEquipment(List<Map> entityEquipment) {
+        list.set("entityequipment", entityEquipment);
+        saveCnf();
+    }
+
     public void setVillagerTradeList(List<Map> recipes) {
         list.set("villagersimpletradelist", recipes);
         saveCnf();
@@ -314,6 +319,10 @@ public class LoaderMob extends LoaderYaml {
         return DyeColor.valueOf(list.getString("tropicalfishpatterncolor"));
     }
 
+    public List<Map<?, ?>> getEntityEquipment() {
+        return list.getMapList("entityequipment");
+    }
+
     public List<Map<?, ?>> getTradeList() {
         return list.getMapList("villagersimpletradelist");
     }
@@ -360,4 +369,7 @@ public class LoaderMob extends LoaderYaml {
     public String getPluginVersion() {
         return list.getString("gen_plugin_version");
     }
+
+
+
 }
