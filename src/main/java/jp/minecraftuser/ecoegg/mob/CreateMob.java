@@ -65,7 +65,9 @@ public class CreateMob {
         String name = load.getCustomName();
 
         if (name != null) entity.setCustomName(name);
-
+        if(entity instanceof Zombie){
+            createZombie();
+        }
         if (entity instanceof AbstractHorse) {
             createHorse();
         }
@@ -98,6 +100,10 @@ public class CreateMob {
             createVillager();
         }
         return entity;
+    }
+    private void createZombie(){
+        Zombie zombie = (Zombie) entity;
+        zombie.setBaby(load.getChild());
     }
 
     private void createSheep() {

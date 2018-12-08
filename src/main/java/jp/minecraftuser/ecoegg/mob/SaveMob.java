@@ -42,6 +42,9 @@ public class SaveMob {
         save.setHealth(entity.getHealth());
 
         //ウマとかラバとかロバとかゾンビウマとかスケルトンウマとか
+        if (entity instanceof Zombie) {
+            saveZombie();
+        }
         if (entity instanceof AbstractHorse) {
             saveHorse();
         }
@@ -76,6 +79,11 @@ public class SaveMob {
             saveAnimal();
         }
 
+    }
+
+    private void saveZombie() {
+        Zombie zombie = (Zombie) entity;
+        save.setChild(zombie.isBaby());
     }
 
     private void saveSheep() {

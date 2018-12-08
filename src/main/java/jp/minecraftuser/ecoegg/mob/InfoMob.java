@@ -31,10 +31,13 @@ public class InfoMob {
         Utl.sendPluginMessage(plg, player, "MaxHealth:" + entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
         Utl.sendPluginMessage(plg, player, "Health:" + entity.getHealth());
 
+        if (entity instanceof Zombie) {
+            showZombie();
+        }
         if (entity instanceof AbstractHorse) {
             showHorse();
         }
-        if(entity instanceof Sheep){
+        if (entity instanceof Sheep) {
             showSheep();
         }
         if (entity instanceof Ocelot) {
@@ -64,6 +67,11 @@ public class InfoMob {
         }
         Utl.sendPluginMessage(plg, player, "===== " + entity.getType() + "ステータスここまで =====");
 
+    }
+
+    private void showZombie() {
+        Zombie zombie = (Zombie) entity;
+        Utl.sendPluginMessage(plg, player, "isChild:" + zombie.isBaby());
     }
 
     private void showSheep() {
