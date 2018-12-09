@@ -177,6 +177,12 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public void savePotionEffectList(List<Map> potionEffectList) {
+        list.set("potioneffectlist", potionEffectList);
+        saveCnf();
+
+    }
+
     public void setVillagerTradeList(List<Map> recipes) {
         list.set("villagersimpletradelist", recipes);
         saveCnf();
@@ -323,6 +329,10 @@ public class LoaderMob extends LoaderYaml {
         return list.getMapList("entityequipment");
     }
 
+    public List<Map<?, ?>> getPotionEffectList() {
+        return list.getMapList("potioneffectlist");
+    }
+
     public List<Map<?, ?>> getTradeList() {
         return list.getMapList("villagersimpletradelist");
     }
@@ -369,7 +379,6 @@ public class LoaderMob extends LoaderYaml {
     public String getPluginVersion() {
         return list.getString("gen_plugin_version");
     }
-
 
 
 }

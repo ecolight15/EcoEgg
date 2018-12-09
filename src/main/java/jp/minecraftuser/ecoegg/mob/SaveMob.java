@@ -42,7 +42,6 @@ public class SaveMob {
         save.setHealth(entity.getHealth());
 
 
-
         //ウマとかラバとかロバとかゾンビウマとかスケルトンウマとか
         if (entity instanceof Zombie) {
             saveZombie();
@@ -80,10 +79,14 @@ public class SaveMob {
         if (entity instanceof Animals) {
             saveAnimal();
         }
-        if(entity instanceof Zombie || entity instanceof Skeleton){
+        if (entity instanceof Zombie || entity instanceof Skeleton) {
             saveEntityEquipment();
         }
+        savePotionEffect();
+
+
     }
+
 
     private void saveZombie() {
         Zombie zombie = (Zombie) entity;
@@ -197,6 +200,12 @@ public class SaveMob {
         save.setChild(!animals.isAdult());
         save.setAge(animals.getAge());
         save.setBreed(animals.canBreed());
+    }
+
+    private void savePotionEffect() {
+        List<Map> potionList = new LinkedList<>();
+        entity.getActivePotionEffects().forEach(effect -> potionList.add(effect.serialize()));
+        save.savePotionEffectList(potionList);
     }
 
     private int getVillagerCareerLevel(Villager villager) throws NoSuchFieldException, IllegalAccessException {

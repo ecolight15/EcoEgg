@@ -13,6 +13,8 @@ import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.MerchantRecipe;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -106,6 +108,10 @@ public class CreateMob {
         if (entity instanceof Zombie || entity instanceof Skeleton) {
             createEntityEquipment();
         }
+
+        createPotionEffect();
+
+
         return entity;
     }
 
@@ -242,6 +248,21 @@ public class CreateMob {
             animals.setAdult();
         }
         animals.setBreed(load.getBreed());
+    }
+
+    private void createPotionEffect() {
+        if (isOldFormatEgg()) {
+            Utl.sendPluginMessage(plg, player, "PotionEffect復元機能をスキップしました");
+            return;
+        }
+
+        List<Map<?, ?>> serialize_PotionEffectList = load.getPotionEffectList();
+        List<PotionEffect> potionEffectList = new ArrayList<>();
+
+        serialize_PotionEffectList.forEach(potionEffect -> {
+            potionEffectList.add(new PotionEffect((Map<String, Object>) potionEffect));
+        });
+        entity.addPotionEffects(potionEffectList);
     }
 
     private void setVillagerCareerLevel(Villager villager, int level) throws NoSuchFieldException, IllegalAccessException {

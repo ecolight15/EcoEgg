@@ -67,8 +67,17 @@ public class InfoMob {
         if (entity instanceof Zombie || entity instanceof Skeleton) {
             showEntityEquipment();
         }
+        showPotionEffect();
         Utl.sendPluginMessage(plg, player, "===== " + entity.getType() + "ステータスここまで =====");
 
+    }
+
+    private void showPotionEffect() {
+        if (entity.getActivePotionEffects().size() >= 1) {
+            Utl.sendPluginMessage(plg, player, "----ポーションエフェクトここから----");
+            entity.getActivePotionEffects().forEach(potionEffect -> Utl.sendPluginMessage(plg, player, "Type: " + potionEffect.getType().getName() + " Level: " + potionEffect.getAmplifier() + " Time: " + potionEffect.getDuration() / 20 + "s"));
+            Utl.sendPluginMessage(plg, player, "----ポーションエフェクトここまで----");
+        }
     }
 
     private void showZombie() {
@@ -145,6 +154,7 @@ public class InfoMob {
 
     private void showVillager() {
         Villager villager = (Villager) entity;
+        Utl.sendPluginMessage(plg, player, "----トレード内容ここから----");
         villager.getRecipes().forEach(merchantRecipe -> {
             StringBuilder trade_recipe = new StringBuilder();
             merchantRecipe.getIngredients().forEach(itemStack -> trade_recipe.append(itemStack.getType()).append(" * ").append(itemStack.getAmount()).append(" "));
@@ -154,9 +164,11 @@ public class InfoMob {
             trade_recipe.append("(").append(merchantRecipe.getUses()).append("/").append(merchantRecipe.getMaxUses()).append(")");
             Utl.sendPluginMessage(plg, player, "Trade:" + trade_recipe);
         });
+        Utl.sendPluginMessage(plg, player, "----トレード内容ここまで----");
         Utl.sendPluginMessage(plg, player, "Career:" + villager.getCareer());
         Utl.sendPluginMessage(plg, player, "Profession:" + villager.getProfession());
         Utl.sendPluginMessage(plg, player, "Riches:" + villager.getRiches());
+
 
         try {
             Utl.sendPluginMessage(plg, player, "CareerLevel:" + getVillagerCareerLevel(villager));
