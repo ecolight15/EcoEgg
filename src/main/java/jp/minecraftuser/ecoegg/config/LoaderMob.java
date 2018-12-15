@@ -94,12 +94,17 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public void setSheepColor(DyeColor color) {
+        list.set("sheepcolor", color.name());
+        saveCnf();
+    }
+
     public void setStyle(Horse.Style style) {
         list.set("style", style.name());
         saveCnf();
     }
 
-    public void setColor(Horse.Color color) {
+    public void setHorseColor(Horse.Color color) {
         list.set("color", color.name());
         saveCnf();
     }
@@ -167,6 +172,17 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public void setEntityEquipment(List<Map> entityEquipment) {
+        list.set("entityequipment", entityEquipment);
+        saveCnf();
+    }
+
+    public void savePotionEffectList(List<Map> potionEffectList) {
+        list.set("potioneffectlist", potionEffectList);
+        saveCnf();
+
+    }
+
     public void setVillagerTradeList(List<Map> recipes) {
         list.set("villagersimpletradelist", recipes);
         saveCnf();
@@ -207,6 +223,7 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+
     //--------------------------------------------------------------------------
     public boolean getUsed() {
         return list.getBoolean("used");
@@ -244,11 +261,15 @@ public class LoaderMob extends LoaderYaml {
         return list.getInt("age");
     }
 
+    public DyeColor getSheepColor() {
+        return DyeColor.valueOf(list.getString("sheepcolor"));
+    }
+
     public Horse.Style getStyle() {
         return Horse.Style.valueOf(list.getString("style"));
     }
 
-    public Horse.Color getColor() {
+    public Horse.Color getHorseColor() {
         return Horse.Color.valueOf(list.getString("color"));
     }
 
@@ -304,6 +325,14 @@ public class LoaderMob extends LoaderYaml {
         return DyeColor.valueOf(list.getString("tropicalfishpatterncolor"));
     }
 
+    public List<Map<?, ?>> getEntityEquipment() {
+        return list.getMapList("entityequipment");
+    }
+
+    public List<Map<?, ?>> getPotionEffectList() {
+        return list.getMapList("potioneffectlist");
+    }
+
     public List<Map<?, ?>> getTradeList() {
         return list.getMapList("villagersimpletradelist");
     }
@@ -346,7 +375,10 @@ public class LoaderMob extends LoaderYaml {
     public boolean getTamed() {
         return list.getBoolean("tamed");
     }
-    public String getPluginVersion(){
+
+    public String getPluginVersion() {
         return list.getString("gen_plugin_version");
     }
+
+
 }

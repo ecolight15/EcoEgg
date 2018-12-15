@@ -1,6 +1,7 @@
 package jp.minecraftuser.ecoegg.mob;
 
 import jp.minecraftuser.ecoegg.SimpleTradeRecipe;
+import jp.minecraftuser.ecoegg.SimpleEquipment;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
 import jp.minecraftuser.ecoframework.PluginFrame;
 import jp.minecraftuser.ecoframework.Utl;
@@ -10,7 +11,10 @@ import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.MerchantRecipe;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -53,8 +57,8 @@ public class CreateMob {
         }
 
         entity = (LivingEntity) player.getWorld().spawnEntity(loc, type);
-        if(material == Material.SOUL_SAND){
-            Utl.sendPluginMessage(plg,player,"ノーマルのモンスターエッグとして使用しました");
+        if (material == Material.SOUL_SAND) {
+            Utl.sendPluginMessage(plg, player, "ノーマルのモンスターエッグとして使用しました");
             return entity;
         }
 
@@ -66,8 +70,15 @@ public class CreateMob {
 
         if (name != null) entity.setCustomName(name);
 
+
+        if (entity instanceof Zombie) {
+            createZombie();
+        }
         if (entity instanceof AbstractHorse) {
             createHorse();
+        }
+        if (entity instanceof Sheep) {
+            createSheep();
         }
         if (entity instanceof Ocelot) {
             createOcelot();
@@ -94,7 +105,31 @@ public class CreateMob {
         if (entity instanceof Villager) {
             createVillager();
         }
+        if (entity instanceof Zombie || entity instanceof Skeleton) {
+            createEntityEquipment();
+        }
+
+        createPotionEffect();
+
+
         return entity;
+    }
+
+    private void createZombie() {
+        if (isOldFormatEgg()) {
+            Utl.sendPluginMessage(plg, player, "チルド復元処理をスキップしました");
+        }
+        Zombie zombie = (Zombie) entity;
+        zombie.setBaby(load.getChild());
+    }
+
+    private void createSheep() {
+        if (isOldFormatEgg()) {
+            Utl.sendPluginMessage(plg, player, "色復元処理をスキップしました");
+        }
+        Sheep sheep = (Sheep) entity;
+        sheep.setColor(load.getSheepColor());
+
     }
 
     private void createRabbit() {
@@ -131,7 +166,7 @@ public class CreateMob {
 
             org.bukkit.entity.Horse normal_horse = (org.bukkit.entity.Horse) horse;
             normal_horse.setStyle(load.getStyle());
-            normal_horse.setColor(load.getColor());
+            normal_horse.setColor(load.getHorseColor());
         }
 
         horse.setMaxDomestication(load.getMaxDomestication());
@@ -141,6 +176,19 @@ public class CreateMob {
         horse.setJumpStrength(load.getJumpStrength());
         horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(load.getSpeed());
         horse.setBreed(load.getBreed());
+    }
+
+    private void createEntityEquipment() {
+        if (isOldFormatEgg()) {
+            Utl.sendPluginMessage(plg, player, "持ち物復元処理をスキップしました");
+            return;
+        }
+
+        EntityEquipment entityEquipment = entity.getEquipment();
+        List<Map<?, ?>> serialize_entityEquipment = load.getEntityEquipment();
+        SimpleEquipment simpleEquipment = SimpleEquipment.deserialize((Map<String, Object>) serialize_entityEquipment.get(0));
+        simpleEquipment.create_EntityEquipment(entityEquipment);//ここで設定
+
     }
 
     private void createVillager() {
@@ -200,6 +248,21 @@ public class CreateMob {
             animals.setAdult();
         }
         animals.setBreed(load.getBreed());
+    }
+
+    private void createPotionEffect() {
+        if (isOldFormatEgg()) {
+            Utl.sendPluginMessage(plg, player, "PotionEffect復元機能をスキップしました");
+            return;
+        }
+
+        List<Map<?, ?>> serialize_PotionEffectList = load.getPotionEffectList();
+        List<PotionEffect> potionEffectList = new ArrayList<>();
+
+        serialize_PotionEffectList.forEach(potionEffect -> {
+            potionEffectList.add(new PotionEffect((Map<String, Object>) potionEffect));
+        });
+        entity.addPotionEffects(potionEffectList);
     }
 
     private void setVillagerCareerLevel(Villager villager, int level) throws NoSuchFieldException, IllegalAccessException {

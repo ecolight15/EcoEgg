@@ -1,6 +1,7 @@
 package jp.minecraftuser.ecoegg.mob;
 
 import jp.minecraftuser.ecoegg.SimpleTradeRecipe;
+import jp.minecraftuser.ecoegg.SimpleEquipment;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
 import jp.minecraftuser.ecoframework.PluginFrame;
 import jp.minecraftuser.ecoframework.Utl;
@@ -40,9 +41,16 @@ public class SaveMob {
         save.setMaxHealth(entity.getMaxHealth());
         save.setHealth(entity.getHealth());
 
+
         //ウマとかラバとかロバとかゾンビウマとかスケルトンウマとか
+        if (entity instanceof Zombie) {
+            saveZombie();
+        }
         if (entity instanceof AbstractHorse) {
             saveHorse();
+        }
+        if (entity instanceof Sheep) {
+            saveSheep();
         }
         if (entity instanceof Ocelot) {
             saveOcelot();
@@ -71,7 +79,23 @@ public class SaveMob {
         if (entity instanceof Animals) {
             saveAnimal();
         }
+        if (entity instanceof Zombie || entity instanceof Skeleton) {
+            saveEntityEquipment();
+        }
+        savePotionEffect();
 
+
+    }
+
+
+    private void saveZombie() {
+        Zombie zombie = (Zombie) entity;
+        save.setChild(zombie.isBaby());
+    }
+
+    private void saveSheep() {
+        Sheep sheep = (Sheep) entity;
+        save.setSheepColor(sheep.getColor());
     }
 
     private void saveRabbit() {
@@ -126,13 +150,20 @@ public class SaveMob {
         if (horse instanceof Horse) {
             Horse _horse = (Horse) horse;
             save.setStyle(_horse.getStyle());
-            save.setColor(_horse.getColor());
+            save.setHorseColor(_horse.getColor());
         }
         if (horse.getOwner() != null) save.setOwner(horse.getOwner().getName());
         save.setJumpStrength(horse.getJumpStrength());
         save.SetHorseVariant(horse.getVariant());
         save.setSpeed(horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue());
         save.setBreed(horse.canBreed());
+    }
+
+    private void saveEntityEquipment() {
+        SimpleEquipment simpleEquipment = new SimpleEquipment(entity.getEquipment());
+        List<Map> tmp = new LinkedList<>();
+        tmp.add(simpleEquipment.serialize());
+        save.setEntityEquipment(tmp);
     }
 
     public void saveVillager() {
@@ -169,6 +200,12 @@ public class SaveMob {
         save.setChild(!animals.isAdult());
         save.setAge(animals.getAge());
         save.setBreed(animals.canBreed());
+    }
+
+    private void savePotionEffect() {
+        List<Map> potionList = new LinkedList<>();
+        entity.getActivePotionEffects().forEach(effect -> potionList.add(effect.serialize()));
+        save.savePotionEffectList(potionList);
     }
 
     private int getVillagerCareerLevel(Villager villager) throws NoSuchFieldException, IllegalAccessException {

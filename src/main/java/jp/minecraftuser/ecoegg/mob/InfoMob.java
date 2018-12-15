@@ -5,6 +5,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
 
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Field;
@@ -24,15 +25,20 @@ public class InfoMob {
     }
 
     public void show() {
-
         Utl.sendPluginMessage(plg, player, "===== " + entity.getType() + "ステータス表示 =====");
         Utl.sendPluginMessage(plg, player, "EntityName:" + entity.getType());
         Utl.sendPluginMessage(plg, player, "CustomName:" + entity.getName());
         Utl.sendPluginMessage(plg, player, "MaxHealth:" + entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
         Utl.sendPluginMessage(plg, player, "Health:" + entity.getHealth());
 
+        if (entity instanceof Zombie) {
+            showZombie();
+        }
         if (entity instanceof AbstractHorse) {
             showHorse();
+        }
+        if (entity instanceof Sheep) {
+            showSheep();
         }
         if (entity instanceof Ocelot) {
             showOcelot();
@@ -49,7 +55,6 @@ public class InfoMob {
         if (entity instanceof TropicalFish) {
             showTropicalFish();
         }
-
         if (entity instanceof Tameable) {
             showOwner();
         }
@@ -59,8 +64,30 @@ public class InfoMob {
         if (entity instanceof Villager) {
             showVillager();
         }
+        if (entity instanceof Zombie || entity instanceof Skeleton) {
+            showEntityEquipment();
+        }
+        showPotionEffect();
         Utl.sendPluginMessage(plg, player, "===== " + entity.getType() + "ステータスここまで =====");
 
+    }
+
+    private void showPotionEffect() {
+        if (entity.getActivePotionEffects().size() >= 1) {
+            Utl.sendPluginMessage(plg, player, "----ポーションエフェクトここから----");
+            entity.getActivePotionEffects().forEach(potionEffect -> Utl.sendPluginMessage(plg, player, "Type: " + potionEffect.getType().getName() + " Level: " + potionEffect.getAmplifier() + " Time: " + potionEffect.getDuration() / 20 + "s"));
+            Utl.sendPluginMessage(plg, player, "----ポーションエフェクトここまで----");
+        }
+    }
+
+    private void showZombie() {
+        Zombie zombie = (Zombie) entity;
+        Utl.sendPluginMessage(plg, player, "isChild:" + zombie.isBaby());
+    }
+
+    private void showSheep() {
+        Sheep sheep = (Sheep) entity;
+        Utl.sendPluginMessage(plg, player, "SheepColor:" + sheep.getColor());
     }
 
     private void showRabbit() {
@@ -110,20 +137,38 @@ public class InfoMob {
         Utl.sendPluginMessage(plg, player, "Speed:" + horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue());
     }
 
+    private void showEntityEquipment() {
+        EntityEquipment entityEquipment = entity.getEquipment();
+        Utl.sendPluginMessage(plg, player, "----装備品ここから----");
+        Utl.sendPluginMessage(plg, player, "Helmet:" + entityEquipment.getHelmet().getType().name());
+        Utl.sendPluginMessage(plg, player, "ChestPlate:" + entityEquipment.getChestplate().getType().name());
+        Utl.sendPluginMessage(plg, player, "Leggings:" + entityEquipment.getLeggings().getType().name());
+        Utl.sendPluginMessage(plg, player, "Boots:" + entityEquipment.getBoots().getType().name());
+        Utl.sendPluginMessage(plg, player, "MainHand:" + entityEquipment.getHelmet().getType().name());
+        Utl.sendPluginMessage(plg, player, "OffHand:" + entityEquipment.getItemInMainHand().getType().name());
+        Utl.sendPluginMessage(plg, player, "Helmet:" + entityEquipment.getItemInOffHand().getType().name());
+        Utl.sendPluginMessage(plg, player, "----装備品ここまで----");
+
+
+    }
+
     private void showVillager() {
         Villager villager = (Villager) entity;
+        Utl.sendPluginMessage(plg, player, "----トレード内容ここから----");
         villager.getRecipes().forEach(merchantRecipe -> {
             StringBuilder trade_recipe = new StringBuilder();
-            merchantRecipe.getIngredients().forEach(itemStack -> trade_recipe.append(itemStack.getType()).append(" * ").append(itemStack.getAmount()));
+            merchantRecipe.getIngredients().forEach(itemStack -> trade_recipe.append(itemStack.getType()).append(" * ").append(itemStack.getAmount()).append(" "));
             trade_recipe.append(" -> ");
             ItemStack resultItem = merchantRecipe.getResult();
             trade_recipe.append(resultItem.getType()).append(" * ").append(resultItem.getAmount());
             trade_recipe.append("(").append(merchantRecipe.getUses()).append("/").append(merchantRecipe.getMaxUses()).append(")");
             Utl.sendPluginMessage(plg, player, "Trade:" + trade_recipe);
         });
+        Utl.sendPluginMessage(plg, player, "----トレード内容ここまで----");
         Utl.sendPluginMessage(plg, player, "Career:" + villager.getCareer());
         Utl.sendPluginMessage(plg, player, "Profession:" + villager.getProfession());
         Utl.sendPluginMessage(plg, player, "Riches:" + villager.getRiches());
+
 
         try {
             Utl.sendPluginMessage(plg, player, "CareerLevel:" + getVillagerCareerLevel(villager));
