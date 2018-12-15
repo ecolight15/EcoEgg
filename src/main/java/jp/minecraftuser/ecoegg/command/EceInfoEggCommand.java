@@ -41,7 +41,7 @@ public class EceInfoEggCommand extends CommandFrame {
      */
     @Override
     public String getPermissionString() {
-        return "ecoegg.egginfo";
+        return "ecoegg.infoegg";
     }
 
     /**
