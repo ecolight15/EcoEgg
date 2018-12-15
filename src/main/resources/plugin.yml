@@ -7,3 +7,32 @@ commands:
   ece:
     description: ecoegg command.
     usage: /<command> xxx
+    permission: ecoegg
+  ece reload:
+    description: ecoegg command.
+    usage: /<command> xxx
+    permission: ecoegg.reload
+  ece info:
+    description: ecoegg command.
+    usage: /<command> xxx
+    permission: ecoegg.info
+  ece infoegg:
+    description: ecoegg command.
+    usage: /<command> xxx
+    permission: ecoegg.infoegg
+  ece get:
+    description: ecoegg command.
+    usage: /<command> xxx
+    permission: ecoegg.get
+  ece set:
+    description: ecoegg command.
+    usage: /<command> xxx
+    permission: ecoegg.set
+  ece book:
+    description: ecoegg command.
+    usage: /<command> xxx
+    permission: ecoegg.book
+  ece egg:
+    description: ecoegg command.
+    usage: /<command> xxx
+    permission: ecoegg.egg
