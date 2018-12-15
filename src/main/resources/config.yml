@@ -5,10 +5,10 @@
 # □--------------------------------------□
 # ドロップテーブル
 # droptable:
-#   EnderDragon:
+#   ender_dragon:
 #     amount: 3
 #     rate: 1
-#   Witch:
+#   witch:
 #     amount: 1
 #     rate: 100
 # □--------------------------------------□
@@ -29,13 +29,7 @@
 # □--------------------------------------□
 
 
-droptable:
-  EnderDragon:
-    amount: 3
-    rate: 1
-  Witch:
-    amount: 1
-    rate: 100
+droptable: {}
 title: '魔道書「えこたまご」'
 name: '魔道書「えこたまご」'
 author: '神官えこ'
