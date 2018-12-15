@@ -166,15 +166,16 @@ public class InfoMob {
         });
         Utl.sendPluginMessage(plg, player, "----トレード内容ここまで----");
 
-        if (villager.getCareer() == null) {
+        try {
+            Utl.sendPluginMessage(plg, player, "Career:" + villager.getCareer());
+            Utl.sendPluginMessage(plg, player, "Profession:" + villager.getProfession());
+            Utl.sendPluginMessage(plg, player, "Riches:" + villager.getRiches());
+
+        } catch (IllegalArgumentException e) {
             Utl.sendPluginMessage(plg, player, "旧タイプの村人な為､職業を取得できませんでした");
             Utl.sendPluginMessage(plg, player, "取引を更新すると職業を取得できます");
             return;
         }
-
-        Utl.sendPluginMessage(plg, player, "Career:" + villager.getCareer());
-        Utl.sendPluginMessage(plg, player, "Profession:" + villager.getProfession());
-        Utl.sendPluginMessage(plg, player, "Riches:" + villager.getRiches());
 
 
         try {
