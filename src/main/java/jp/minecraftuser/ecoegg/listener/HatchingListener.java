@@ -135,6 +135,7 @@ public class HatchingListener extends ListenerFrame {
         SaveMob saveMob = new SaveMob(le, pl, loc, save, plg);
         saveMob.save();
         if (saveMob.isCancel()) {
+            Utl.sendPluginMessage(plg,pl,"モンスター保存処理に失敗しました｡");
             return;
         }
 
@@ -244,6 +245,7 @@ public class HatchingListener extends ListenerFrame {
         CreateMob createMob = new CreateMob(player, block.getType(), loc, load, plg);
         LivingEntity entity = createMob.create();
         if (createMob.isCancel()) {
+            Utl.sendPluginMessage(plg,event.getPlayer(),"モンスター復元処理に失敗しました");
             entity.remove();
             return;
         }
