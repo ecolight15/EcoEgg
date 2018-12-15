@@ -174,15 +174,16 @@ public class SaveMob {
 
         // 保存
         save.setVillagerTradeList(simpleTradeRecipeList);
-        if (villager.getCareer() == null) {
+        try {
+            save.setVillagerCareer(villager.getCareer());
+            save.setVillagerRiches(villager.getRiches());
+            save.setVillagerProfession(villager.getProfession());
+        } catch (IllegalArgumentException e) {
             Utl.sendPluginMessage(plg, player, "旧タイプの村人な為､職業の取得に失敗しました｡");
             Utl.sendPluginMessage(plg, player, "取引を更新してください｡");
             cancel = true;
             return;
         }
-        save.setVillagerCareer(villager.getCareer());
-        save.setVillagerRiches(villager.getRiches());
-        save.setVillagerProfession(villager.getProfession());
 
         try {
             save.setVillagerCareerLevel(getVillagerCareerLevel(villager));
