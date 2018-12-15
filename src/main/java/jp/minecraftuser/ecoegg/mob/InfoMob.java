@@ -162,9 +162,16 @@ public class InfoMob {
             ItemStack resultItem = merchantRecipe.getResult();
             trade_recipe.append(resultItem.getType()).append(" * ").append(resultItem.getAmount());
             trade_recipe.append("(").append(merchantRecipe.getUses()).append("/").append(merchantRecipe.getMaxUses()).append(")");
-            Utl.sendPluginMessage(plg, player, "Trade:" + trade_recipe);
+            Utl.sendPluginMessage(plg, player, trade_recipe.toString());
         });
         Utl.sendPluginMessage(plg, player, "----トレード内容ここまで----");
+
+        if (villager.getCareer() == null) {
+            Utl.sendPluginMessage(plg, player, "旧タイプの村人な為､職業を取得できませんでした");
+            Utl.sendPluginMessage(plg, player, "取引を更新すると職業を取得できます");
+            return;
+        }
+
         Utl.sendPluginMessage(plg, player, "Career:" + villager.getCareer());
         Utl.sendPluginMessage(plg, player, "Profession:" + villager.getProfession());
         Utl.sendPluginMessage(plg, player, "Riches:" + villager.getRiches());
@@ -173,7 +180,7 @@ public class InfoMob {
         try {
             Utl.sendPluginMessage(plg, player, "CareerLevel:" + getVillagerCareerLevel(villager));
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
+            Utl.sendPluginMessage(plg, player, "CareerLevelの取得に失敗しました 管理者に報告してください");
         }
     }
 

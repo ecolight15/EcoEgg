@@ -217,7 +217,7 @@ public class CreateMob {
             setVillagerCareerLevel(villager, load.getVillagerCareerLevel());
         } catch (NoSuchFieldException | IllegalAccessException e) {
             cancel = true;
-            Utl.sendPluginMessage(plg, player, "CareerLevelの復元処理に失敗しました 管理者に報告してください");
+            Utl.sendPluginMessage(plg, player, "CareerLevelの復元に失敗しました 管理者に報告してください");
 
         }
     }
