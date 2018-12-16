@@ -151,6 +151,10 @@ public class SaveMob {
             Horse _horse = (Horse) horse;
             save.setStyle(_horse.getStyle());
             save.setHorseColor(_horse.getColor());
+        } else if (horse instanceof Llama) {
+            Llama _llama = (Llama) horse;
+            save.setLlamaColor(_llama.getColor());
+            save.setLlamaStrength(_llama.getStrength());
         }
         if (horse.getOwner() != null) save.setOwner(horse.getOwner().getName());
         save.setJumpStrength(horse.getJumpStrength());

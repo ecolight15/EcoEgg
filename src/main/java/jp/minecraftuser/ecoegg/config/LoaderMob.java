@@ -99,6 +99,16 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public void setLlamaColor(Llama.Color color) {
+        list.set("color", color.name());
+        saveCnf();
+    }
+
+    public void setLlamaStrength(int strength) {
+        list.set("strength", strength);
+        saveCnf();
+    }
+
     public void setStyle(Horse.Style style) {
         list.set("style", style.name());
         saveCnf();
@@ -257,13 +267,21 @@ public class LoaderMob extends LoaderYaml {
         return list.getInt("domestication");
     }
 
-    public int getAge() {
-        return list.getInt("age");
-    }
+    public int getAge() {return list.getInt("age");}
+
 
     public DyeColor getSheepColor() {
         return DyeColor.valueOf(list.getString("sheepcolor"));
     }
+
+    public Llama.Color getLlamaColor() {
+        return Llama.Color.valueOf(list.getString("color"));
+    }
+
+    public int getLlamaStrength() {
+        return list.getInt("strength");
+    }
+
 
     public Horse.Style getStyle() {
         return Horse.Style.valueOf(list.getString("style"));

@@ -131,6 +131,11 @@ public class InfoMob {
             Horse normal_Horse = (Horse) horse;
             Utl.sendPluginMessage(plg, player, "Style:" + normal_Horse.getStyle().name());
             Utl.sendPluginMessage(plg, player, "Color:" + normal_Horse.getColor().name());
+        } else if (horse instanceof Llama) {
+            Llama llama = (Llama) horse;
+            Utl.sendPluginMessage(plg, player, "Color:" + llama.getColor().name());
+            Utl.sendPluginMessage(plg, player, "Strength:" + llama.getStrength());
+
         }
         Utl.sendPluginMessage(plg, player, "Variant:" + horse.getVariant().name());
         Utl.sendPluginMessage(plg, player, "JumpStrength:" + horse.getAttribute(Attribute.HORSE_JUMP_STRENGTH).getBaseValue());
