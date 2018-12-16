@@ -172,7 +172,7 @@ public class CreateMob {
                 llama.setColor(load.getLlamaColor());
                 llama.setStrength(load.getLlamaStrength());
             } else {
-                Utl.sendPluginMessage(plg, player, "false");
+                Utl.sendPluginMessage(plg, player, "色復元処理をスキップしました");
             }
 
         }
