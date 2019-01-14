@@ -210,7 +210,10 @@ public class HatchingListener extends ListenerFrame {
     @EventHandler(priority = EventPriority.LOWEST)
     public void PlayerInteract(PlayerInteractEvent event) {
 
-
+        //左クリックは無視
+        if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
+            return;
+        }
 
         //----------------------------------------------------------------------
         // 卵の孵化処理
