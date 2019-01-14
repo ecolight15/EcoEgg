@@ -74,6 +74,9 @@ public class CreateMob {
         if (entity instanceof Zombie) {
             createZombie();
         }
+        if(entity instanceof Creeper){
+            createCreeper();
+        }
         if (entity instanceof AbstractHorse) {
             createHorse();
         }
@@ -121,6 +124,15 @@ public class CreateMob {
         }
         Zombie zombie = (Zombie) entity;
         zombie.setBaby(load.getChild());
+    }
+
+    private void createCreeper() {
+        if (Version.compare("0.8", load.getPluginVersion())) {
+            Creeper creeper = (Creeper) entity;
+            creeper.setPowered(load.getPower());
+        } else {
+            Utl.sendPluginMessage(plg, player, "帯電復元処理をスキップしました");
+        }
     }
 
     private void createSheep() {

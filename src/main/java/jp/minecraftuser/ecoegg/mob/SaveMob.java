@@ -46,6 +46,9 @@ public class SaveMob {
         if (entity instanceof Zombie) {
             saveZombie();
         }
+        if (entity instanceof Creeper) {
+            saveCreeper();
+        }
         if (entity instanceof AbstractHorse) {
             saveHorse();
         }
@@ -91,6 +94,11 @@ public class SaveMob {
     private void saveZombie() {
         Zombie zombie = (Zombie) entity;
         save.setChild(zombie.isBaby());
+    }
+
+    private void saveCreeper() {
+        Creeper creeper = (Creeper) entity;
+        save.setPower(creeper.isPowered());
     }
 
     private void saveSheep() {
