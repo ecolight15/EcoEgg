@@ -34,6 +34,9 @@ public class InfoMob {
         if (entity instanceof Zombie) {
             showZombie();
         }
+        if (entity instanceof Creeper) {
+            showCreeper();
+        }
         if (entity instanceof AbstractHorse) {
             showHorse();
         }
@@ -72,6 +75,7 @@ public class InfoMob {
 
     }
 
+
     private void showPotionEffect() {
         if (entity.getActivePotionEffects().size() >= 1) {
             Utl.sendPluginMessage(plg, player, "----ポーションエフェクトここから----");
@@ -83,6 +87,11 @@ public class InfoMob {
     private void showZombie() {
         Zombie zombie = (Zombie) entity;
         Utl.sendPluginMessage(plg, player, "isChild:" + zombie.isBaby());
+    }
+
+    private void showCreeper() {
+        Creeper creeper = (Creeper) entity;
+        Utl.sendPluginMessage(plg, player, "isPowered:" + creeper.isPowered());
     }
 
     private void showSheep() {
@@ -131,6 +140,11 @@ public class InfoMob {
             Horse normal_Horse = (Horse) horse;
             Utl.sendPluginMessage(plg, player, "Style:" + normal_Horse.getStyle().name());
             Utl.sendPluginMessage(plg, player, "Color:" + normal_Horse.getColor().name());
+        } else if (horse instanceof Llama) {
+            Llama llama = (Llama) horse;
+            Utl.sendPluginMessage(plg, player, "Color:" + llama.getColor().name());
+            Utl.sendPluginMessage(plg, player, "Strength:" + llama.getStrength());
+
         }
         Utl.sendPluginMessage(plg, player, "Variant:" + horse.getVariant().name());
         Utl.sendPluginMessage(plg, player, "JumpStrength:" + horse.getAttribute(Attribute.HORSE_JUMP_STRENGTH).getBaseValue());

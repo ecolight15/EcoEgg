@@ -5,6 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
+import com.sk89q.worldguard.protection.regions.RegionQuery;
 import jp.minecraftuser.ecoegg.EcoEgg;
 import jp.minecraftuser.ecoegg.EcoEggUtil;
 import jp.minecraftuser.ecoegg.mob.CreateMob;
@@ -23,6 +28,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -61,8 +67,10 @@ public class HatchingListener extends ListenerFrame {
         //----------------------------------------------------------------------
         // たまごのあるMOBの場合
         //----------------------------------------------------------------------
-        Player pl = event.getPlayer();
+        Player player = event.getPlayer();
         Entity ent = event.getRightClicked();
+        LivingEntity le = (LivingEntity) ent;
+
 
         //モンスターエッグに変換できない場合はキャンセル
         if (!EcoEggUtil.existMonsterEgg(ent)) {
@@ -74,14 +82,14 @@ public class HatchingListener extends ListenerFrame {
         //----------------------------------------------------------------------
         boolean bookcheck = true;
         if (((EcoEgg) plg).getGetter() != null) {
-            if (((EcoEgg) plg).getGetter().equals(pl)) {
+            if (((EcoEgg) plg).getGetter().equals(player)) {
                 // 魔道書判定スキップ、初期化
                 bookcheck = false;
                 ((EcoEgg) plg).setGetter(null);
             }
         }
         if (bookcheck) {
-            ItemStack is = pl.getItemInHand();
+            ItemStack is = player.getItemInHand();
             if (is.getType() != Material.WRITTEN_BOOK) return;
             // 魔道書の記述が正しいか
             BookMeta meta = (BookMeta) is.getItemMeta();
@@ -90,11 +98,26 @@ public class HatchingListener extends ListenerFrame {
             if (!meta.getTitle().equals(eceConf.getTitle())) return;
             if (!meta.getDisplayName().equals(eceConf.getDispName())) return;
         }
+        //----------------------------------------------------------------------
+        // WorldGuardで保護されていないかチェック
+        //----------------------------------------------------------------------
+        LocalPlayer localPlayer = ((EcoEgg) plg).getWorldGuard().wrapPlayer(player);
+
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionQuery query = container.createQuery();
+
+        com.sk89q.worldedit.util.Location player_loc = localPlayer.getLocation();
+        com.sk89q.worldedit.util.Location entity_loc = new com.sk89q.worldedit.util.Location(player_loc.getExtent(), ent.getLocation().getX(), ent.getLocation().getY(), ent.getLocation().getZ());
+
+        if (!query.testState(player_loc, localPlayer, (StateFlag) EcoEgg.USE_ECO_EGG_FLAG) || !query.testState(entity_loc, localPlayer, (StateFlag) EcoEgg.USE_ECO_EGG_FLAG)) {
+            Utl.sendPluginMessage(plg,player,("この場所ではえこたまごを使用できません"));
+            return;
+        }
 
         //----------------------------------------------------------------------
         // 他者のMOBの場合は魔道書のみ消滅
         //----------------------------------------------------------------------
-        LivingEntity le = (LivingEntity) ent;
+
         Location loc = le.getLocation();
         boolean reject = false;
 
@@ -102,16 +125,16 @@ public class HatchingListener extends ListenerFrame {
         if (le instanceof Tameable) {
             Tameable tame_entity = (Tameable) le;
             if (tame_entity.getOwner() != null && tame_entity.getOwner().getName() != null) {
-                if (!(tame_entity.getOwner().getName().equals(pl.getName()))) {
+                if (!(tame_entity.getOwner().getName().equals(player.getName()))) {
                     reject = true;
                 }
             }
         }
-        PlayerInventory pi = pl.getInventory();
+        PlayerInventory pi = player.getInventory();
         ItemStack is = pi.getItemInMainHand();
-        if ((reject) && (!pl.isOp())) {
+        if ((reject) && (!player.isOp())) {
             Utl.sendPluginMessage(plg, event.getPlayer(), "他のプレイヤーの動物には力が及びませんでした");
-            if (pl.getGameMode() != GameMode.CREATIVE) {
+            if (player.getGameMode() != GameMode.CREATIVE) {
                 if (is.getAmount() == 1) {
                     pi.setItemInMainHand(new ItemStack(Material.AIR));
                 } else {
@@ -132,10 +155,10 @@ public class HatchingListener extends ListenerFrame {
         egg = new ItemStack(Material.matchMaterial("minecraft:" + ent.getType().getName() + "_spawn_egg"));//雑い
 
         LoaderMob save = new LoaderMob((EcoEgg) plg, le.getUniqueId());
-        SaveMob saveMob = new SaveMob(le, pl, loc, save, plg);
+        SaveMob saveMob = new SaveMob(le, player, loc, save, plg);
         saveMob.save();
         if (saveMob.isCancel()) {
-            Utl.sendPluginMessage(plg,pl,"モンスター保存処理に失敗しました｡");
+            Utl.sendPluginMessage(plg, player, "モンスター保存処理に失敗しました｡");
             return;
         }
 
@@ -155,27 +178,27 @@ public class HatchingListener extends ListenerFrame {
                 ii++;
             }
             if (ii == pi.getSize()) {
-                Utl.sendPluginMessage(plg, pl, ChatColor.AQUA + "インベントリに空きが無いので使用できません");
+                Utl.sendPluginMessage(plg, player, ChatColor.AQUA + "インベントリに空きが無いので使用できません");
 
                 return;
             } else {
                 is.setAmount(is.getAmount() - 1);
-                pl.getInventory().setItemInMainHand(is);
+                player.getInventory().setItemInMainHand(is);
                 pi.setItem(ii, egg);
-                pl.getInventory().getItem(ii).setAmount(1);
+                player.getInventory().getItem(ii).setAmount(1);
             }
         }
         Date date = new Date();
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
-        save.saveGen(pl.getName(), ent.getType().name(), sdf1.format(date), plg.getDescription().getVersion());
+        save.saveGen(player.getName(), ent.getType().name(), sdf1.format(date), plg.getDescription().getVersion());
         save.saveDate(date.getTime());
 
         le.remove();
-        pl.getWorld().strikeLightningEffect(loc);
+        player.getWorld().strikeLightningEffect(loc);
 
-        Utl.sendPluginMessage(plg, pl, ChatColor.AQUA + "MOBをたまごに変換しました");
-        log.info("ChangeMobEgg[" + pl.getName() + "]" + pl.getLocation().toString() + ",MOB:" + (byte) ent.getType().getTypeId());
+        Utl.sendPluginMessage(plg, player, ChatColor.AQUA + "MOBをたまごに変換しました");
+        log.info("ChangeMobEgg[" + player.getName() + "]" + player.getLocation().toString() + ",MOB:" + (byte) ent.getType().getTypeId());
 
     }
 
@@ -186,10 +209,19 @@ public class HatchingListener extends ListenerFrame {
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void PlayerInteract(PlayerInteractEvent event) {
+
+        //左クリックは無視
+        if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
+            return;
+        }
+
         //----------------------------------------------------------------------
         // 卵の孵化処理
         //----------------------------------------------------------------------
+        Player player = event.getPlayer();
+        Block block = event.getClickedBlock();
         ItemStack item = event.getItem();
+
         if (item == null) return;
 
         // モンスターエッグ以外は処理しない
@@ -202,6 +234,23 @@ public class HatchingListener extends ListenerFrame {
 
         // エコエッグの表記で始まるか
         if (!item_name.startsWith("[EcoEgg]")) return;
+
+
+        //----------------------------------------------------------------------
+        // WorldGuardで保護されていないかチェック
+        //----------------------------------------------------------------------
+        LocalPlayer localPlayer = ((EcoEgg) plg).getWorldGuard().wrapPlayer(player);
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionQuery query = container.createQuery();
+
+        com.sk89q.worldedit.util.Location player_loc = localPlayer.getLocation();
+        com.sk89q.worldedit.util.Location block_loc = new com.sk89q.worldedit.util.Location(player_loc.getExtent(), block.getX(), block.getY(), block.getZ());
+
+        if (!query.testState(player_loc, localPlayer, (StateFlag) EcoEgg.USE_ECO_EGG_FLAG) || !query.testState(block_loc, localPlayer, (StateFlag) EcoEgg.USE_ECO_EGG_FLAG)) {
+            Utl.sendPluginMessage(plg,player,("この場所ではえこたまごを使用できません"));
+            return;
+        }
+
         event.setCancelled(true);
         String[] token = item_name.split(",");
         String most = token[token.length - 2];
@@ -227,14 +276,9 @@ public class HatchingListener extends ListenerFrame {
             return;
         }
 
-        // 一応本のクリック判定をキャンセル？
-        Block block = event.getClickedBlock();
-        if (block == null) {
-            return;
-        }
 
         // MOBスポーン処理
-        Player player = event.getPlayer();
+
         Location loc = block.getLocation();
         BlockFace blockface = event.getBlockFace();
 
@@ -245,7 +289,7 @@ public class HatchingListener extends ListenerFrame {
         CreateMob createMob = new CreateMob(player, block.getType(), loc, load, plg);
         LivingEntity entity = createMob.create();
         if (createMob.isCancel()) {
-            Utl.sendPluginMessage(plg,event.getPlayer(),"モンスター復元処理に失敗しました");
+            Utl.sendPluginMessage(plg, event.getPlayer(), "モンスター復元処理に失敗しました");
             entity.remove();
             return;
         }

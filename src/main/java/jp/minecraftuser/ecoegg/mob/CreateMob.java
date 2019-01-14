@@ -2,6 +2,7 @@ package jp.minecraftuser.ecoegg.mob;
 
 import jp.minecraftuser.ecoegg.SimpleTradeRecipe;
 import jp.minecraftuser.ecoegg.SimpleEquipment;
+import jp.minecraftuser.ecoegg.Version;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
 import jp.minecraftuser.ecoframework.PluginFrame;
 import jp.minecraftuser.ecoframework.Utl;
@@ -13,7 +14,6 @@ import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.MerchantRecipe;
-import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 
 import java.lang.reflect.Field;
@@ -74,6 +74,9 @@ public class CreateMob {
         if (entity instanceof Zombie) {
             createZombie();
         }
+        if(entity instanceof Creeper){
+            createCreeper();
+        }
         if (entity instanceof AbstractHorse) {
             createHorse();
         }
@@ -123,6 +126,15 @@ public class CreateMob {
         zombie.setBaby(load.getChild());
     }
 
+    private void createCreeper() {
+        if (Version.compare("0.8", load.getPluginVersion())) {
+            Creeper creeper = (Creeper) entity;
+            creeper.setPowered(load.getPower());
+        } else {
+            Utl.sendPluginMessage(plg, player, "帯電復元処理をスキップしました");
+        }
+    }
+
     private void createSheep() {
         if (isOldFormatEgg()) {
             Utl.sendPluginMessage(plg, player, "色復元処理をスキップしました");
@@ -162,11 +174,19 @@ public class CreateMob {
 
     private void createHorse() {
         AbstractHorse horse = (AbstractHorse) entity;
-        if (horse instanceof org.bukkit.entity.Horse) {
-
-            org.bukkit.entity.Horse normal_horse = (org.bukkit.entity.Horse) horse;
+        if (horse instanceof Horse) {
+            Horse normal_horse = (Horse) horse;
             normal_horse.setStyle(load.getStyle());
             normal_horse.setColor(load.getHorseColor());
+        } else if (horse instanceof Llama) {
+            if (Version.compare("0.6", load.getPluginVersion())) {
+                Llama llama = (Llama) horse;
+                llama.setColor(load.getLlamaColor());
+                llama.setStrength(load.getLlamaStrength());
+            } else {
+                Utl.sendPluginMessage(plg, player, "色復元処理をスキップしました");
+            }
+
         }
 
         horse.setMaxDomestication(load.getMaxDomestication());
@@ -275,6 +295,7 @@ public class CreateMob {
     private boolean isOldFormatEgg() {
         return load.getPluginVersion() == null;//雑い
     }
+
 
     public boolean isCancel() {
         return this.cancel;

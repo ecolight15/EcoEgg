@@ -46,6 +46,9 @@ public class SaveMob {
         if (entity instanceof Zombie) {
             saveZombie();
         }
+        if (entity instanceof Creeper) {
+            saveCreeper();
+        }
         if (entity instanceof AbstractHorse) {
             saveHorse();
         }
@@ -91,6 +94,11 @@ public class SaveMob {
     private void saveZombie() {
         Zombie zombie = (Zombie) entity;
         save.setChild(zombie.isBaby());
+    }
+
+    private void saveCreeper() {
+        Creeper creeper = (Creeper) entity;
+        save.setPower(creeper.isPowered());
     }
 
     private void saveSheep() {
@@ -151,6 +159,10 @@ public class SaveMob {
             Horse _horse = (Horse) horse;
             save.setStyle(_horse.getStyle());
             save.setHorseColor(_horse.getColor());
+        } else if (horse instanceof Llama) {
+            Llama _llama = (Llama) horse;
+            save.setLlamaColor(_llama.getColor());
+            save.setLlamaStrength(_llama.getStrength());
         }
         if (horse.getOwner() != null) save.setOwner(horse.getOwner().getName());
         save.setJumpStrength(horse.getJumpStrength());
