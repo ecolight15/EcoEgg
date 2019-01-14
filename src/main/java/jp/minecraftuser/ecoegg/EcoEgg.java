@@ -3,6 +3,12 @@ package jp.minecraftuser.ecoegg;
 
 import java.util.HashMap;
 
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
+import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import jp.minecraftuser.ecoegg.command.*;
 import jp.minecraftuser.ecoframework.CommandFrame;
 import jp.minecraftuser.ecoegg.config.EcoEggConfig;
@@ -18,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 
 /**
  * @author ecolight
@@ -26,6 +33,18 @@ public class EcoEgg extends PluginFrame {
     private static EcoEggConfig eceConf = null;
     private static Player getter = null;
     HashMap<Player, InfoParam> infoList = null;
+    public static final Flag USE_ECO_EGG_FLAG = new StateFlag("use-ecoegg", true);
+
+    @Override
+    public void onLoad() {
+
+        FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
+        try {
+            registry.register(USE_ECO_EGG_FLAG);
+        } catch (FlagConflictException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onEnable() {
@@ -33,7 +52,6 @@ public class EcoEgg extends PluginFrame {
         eceConf = (EcoEggConfig) getDefaultConfig();
         infoList = new HashMap<>();
         ConfigurationSerialization.registerClass(SimpleTradeRecipe.class);
-
     }
 
     @Override
@@ -116,6 +134,17 @@ public class EcoEgg extends PluginFrame {
     public boolean chkSetUser(Player pl) {
         if (!infoList.containsKey(pl)) return false;
         return (infoList.get(pl).getType() == CommandType.SET);
+    }
+
+    public WorldGuardPlugin getWorldGuard() {
+        Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
+
+        // WorldGuard may not be loaded
+        if (!(plugin instanceof WorldGuardPlugin)) {
+            return null; // Maybe you want throw an exception instead
+        }
+
+        return (WorldGuardPlugin) plugin;
     }
 
 }
