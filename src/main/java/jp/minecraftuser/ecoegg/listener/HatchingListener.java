@@ -69,10 +69,14 @@ public class HatchingListener extends ListenerFrame {
         //----------------------------------------------------------------------
         Player player = event.getPlayer();
         Entity ent = event.getRightClicked();
+        // LivingEntity出ない場合は何もしない
+        if (!(ent instanceof LivingEntity)) {
+            return;
+        }
         LivingEntity le = (LivingEntity) ent;
 
 
-        //モンスターエッグに変換できない場合はキャンセル
+        //モンスターエッグに変換できない場合は何もしない
         if (!EcoEggUtil.existMonsterEgg(ent)) {
             return;
         }
