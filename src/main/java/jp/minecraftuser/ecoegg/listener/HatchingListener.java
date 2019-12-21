@@ -1,10 +1,6 @@
 
 package jp.minecraftuser.ecoegg.listener;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.UUID;
-
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.flags.StateFlag;
@@ -12,12 +8,12 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import jp.minecraftuser.ecoegg.EcoEgg;
 import jp.minecraftuser.ecoegg.EcoEggUtil;
-import jp.minecraftuser.ecoegg.mob.CreateMob;
-import jp.minecraftuser.ecoegg.mob.SaveMob;
-import jp.minecraftuser.ecoframework.PluginFrame;
 import jp.minecraftuser.ecoegg.config.EcoEggConfig;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
+import jp.minecraftuser.ecoegg.mob.CreateMob;
+import jp.minecraftuser.ecoegg.mob.SaveMob;
 import jp.minecraftuser.ecoframework.ListenerFrame;
+import jp.minecraftuser.ecoframework.PluginFrame;
 import jp.minecraftuser.ecoframework.Utl;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -25,7 +21,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
@@ -36,6 +35,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * 孵化イベントリスナクラス
@@ -69,12 +72,18 @@ public class HatchingListener extends ListenerFrame {
         //----------------------------------------------------------------------
         Player player = event.getPlayer();
         Entity ent = event.getRightClicked();
+
         // LivingEntity出ない場合は何もしない
         if (!(ent instanceof LivingEntity)) {
             return;
         }
         LivingEntity le = (LivingEntity) ent;
 
+        //LivienEntity以外はキャンセル
+        if(!(ent instanceof LivingEntity)){
+            return;
+        }
+        LivingEntity le = (LivingEntity) ent;
 
         //モンスターエッグに変換できない場合は何もしない
         if (!EcoEggUtil.existMonsterEgg(ent)) {
@@ -214,10 +223,11 @@ public class HatchingListener extends ListenerFrame {
     @EventHandler(priority = EventPriority.LOWEST)
     public void PlayerInteract(PlayerInteractEvent event) {
 
-        //左クリックは無視
-        if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
+        //右クリック(ブロック)以外は無視
+        if(event.getAction() != Action.RIGHT_CLICK_BLOCK){
             return;
         }
+
 
         //----------------------------------------------------------------------
         // 卵の孵化処理
@@ -225,6 +235,7 @@ public class HatchingListener extends ListenerFrame {
         Player player = event.getPlayer();
         Block block = event.getClickedBlock();
         ItemStack item = event.getItem();
+
 
         if (item == null) return;
 
