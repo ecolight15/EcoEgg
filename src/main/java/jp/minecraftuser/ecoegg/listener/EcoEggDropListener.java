@@ -74,7 +74,7 @@ public class EcoEggDropListener extends ListenerFrame  {
             // 指定した確立でドロップする(configで変更可能)
             //------------------------------------------------------------------
             Random rnd = new Random();
-            if (rnd.nextInt(param.getRate()) != 0) return;
+            if (rnd.nextInt(param.getRate()) != 0) continue;
             if ((loopcnt > 1) && (param.getRate() == 1)) {
                 param.setAmount(param.getAmount() + loopcnt - 1);
                 loopcnt = 1;
