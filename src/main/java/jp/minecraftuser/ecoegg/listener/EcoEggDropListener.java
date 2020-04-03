@@ -51,45 +51,34 @@ public class EcoEggDropListener extends ListenerFrame  {
         // 魔道書を落とす
         //----------------------------------------------------------------------
         Player pl = event.getEntity().getKiller();
-        int loopcnt = 1;
+
+        // 所定のドロップ数を設定
+        double dropAmount = param.getAmount();
+        // ルートボーナスの係数を掛ける
         if (pl != null) {
             ItemStack i = pl.getInventory().getItemInMainHand();
             if (i != null) {
                 if (i.getEnchantments().containsKey(Enchantment.LOOT_BONUS_MOBS)) {
-                    switch (i.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS)) {
-                        case 3:
-                            loopcnt++;
-                        case 2:
-                            loopcnt++;
-                        case 1:
-                            loopcnt++;
-                    }
+                    dropAmount *= param.getLootBonus(i.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS));
                 }
             }
         }
 
         // アイテム情報生成
-        for (int cnt = 0; cnt < loopcnt; cnt++) {
-            //------------------------------------------------------------------
-            // 指定した確立でドロップする(configで変更可能)
-            //------------------------------------------------------------------
-            Random rnd = new Random();
-            if (rnd.nextInt(param.getRate()) != 0) continue;
-            if ((loopcnt > 1) && (param.getRate() == 1)) {
-                param.setAmount(param.getAmount() + loopcnt - 1);
-                loopcnt = 1;
-            }
-            for (int i = 0; i < param.getAmount(); i++) {
-                // ドロップ処理
-                LivingEntity ent = event.getEntity();
-                Location loc = ent.getLocation();
-                if (ent.getType() == EntityType.ENDER_DRAGON) loc.setY(loc.getY()+20);
-                ent.getWorld().dropItem(loc, ((EcoEgg)plg).makeBook());
-                log.log(Level.INFO, "EggBookDrop:{0}", ent.getLocation().toString());
-            }
+        //------------------------------------------------------------------
+        // 指定した確立でドロップする(configで変更可能)
+        //------------------------------------------------------------------
+        Random rnd = new Random();
+        // 設定値を上限にランダム値を取得し、0以外の場合にはハズレとする
+        if (rnd.nextInt(param.getRate()) != 0) return;
+        // ドロップ数分ループしてドロップする
+        for (int i = 0; i < dropAmount; i++) {
+            // ドロップ処理
+            LivingEntity ent = event.getEntity();
+            Location loc = ent.getLocation();
+            if (ent.getType() == EntityType.ENDER_DRAGON) loc.setY(loc.getY()+20);
+            ent.getWorld().dropItem(loc, ((EcoEgg)plg).makeBook());
+            log.log(Level.INFO, "EggBookDrop:{0}", ent.getLocation().toString());
         }
     }
-
-
-
 }

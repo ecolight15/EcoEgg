@@ -7,8 +7,8 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
+import java.util.logging.Level;
 import jp.minecraftuser.ecoegg.command.*;
 import jp.minecraftuser.ecoframework.CommandFrame;
 import jp.minecraftuser.ecoegg.config.EcoEggConfig;
@@ -17,6 +17,7 @@ import jp.minecraftuser.ecoegg.listener.EcoEggDropListener;
 import jp.minecraftuser.ecoegg.listener.CommandListener;
 import jp.minecraftuser.ecoegg.listener.DamageCancelListener;
 import jp.minecraftuser.ecoegg.listener.HatchingListener;
+import jp.minecraftuser.ecoframework.ConfigFrame;
 import jp.minecraftuser.ecoframework.PluginFrame;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -27,22 +28,34 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 /**
+ * EcoEggプラグインメインクラス
  * @author ecolight
  */
 public class EcoEgg extends PluginFrame {
     private static EcoEggConfig eceConf = null;
     private static Player getter = null;
     HashMap<Player, InfoParam> infoList = null;
-    public static final Flag USE_ECO_EGG_FLAG = new StateFlag("use-ecoegg", true);
+    public static Object USE_ECO_EGG_FLAG;
 
     @Override
     public void onLoad() {
-
-        FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
-        try {
-            registry.register(USE_ECO_EGG_FLAG);
-        } catch (FlagConflictException e) {
-            e.printStackTrace();
+        // 設定ファイルからWorldGuard連携のフラグを読み込み、有効時のみフラグ登録する
+        ConfigFrame c = new ConfigFrame(this) {
+            @Override
+            public void reloadNotify() {};
+        };
+        c.registerBoolean("WorldGuard.Enabled");
+        if (c.getBoolean("WorldGuard.Enabled")) {
+            getLogger().log(Level.INFO, "WorldGuard flag enabled.");
+            USE_ECO_EGG_FLAG = new StateFlag("use-ecoegg", true);
+            FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
+            try {
+                registry.register((Flag)USE_ECO_EGG_FLAG);
+            } catch (Exception e) { // FlagConflictException
+                e.printStackTrace();
+            }
+        } else {
+            getLogger().log(Level.INFO, "WorldGuard flag disabled.");
         }
     }
 

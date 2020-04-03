@@ -2,8 +2,8 @@ name: EcoEgg
 main: jp.minecraftuser.ecoegg.EcoEgg
 version: ${project.version}
 api-version: 1.13
-depend: [WorldGuard,EcoFramework]
-
+depend: [EcoFramework]
+softdepend: [WorldGuard]
 commands:
   ece:
     description: ecoegg command.

@@ -4,6 +4,7 @@ package jp.minecraftuser.ecoegg.config;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import jp.minecraftuser.ecoegg.DropParam;
 import jp.minecraftuser.ecoegg.EcoEggUtil;
 import jp.minecraftuser.ecoframework.ConfigFrame;
@@ -47,7 +48,18 @@ public class EcoEggConfig extends ConfigFrame {
                     // 取得値の初期値を設定しておく
                     conf.addDefault("droptable."+mobs[1]+".amount", 1);
                     conf.addDefault("droptable."+mobs[1]+".rate", 1000);
-                    dropTable.put(ent, new DropParam(ent, conf.getInt("droptable."+mobs[1]+".amount"), conf.getInt("droptable."+mobs[1]+".rate")));
+                    conf.addDefault("droptable."+mobs[1]+".lootbonus.level1", 1.0);
+                    conf.addDefault("droptable."+mobs[1]+".lootbonus.level2", 1.0);
+                    conf.addDefault("droptable."+mobs[1]+".lootbonus.level3", 1.0);
+                    DropParam p = new DropParam(ent,
+                        conf.getInt("droptable."+mobs[1]+".amount"),
+                        conf.getInt("droptable."+mobs[1]+".rate"),
+                        conf.getDouble("droptable."+mobs[1]+".lootbonus.level1"),
+                        conf.getDouble("droptable."+mobs[1]+".lootbonus.level2"),
+                        conf.getDouble("droptable."+mobs[1]+".lootbonus.level3")
+                    );
+                    dropTable.put(ent, p);
+                    log.log(Level.INFO, "register drop table[{0}]", p.toString());
                 }
             }
         }
