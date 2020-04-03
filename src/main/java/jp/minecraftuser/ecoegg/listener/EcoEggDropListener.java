@@ -71,15 +71,16 @@ public class EcoEggDropListener extends ListenerFrame  {
         // アイテム情報生成
         for (int cnt = 0; cnt < loopcnt; cnt++) {
             //------------------------------------------------------------------
-            // 指定した確立でドロップする(configで変更可能)
+            // 指定した確率でドロップする(configで変更可能)
             //------------------------------------------------------------------
+            int amount = param.getAmount();
             Random rnd = new Random();
             if (rnd.nextInt(param.getRate()) != 0) continue;
             if ((loopcnt > 1) && (param.getRate() == 1)) {
-                param.setAmount(param.getAmount() + loopcnt - 1);
+                amount += loopcnt - 1;
                 loopcnt = 1;
             }
-            for (int i = 0; i < param.getAmount(); i++) {
+            for (int i = 0; i < amount; i++) {
                 // ドロップ処理
                 LivingEntity ent = event.getEntity();
                 Location loc = ent.getLocation();
