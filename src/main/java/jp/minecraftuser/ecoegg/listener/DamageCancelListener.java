@@ -34,9 +34,8 @@ public class DamageCancelListener extends ListenerFrame {
     public void EntityDamage(EntityDamageEvent event) {
         // OP騎乗の落下ダメージはキャンセル
         if (event.getCause() != EntityDamageEvent.DamageCause.FALL) return;
-        Entity ent = event.getEntity();
-        if (ent == null) return;
-        for (Entity e : ent.getPassengers()) {
+        Entity entity = event.getEntity();
+        for (Entity e : entity.getPassengers()) {
             if (e.isOp()) {
                 event.setCancelled(true);
                 break;

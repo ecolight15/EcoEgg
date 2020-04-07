@@ -26,8 +26,8 @@ public class SaveMob {
     private PluginFrame plg;
     private boolean cancel;
 
-    public SaveMob(LivingEntity ent, Player player, Location loc, LoaderMob save, PluginFrame plg) {
-        this.entity = ent;
+    public SaveMob(LivingEntity entity, Player player, Location loc, LoaderMob save, PluginFrame plg) {
+        this.entity = entity;
         this.player = player;
         this.loc = loc;
         this.save = save;

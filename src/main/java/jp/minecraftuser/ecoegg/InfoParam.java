@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
  * @author ecolight
  */
 public class InfoParam {
-    private Player pl = null;
+    private Player player = null;
     private CommandType type = null;
     private OptionType opt = null;
     private double val = 0.0;
@@ -17,11 +17,11 @@ public class InfoParam {
     private Horse.Style hstyle = null; 
     private Horse.Color hcolor = null;
     
-    public InfoParam(Player pl, CommandType type) {
-        this.pl = pl;
+    public InfoParam(Player player, CommandType type) {
+        this.player = player;
         this.type = type;
     }
-    public Player getPlayer() { return this.pl; }
+    public Player getPlayer() { return this.player; }
     public CommandType getType() { return this.type; }
     public void setOpt(OptionType opt) { this.opt = opt; }
     public OptionType getOpt() { return this.opt; }

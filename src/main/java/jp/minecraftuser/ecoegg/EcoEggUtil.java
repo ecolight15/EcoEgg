@@ -1,5 +1,6 @@
 package jp.minecraftuser.ecoegg;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -14,22 +15,22 @@ public class EcoEggUtil {
 
     /**
      * モンスターエッグかどうかを判断する
-     * @param item 判定するアイテムを渡す
+     * @param itemStack 判定するアイテムを渡す
      * @return モンスターエッグかどうかの真偽値を返す
      */
-    public static boolean isMonsterEgg(ItemStack item) {
-        if (item == null) {
+    public static boolean isMonsterEgg(ItemStack itemStack) {
+        if (itemStack == null) {
             return false;
         }
-        if (!item.getType().getKey().toString().matches(".*_spawn_egg")) {
+        if (!itemStack.getType().getKey().toString().matches(".*_spawn_egg")) {
             return false;
         }
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta == null) {
             return false;
         }
-        String item_name = meta.getDisplayName();
-        if (item_name == null) return false;
+        String item_name = itemMeta.getDisplayName();
+        if (StringUtils.isEmpty(item_name)) return false;
 
         return item_name.startsWith("[EcoEgg]");
     }
