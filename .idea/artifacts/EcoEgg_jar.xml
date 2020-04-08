@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="EcoEgg:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/EcoEgg_jar</output-path>
-    <root id="archive" name="EcoEgg.jar">
-      <element id="module-output" name="EcoEgg" />
-    </root>
-  </artifact>
-</component>

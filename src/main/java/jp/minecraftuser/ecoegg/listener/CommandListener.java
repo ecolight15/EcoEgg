@@ -42,60 +42,60 @@ public class CommandListener extends ListenerFrame {
         //----------------------------------------------------------------------
         // たまごのあるMOBの場合
         //----------------------------------------------------------------------
-        Player pl = event.getPlayer();
-        Entity ent = event.getRightClicked();
+        Player player = event.getPlayer();
+        Entity entity = event.getRightClicked();
 
-        if (((EcoEgg) plg).chkInfoUser(pl)) {
-            if (!EcoEggUtil.existMonsterEgg(ent) && !(ent instanceof Player)) {
-                Utl.sendPluginMessage(plg, pl, "infoコマンドの対象外のエンティティです");
+        if (((EcoEgg) plg).chkInfoUser(player)) {
+            if (!EcoEggUtil.existMonsterEgg(entity) && !(entity instanceof Player)) {
+                Utl.sendPluginMessage(plg, player, "infoコマンドの対象外のエンティティです");
                 return;
             }
 
             // MOB個別処理
-            InfoParam param = ((EcoEgg) plg).getParamUser(pl); //何もしない
+            InfoParam infoParam = ((EcoEgg) plg).getParamUser(player); //何もしない
 
-            InfoMob infoMob = new InfoMob((LivingEntity) ent, pl, plg);
+            InfoMob infoMob = new InfoMob((LivingEntity) entity, player, plg);
             infoMob.show();
 
             event.setCancelled(true);
-        } else if (((EcoEgg) plg).chkSetUser(pl)) {
-            switch (ent.getType()) {
+        } else if (((EcoEgg) plg).chkSetUser(player)) {
+            switch (entity.getType()) {
                 case HORSE:
                     break;
                 default:
-                    Utl.sendPluginMessage(plg, pl, "setコマンドの対象外のエンティティです");
+                    Utl.sendPluginMessage(plg, player, "setコマンドの対象外のエンティティです");
                     return;
             }
             InfoParam param;
-            switch (ent.getType()) {
+            switch (entity.getType()) {
                 case HORSE:
-                    Horse horse = (Horse) ent;
-                    param = ((EcoEgg) plg).getParamUser(pl);
+                    Horse horse = (Horse) entity;
+                    param = ((EcoEgg) plg).getParamUser(player);
                     switch (param.getOpt()) {
                         case JUMP:
                             horse.setJumpStrength(param.getVal());
-                            Utl.sendPluginMessage(plg, pl, "ジャンプ力[" + horse.getJumpStrength() + "]を設定しました");
+                            Utl.sendPluginMessage(plg, player, "ジャンプ力[" + horse.getJumpStrength() + "]を設定しました");
                             break;
                         case SPEED:
                             horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(param.getVal());
-                            Utl.sendPluginMessage(plg, pl, "スピード[" + horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue() + "]を設定しました");
+                            Utl.sendPluginMessage(plg, player, "スピード[" + horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue() + "]を設定しました");
                             break;
                         case HEALTH:
                             horse.setMaxHealth(param.getVal());
-                            Utl.sendPluginMessage(plg, pl, "HP最大値[" + horse.getMaxHealth() + "]を設定しました");
+                            Utl.sendPluginMessage(plg, player, "HP最大値[" + horse.getMaxHealth() + "]を設定しました");
                             break;
                         case OWNER:
                             if (plg.getServer().getPlayerExact(param.getStr()) == null) return;
                             horse.setOwner(plg.getServer().getPlayerExact(param.getStr()));
-                            Utl.sendPluginMessage(plg, pl, "飼い主[" + horse.getOwner().getName() + "]を設定しました");
+                            Utl.sendPluginMessage(plg, player, "飼い主[" + horse.getOwner().getName() + "]を設定しました");
                             break;
                         case STYLE:
                             horse.setStyle(param.getHorseStyle());
-                            Utl.sendPluginMessage(plg, pl, "スタイル[" + horse.getStyle().name() + "]を設定しました");
+                            Utl.sendPluginMessage(plg, player, "スタイル[" + horse.getStyle().name() + "]を設定しました");
                             break;
                         case COLOR:
                             horse.setColor(param.getHorseColor());
-                            Utl.sendPluginMessage(plg, pl, "色[" + horse.getColor().name() + "]を設定しました");
+                            Utl.sendPluginMessage(plg, player, "色[" + horse.getColor().name() + "]を設定しました");
                             break;
                     }
                     break;

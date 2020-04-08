@@ -100,28 +100,28 @@ public class EcoEgg extends PluginFrame {
     }
 
     public ItemStack makeBook() {
-        ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
-        BookMeta meta = (BookMeta) item.getItemMeta();
-        meta.setAuthor(eceConf.getAuthor());
-        meta.setDisplayName(eceConf.getDispName());
-        meta.setTitle(eceConf.getTitle());
+        ItemStack itemStack = new ItemStack(Material.WRITTEN_BOOK);
+        BookMeta bookMeta = (BookMeta) itemStack.getItemMeta();
+        bookMeta.setAuthor(eceConf.getAuthor());
+        bookMeta.setDisplayName(eceConf.getDispName());
+        bookMeta.setTitle(eceConf.getTitle());
         for (String page : eceConf.getPages()) {
-            meta.addPage(page);
+            bookMeta.addPage(page);
         }
-        item.setItemMeta(meta);
-        return item;
+        itemStack.setItemMeta(bookMeta);
+        return itemStack;
     }
 
     public ItemStack makeEgg(String title) {
         ItemStack egg = new ItemStack(Material.PIG_SPAWN_EGG);//雑い
-        ItemMeta im = egg.getItemMeta();
-        im.setDisplayName("[EcoEgg]," + title);
-        egg.setItemMeta(im);
+        ItemMeta itemMeta = egg.getItemMeta();
+        itemMeta.setDisplayName("[EcoEgg]," + title);
+        egg.setItemMeta(itemMeta);
         return egg;
     }
 
-    public void setGetter(Player pl) {
-        getter = pl;
+    public void setGetter(Player player) {
+        getter = player;
     }
 
     public Player getGetter() {
@@ -133,10 +133,10 @@ public class EcoEgg extends PluginFrame {
         infoList.put(param.getPlayer(), param);
     }
 
-    public InfoParam getParamUser(Player pl) {
-        InfoParam param = infoList.get(pl);
-        if (param != null) infoList.remove(pl);
-        return param;
+    public InfoParam getParamUser(Player player) {
+        InfoParam infoParam = infoList.get(player);
+        if (infoParam != null) infoList.remove(player);
+        return infoParam;
     }
 
     public boolean chkInfoUser(Player pl) {

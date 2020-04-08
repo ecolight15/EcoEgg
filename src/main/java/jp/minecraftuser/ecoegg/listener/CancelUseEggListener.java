@@ -37,7 +37,6 @@ public class CancelUseEggListener extends ListenerFrame {
     @EventHandler(priority = EventPriority.LOWEST)
     public void CreatureSpawn(CreatureSpawnEvent event) {
         LivingEntity ent = event.getEntity();
-        if (ent == null) return;
         String custom_name = ent.getCustomName();
         if (custom_name == null) return;
         if (custom_name.startsWith("[EcoEgg]")) {
@@ -53,7 +52,7 @@ public class CancelUseEggListener extends ListenerFrame {
     @EventHandler(priority = EventPriority.LOWEST)
     public void CreatureRightClick(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
-        ItemStack item = player.getItemInHand();
+        ItemStack item = player.getInventory().getItemInMainHand();
         if(EcoEggUtil.isMonsterEgg(item)){
             Utl.sendPluginMessage(plg,player,"エンティティに対してモンスターエッグが使用されたので抑止しました");
             Utl.sendPluginMessage(plg,player,"おかしな子供を生みたい場合はオフハンドにもって使用してください");
