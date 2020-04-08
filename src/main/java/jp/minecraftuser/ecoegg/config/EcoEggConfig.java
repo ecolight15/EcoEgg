@@ -39,10 +39,17 @@ public class EcoEggConfig extends ConfigFrame {
                 if (mobs.length == 2) {
                     // MOB指定確定(mobs[1]がMOB名)
                     // MOB名からEntityTypeに変更
-                    EntityType ent = EcoEggUtil.cnvSTR2ENTITY(mobs[1]);
-                    // 変換失敗または既に追加済みの場合は次の定義へ
-                    if ((ent == null) || (dropTable.containsKey(ent))) {
+                    EntityType entityType;
+                    try {
+                        entityType = EntityType.valueOf(mobs[1].toUpperCase());
+                    }catch (java.lang.IllegalArgumentException e){
+                        // 変換失敗は次の定義へ
                         log.warning("無効なMOB指定が存在します["+mobs[1]+"]");
+                        continue;
+                    }
+                    if (dropTable.containsKey(entityType)) {
+                        //追加済みの場合は次の定義へ
+                        log.warning("このMOBは既に登録されています["+mobs[1]+"]");
                         continue;
                     }
                     // 取得値の初期値を設定しておく
@@ -51,14 +58,14 @@ public class EcoEggConfig extends ConfigFrame {
                     conf.addDefault("droptable."+mobs[1]+".lootbonus.level1", 1.0);
                     conf.addDefault("droptable."+mobs[1]+".lootbonus.level2", 1.0);
                     conf.addDefault("droptable."+mobs[1]+".lootbonus.level3", 1.0);
-                    DropParam p = new DropParam(ent,
+                    DropParam p = new DropParam(entityType,
                         conf.getInt("droptable."+mobs[1]+".amount"),
                         conf.getInt("droptable."+mobs[1]+".rate"),
                         conf.getDouble("droptable."+mobs[1]+".lootbonus.level1"),
                         conf.getDouble("droptable."+mobs[1]+".lootbonus.level2"),
                         conf.getDouble("droptable."+mobs[1]+".lootbonus.level3")
                     );
-                    dropTable.put(ent, p);
+                    dropTable.put(entityType, p);
                     log.log(Level.INFO, "register drop table[{0}]", p.toString());
                 }
             }
