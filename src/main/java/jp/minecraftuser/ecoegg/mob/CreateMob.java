@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class CreateMob {
     private LivingEntity entity;
-    private EntityType type;
+    private EntityType entityType;
     private Player player;
     private Material material;
     private Location loc;
@@ -40,27 +40,26 @@ public class CreateMob {
     public LivingEntity create() {
         //もしmob_typeが-1ならgen_typeからモンスターの種類を取ってくる
         if (load.getMobType() != -1) {
-            type = EntityType.fromId(load.getMobType());
+            entityType = EntityType.fromId(load.getMobType());
         } else {
-            type = EntityType.valueOf(load.getGenType());
+            entityType = EntityType.valueOf(load.getGenType());
         }
 
         if (isOldFormatEgg()) {
             Utl.sendPluginMessage(plg, player, "旧式のモンスターエッグです");
-            if (type == EntityType.HORSE && Horse.Variant.valueOf(load.getHorseVariant().name()) != Horse.Variant.HORSE) {
+            if (entityType == EntityType.HORSE && Horse.Variant.valueOf(load.getHorseVariant().name()) != Horse.Variant.HORSE) {
                 EntityType new_entity_type = EntityType.valueOf(load.getHorseVariant().name());
-                Utl.sendPluginMessage(plg, player, "EntityTypeを変更" + type + "->" + new_entity_type);
-                type = new_entity_type;
+                Utl.sendPluginMessage(plg, player, "EntityTypeを変更" + entityType + "->" + new_entity_type);
+                entityType = new_entity_type;
             }
         }
 
-
-        entity = (LivingEntity) player.getWorld().spawnEntity(loc, type);
+        entity = (LivingEntity) player.getWorld().spawnEntity(loc, entityType);
         try {
             if (material == Material.SOUL_SAND) {
-                Utl.sendPluginMessage(plg, player, "ノーマルのモンスターエッグとして使用しました");
-                return entity;
-            }
+            Utl.sendPluginMessage(plg, player, "ノーマルのモンスターエッグとして使用しました");
+            return entity;
+        }
 
 
             entity.setMaxHealth(load.getMaxHealth());
