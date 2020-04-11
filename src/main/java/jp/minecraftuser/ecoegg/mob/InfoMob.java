@@ -1,8 +1,6 @@
 package jp.minecraftuser.ecoegg.mob;
 
-import net.minecraft.server.v1_13_R2.EntityVillager;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
 
 import org.bukkit.inventory.EntityEquipment;
@@ -120,7 +118,7 @@ public class InfoMob {
         Utl.sendPluginMessage(plg, player, "Variant:" + parrot.getVariant());
     }
 
-    public void showTropicalFish() {
+    private void showTropicalFish() {
         TropicalFish tropicalFish = (TropicalFish) entity;
         Utl.sendPluginMessage(plg, player, "Pattern:" + tropicalFish.getPattern());
         Utl.sendPluginMessage(plg, player, "BodyColor:" + tropicalFish.getBodyColor());
@@ -181,22 +179,14 @@ public class InfoMob {
         Utl.sendPluginMessage(plg, player, "----トレード内容ここまで----");
 
         try {
-            Utl.sendPluginMessage(plg, player, "Career:" + villager.getCareer());
             Utl.sendPluginMessage(plg, player, "Profession:" + villager.getProfession());
-            Utl.sendPluginMessage(plg, player, "Riches:" + villager.getRiches());
-
         } catch (IllegalArgumentException e) {
             Utl.sendPluginMessage(plg, player, "旧タイプの村人な為､職業を取得できませんでした");
             Utl.sendPluginMessage(plg, player, "取引を更新すると職業を取得できます");
             return;
         }
+        Utl.sendPluginMessage(plg, player, "VillagerLevel:" + villager.getVillagerLevel());
 
-
-        try {
-            Utl.sendPluginMessage(plg, player, "CareerLevel:" + getVillagerCareerLevel(villager));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            Utl.sendPluginMessage(plg, player, "CareerLevelの取得に失敗しました 管理者に報告してください");
-        }
     }
 
     private void showOwner() {
@@ -217,10 +207,4 @@ public class InfoMob {
         Utl.sendPluginMessage(plg, player, "isChild:" + !animals.isAdult());
     }
 
-    private int getVillagerCareerLevel(Villager villager) throws NoSuchFieldException, IllegalAccessException {
-        EntityVillager entityVillager = ((CraftVillager) villager).getHandle();
-        Field careerLevelField = EntityVillager.class.getDeclaredField("careerLevel");
-        careerLevelField.setAccessible(true);
-        return careerLevelField.getInt(entityVillager);
-    }
 }

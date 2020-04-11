@@ -6,11 +6,9 @@ import jp.minecraftuser.ecoegg.Version;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
 import jp.minecraftuser.ecoframework.PluginFrame;
 import jp.minecraftuser.ecoframework.Utl;
-import net.minecraft.server.v1_13_R2.EntityVillager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.MerchantRecipe;
@@ -56,63 +54,72 @@ public class CreateMob {
             }
         }
 
+
         entity = (LivingEntity) player.getWorld().spawnEntity(loc, type);
-        if (material == Material.SOUL_SAND) {
-            Utl.sendPluginMessage(plg, player, "ノーマルのモンスターエッグとして使用しました");
-            return entity;
-        }
+        try {
+            if (material == Material.SOUL_SAND) {
+                Utl.sendPluginMessage(plg, player, "ノーマルのモンスターエッグとして使用しました");
+                return entity;
+            }
 
 
-        entity.setMaxHealth(load.getMaxHealth());
-        entity.setHealth(load.getHealth());
+            entity.setMaxHealth(load.getMaxHealth());
+            entity.setHealth(load.getHealth());
 
-        String name = load.getCustomName();
+            String name = load.getCustomName();
 
-        if (name != null) entity.setCustomName(name);
+            if (name != null) entity.setCustomName(name);
 
 
-        if (entity instanceof Zombie) {
-            createZombie();
-        }
-        if(entity instanceof Creeper){
-            createCreeper();
-        }
-        if (entity instanceof AbstractHorse) {
-            createHorse();
-        }
-        if (entity instanceof Sheep) {
-            createSheep();
-        }
-        if (entity instanceof Ocelot) {
-            createOcelot();
-        }
-        if (entity instanceof Rabbit) {
-            createRabbit();
-        }
-        if (entity instanceof Wolf) {
-            createWolf();
-        }
-        if (entity instanceof Parrot) {
-            createParrot();
-        }
-        if (entity instanceof TropicalFish) {
-            createTropical_Fish();
-        }
+            if (entity instanceof Zombie) {
+                createZombie();
+            }
+            if (entity instanceof Creeper) {
+                createCreeper();
+            }
+            if (entity instanceof AbstractHorse) {
+                createHorse();
+            }
+            if (entity instanceof Sheep) {
+                createSheep();
+            }
+            if (entity instanceof Ocelot) {
+                createOcelot();
+            }
+            if (entity instanceof Rabbit) {
+                createRabbit();
+            }
+            if (entity instanceof Wolf) {
+                createWolf();
+            }
+            if (entity instanceof Parrot) {
+                createParrot();
+            }
+            if (entity instanceof TropicalFish) {
+                createTropical_Fish();
+            }
 
-        if (entity instanceof Tameable) {
-            setTame();
-        }
-        if (entity instanceof Animals) {
-            createAnimal();
-        }
-        if (entity instanceof Villager) {
-            createVillager();
-        }
-        if (entity instanceof Zombie || entity instanceof Skeleton) {
-            createEntityEquipment();
-        }
+            if (entity instanceof Tameable) {
+                setTame();
+            }
+            if (entity instanceof Animals) {
+                createAnimal();
+            }
+            if (entity instanceof Villager) {
+                createVillager();
+            }
+            if (entity instanceof Zombie || entity instanceof Skeleton) {
+                createEntityEquipment();
+            }
 
-        createPotionEffect();
+            createPotionEffect();
+        }catch (Exception e){
+            if(!isOldFormatEgg()) {
+                //新村人の復元に失敗した場合はキャンセルする
+                cancel = true;
+                throw e;
+            }
+        }
 
 
         return entity;
@@ -200,7 +207,7 @@ public class CreateMob {
 
     private void createEntityEquipment() {
         if (isOldFormatEgg()) {
-            Utl.sendPluginMessage(plg, player, "持ち物復元処理をスキップしました");
+            Utl.sendPluginMessage(plg, player, "インベントリ復元処理をスキップしました");
             return;
         }
 
@@ -227,19 +234,41 @@ public class CreateMob {
             trade_list.add(merchantRecipe);
         });
 
-        //先にProfessionを登録すること;
-        villager.setProfession(load.getVillagerCareer().getProfession());
-        villager.setCareer(load.getVillagerCareer(), false);
-        villager.setRecipes(trade_list);
-        villager.setRiches(load.getVillagerRiches());
+        if (Version.compare("1.0", load.getPluginVersion())) {
+            villager.setProfession(load.getVillagerProfession());
+            villager.setVillagerLevel(Math.max(Math.min(load.getVillagerLevel(),5),1));
+        } else {
 
-        try {
-            setVillagerCareerLevel(villager, load.getVillagerCareerLevel());
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            cancel = true;
-            Utl.sendPluginMessage(plg, player, "CareerLevelの復元に失敗しました 管理者に報告してください");
+            Utl.sendPluginMessage(plg, player, "1.15以前の村人です変換処理を行います");
+
+            String old_profession = load.getVillagerCareer();
+            String new_profession = "";
+
+            int old_level = load.getVillagerCareerLevel();
+            int new_level = 0;
+
+            switch (old_profession) {
+                case "WEAPON_SMITH":
+                    new_profession = "WEAPONSMITH";
+                    break;
+                case "TOOL_SMITH":
+                    new_profession = "TOOLSMITH";
+                    break;
+                default:
+                    new_profession = old_profession;
+            }
+            new_level = Math.max(Math.min(old_level,5),1);
+
+            Utl.sendPluginMessage(plg, player, "profession: " + old_profession + "->" + new_profession );
+            Utl.sendPluginMessage(plg, player, "level: " + old_level + "->" + new_level );
+            villager.setProfession(Villager.Profession.valueOf(new_profession));
+            villager.setVillagerLevel(new_level);
+            player.getWorld().spawnEntity(loc,EntityType.COW).addPassenger(villager);
+
 
         }
+
+        villager.setRecipes(trade_list);
     }
 
     private void setTame() {
@@ -285,12 +314,6 @@ public class CreateMob {
         entity.addPotionEffects(potionEffectList);
     }
 
-    private void setVillagerCareerLevel(Villager villager, int level) throws NoSuchFieldException, IllegalAccessException {
-        EntityVillager entityVillager = ((CraftVillager) villager).getHandle();
-        Field careerLevelField = EntityVillager.class.getDeclaredField("careerLevel");
-        careerLevelField.setAccessible(true);
-        careerLevelField.set(entityVillager, level);
-    }
 
     private boolean isOldFormatEgg() {
         return load.getPluginVersion() == null;//雑い

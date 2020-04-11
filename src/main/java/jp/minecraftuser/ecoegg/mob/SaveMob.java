@@ -5,15 +5,12 @@ import jp.minecraftuser.ecoegg.SimpleEquipment;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
 import jp.minecraftuser.ecoframework.PluginFrame;
 import jp.minecraftuser.ecoframework.Utl;
-import net.minecraft.server.v1_13_R2.EntityVillager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 public class SaveMob {
@@ -187,8 +184,6 @@ public class SaveMob {
         // 保存
         save.setVillagerTradeList(simpleTradeRecipeList);
         try {
-            save.setVillagerCareer(villager.getCareer());
-            save.setVillagerRiches(villager.getRiches());
             save.setVillagerProfession(villager.getProfession());
         } catch (IllegalArgumentException e) {
             Utl.sendPluginMessage(plg, player, "旧タイプの村人な為､職業の取得に失敗しました｡");
@@ -196,13 +191,8 @@ public class SaveMob {
             cancel = true;
             return;
         }
+        save.setVillagerLevel(villager.getVillagerLevel());
 
-        try {
-            save.setVillagerCareerLevel(getVillagerCareerLevel(villager));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            Utl.sendPluginMessage(plg, player, "CareerLevelの取得に失敗しました 管理者に報告してください");
-            cancel = true;
-        }
     }
 
     private void saveTame() {
@@ -226,13 +216,6 @@ public class SaveMob {
         List<Map> potionList = new LinkedList<>();
         entity.getActivePotionEffects().forEach(effect -> potionList.add(effect.serialize()));
         save.savePotionEffectList(potionList);
-    }
-
-    private int getVillagerCareerLevel(Villager villager) throws NoSuchFieldException, IllegalAccessException {
-        EntityVillager entityVillager = ((CraftVillager) villager).getHandle();
-        Field careerLevelField = EntityVillager.class.getDeclaredField("careerLevel");
-        careerLevelField.setAccessible(true);
-        return careerLevelField.getInt(entityVillager);
     }
 
     public boolean isCancel() {

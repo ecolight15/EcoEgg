@@ -208,13 +208,8 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
-    public void setVillagerCareer(Villager.Career career) {
-        list.set("villagercareer", career.name());
-        saveCnf();
-    }
-
-    public void setVillagerCareerLevel(int careerLevel) {
-        list.set("villagercareerlevel", careerLevel);
+    public void setVillagerLevel(int villagerlevel) {
+        list.set("villagerlevel", villagerlevel);
         saveCnf();
     }
 
@@ -355,16 +350,25 @@ public class LoaderMob extends LoaderYaml {
         return list.getMapList("villagersimpletradelist");
     }
 
-    public int getVillagerRiches() {
-        return list.getInt("villagerriches");
-    }
-
     public Villager.Profession getVillagerProfession() {
         return Villager.Profession.valueOf(list.getString("villagerprofession"));
     }
+    /**
+     * @deprecated 1.13以前の村人復元用メソッド 1.14以降は{@link LoaderMob#getVillagerProfession()}を使うこと｡
+     */
+    @Deprecated public String getVillagerCareer() {
+        return (list.getString("villagercareer"));
+    }
 
-    public Villager.Career getVillagerCareer() {
-        return Villager.Career.valueOf(list.getString("villagercareer"));
+    /**
+     * @deprecated 1.13以前の村人復元用メソッド 1.14以降は{@link LoaderMob#getVillagerLevel()}を使うこと｡
+     */
+    @Deprecated public int getVillagerCareerLevel() {
+        return list.getInt("villagercareerlevel");
+    }
+
+    public int getVillagerLevel() {
+        return list.getInt("villagerlevel");
     }
 
 
@@ -382,11 +386,6 @@ public class LoaderMob extends LoaderYaml {
 
     public String getGenType() {
         return list.getString("gen_type");
-    }
-
-
-    public int getVillagerCareerLevel() {
-        return list.getInt("villagercareerlevel");
     }
 
 
