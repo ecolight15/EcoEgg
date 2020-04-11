@@ -110,7 +110,7 @@ public class SaveMob {
 
     private void saveWolf() {
         Wolf wolf = (Wolf) entity;
-        save.setCollar(wolf.getCollarColor());
+        save.setDyeColor(wolf.getCollarColor());
         save.setAngry(wolf.isAngry());
     }
 

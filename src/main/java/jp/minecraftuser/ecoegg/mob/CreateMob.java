@@ -14,7 +14,6 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.potion.PotionEffect;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -157,7 +156,7 @@ public class CreateMob {
 
     private void createWolf() {
         Wolf wolf = (Wolf) entity;
-        wolf.setCollarColor(load.getCollar());
+        wolf.setCollarColor(load.getDyeColor());
         wolf.setAngry(load.getAngry());
     }
 

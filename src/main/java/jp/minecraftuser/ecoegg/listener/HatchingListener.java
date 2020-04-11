@@ -203,7 +203,7 @@ public class HatchingListener extends ListenerFrame {
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
         save.saveGen(player.getName(), entity.getType().name(), sdf1.format(date), plg.getDescription().getVersion());
-        save.saveDate(date.getTime());
+        save.setDate(date.getTime());
 
         le.remove();
         player.getWorld().strikeLightningEffect(loc);
