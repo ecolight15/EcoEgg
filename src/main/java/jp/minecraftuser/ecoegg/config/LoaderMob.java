@@ -44,6 +44,7 @@ public class LoaderMob extends LoaderYaml {
     public String getGenType() {
         return list.getString("gen_type");
     }
+
     public void saveUse(String name, String type, String date) {
         list.set("use_user", name);
         list.set("use_type", type);
@@ -52,7 +53,9 @@ public class LoaderMob extends LoaderYaml {
     }
 
 
-    public long getDate() { return list.getLong("date"); }
+    public long getDate() {
+        return list.getLong("date");
+    }
 
     public void setDate(long date) {
         list.set("date", date);
@@ -64,7 +67,9 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
-    public short getMobType() { return (short) list.getInt("mobid"); }
+    public short getMobType() {
+        return (short) list.getInt("mobid");
+    }
 
     public void setMobType(short typeid) {
         list.set("mobid", typeid);
@@ -215,11 +220,11 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
-    public Ocelot.Type getCatType() {
+    public Ocelot.Type getOcelotType() {
         return Ocelot.Type.valueOf(list.getString("cattype"));
     }
 
-    public void setCatType(Ocelot.Type cattype) {
+    public void setOcelotType(Ocelot.Type cattype) {
         list.set("cattype", cattype.name());
         saveCnf();
     }
@@ -380,6 +385,60 @@ public class LoaderMob extends LoaderYaml {
 
     public void setTamed(boolean tamed) {
         list.set("tamed", tamed);
+        saveCnf();
+    }
+
+    public Panda.Gene getPandaMainGene() {
+        return Panda.Gene.valueOf(list.getString("pandamaingene"));
+    }
+
+    public void setPandaMainGene(Panda.Gene gene) {
+        list.set("pandamaingene", gene.name());
+        saveCnf();
+    }
+
+    public Panda.Gene getPandaHiddenGene() {
+        return Panda.Gene.valueOf(list.getString("pandahiddengene"));
+    }
+
+    public void setPandaHiddenGene(Panda.Gene gene) {
+        list.set("pandahiddengene", gene.name());
+        saveCnf();
+    }
+
+    public Cat.Type getCatType() {
+        return Cat.Type.valueOf(list.getString("cattype"));
+    }
+
+    public void setCatType(Cat.Type type) {
+        list.set("cattype", type.name());
+        saveCnf();
+    }
+
+    public Fox.Type getFoxType() {
+        return Fox.Type.valueOf(list.getString("foxtype"));
+    }
+
+    public void setFoxType(Fox.Type type) {
+        list.set("foxtype", type.name());
+        saveCnf();
+    }
+
+    public String getFoxFirstTrustedPlayer() {
+        return list.getString("foxfirsttrustedplayer");
+    }
+
+    public void setFoxFirstTrustedPlayer(String name) {
+        list.set("foxfirsttrustedplayer", name);
+        saveCnf();
+    }
+
+    public String getFoxSecondTrustedPlayer() {
+        return list.getString("foxsecondtrustedplayer");
+    }
+
+    public void setFoxSecondTrustedPlayer(String name) {
+        list.set("foxsecondtrustedplayer", name);
         saveCnf();
     }
 

@@ -55,6 +55,7 @@ public class SaveMob {
         if (entity instanceof Ocelot) {
             saveOcelot();
         }
+
         if (entity instanceof Rabbit) {
             saveRabbit();
         }
@@ -70,7 +71,15 @@ public class SaveMob {
         if (entity instanceof Villager) {
             saveVillager();
         }
-
+        if (entity instanceof  Panda) {
+            savePanda();
+        }
+        if(entity instanceof Cat){
+            saveCat();
+        }
+        if (entity instanceof Fox) {
+            saveFox();
+        }
         if (entity instanceof Tameable) {
             saveTame();
         }
@@ -116,7 +125,7 @@ public class SaveMob {
 
     private void saveOcelot() {
         Ocelot ocelot = (Ocelot) entity;
-        save.setCatType(ocelot.getCatType());
+        save.setOcelotType(ocelot.getCatType());
     }
 
     private void saveParrot() {
@@ -175,7 +184,7 @@ public class SaveMob {
         save.setEntityEquipment(tmp);
     }
 
-    public void saveVillager() {
+    private void saveVillager() {
         Villager villager = (Villager) entity;
         List<Map> simpleTradeRecipeList = new LinkedList<>();
 
@@ -193,6 +202,30 @@ public class SaveMob {
         }
         save.setVillagerLevel(villager.getVillagerLevel());
 
+    }
+
+    private void savePanda(){
+        Panda panda = (Panda)entity;
+        save.setPandaMainGene(panda.getMainGene());
+        save.setPandaHiddenGene(panda.getHiddenGene());
+    }
+
+    private void saveCat(){
+        Cat cat = (Cat)entity;
+        save.setCatType(cat.getCatType());
+        save.setDyeColor(cat.getCollarColor());
+    }
+
+
+    private void saveFox(){
+        Fox fox = (Fox)entity;
+        save.setFoxType(fox.getFoxType());
+        if(fox.getFirstTrustedPlayer() != null){
+            save.setFoxFirstTrustedPlayer(fox.getFirstTrustedPlayer().getName());
+        }
+        if(fox.getSecondTrustedPlayer() != null){
+            save.setFoxSecondTrustedPlayer(fox.getSecondTrustedPlayer().getName());
+        }
     }
 
     private void saveTame() {

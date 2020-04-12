@@ -96,6 +96,15 @@ public class CreateMob {
             if (entity instanceof TropicalFish) {
                 createTropical_Fish();
             }
+            if(entity instanceof Panda){
+                createPanda();
+            }
+            if(entity instanceof Cat){
+                createCat();
+            }
+            if(entity instanceof Fox){
+                createFox();
+            }
 
             if (entity instanceof Tameable) {
                 setTame();
@@ -162,7 +171,7 @@ public class CreateMob {
 
     private void createOcelot() {
         Ocelot ocelot = (Ocelot) entity;
-        ocelot.setCatType(load.getCatType());
+        ocelot.setCatType(load.getOcelotType());
     }
 
     private void createParrot() {
@@ -267,6 +276,41 @@ public class CreateMob {
         }
 
         villager.setRecipes(trade_list);
+    }
+    private void createPanda(){
+        Panda panda = (Panda)entity;
+        panda.setMainGene(load.getPandaMainGene());
+        panda.setHiddenGene(load.getPandaHiddenGene());
+    }
+
+    private void createCat(){
+        Cat cat = (Cat)entity;
+        cat.setCatType(load.getCatType());
+        cat.setCollarColor(load.getDyeColor());
+    }
+
+
+    private void createFox(){
+        Fox fox = (Fox)entity;
+        boolean ownerreset = false;
+        String firstTrustedPlayer = load.getFoxFirstTrustedPlayer();
+        String secondTrustedPlayer = load.getFoxSecondTrustedPlayer();
+        fox.setFoxType(load.getFoxType());
+
+        if (material == Material.CARROTS) ownerreset = true;
+
+        if(ownerreset){
+            fox.setFirstTrustedPlayer(player);
+        }else{
+            if(firstTrustedPlayer != null){
+                fox.setFirstTrustedPlayer(plg.getServer().getOfflinePlayer(firstTrustedPlayer));
+            }
+            if(secondTrustedPlayer != null){
+                fox.setSecondTrustedPlayer(plg.getServer().getOfflinePlayer(secondTrustedPlayer));
+            }
+        }
+
+
     }
 
     private void setTame() {

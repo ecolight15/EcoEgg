@@ -6,7 +6,7 @@ import org.bukkit.entity.*;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
-import java.lang.reflect.Field;
+
 
 import jp.minecraftuser.ecoframework.PluginFrame;
 import jp.minecraftuser.ecoframework.Utl;
@@ -55,6 +55,15 @@ public class InfoMob {
         }
         if (entity instanceof TropicalFish) {
             showTropicalFish();
+        }
+        if (entity instanceof Panda) {
+            showPanda();
+        }
+        if (entity instanceof Cat) {
+            showCat();
+        }
+        if (entity instanceof Fox) {
+            showFox();
         }
         if (entity instanceof Tameable) {
             showOwner();
@@ -188,6 +197,36 @@ public class InfoMob {
         Utl.sendPluginMessage(plg, player, "VillagerLevel:" + villager.getVillagerLevel());
 
     }
+
+    private void showPanda() {
+        Panda panda = (Panda) entity;
+        Utl.sendPluginMessage(plg, player, "MainGene:" + panda.getMainGene());
+        Utl.sendPluginMessage(plg, player, "HiddenGene:" + panda.getHiddenGene());
+    }
+
+    private void showCat() {
+        Cat cat = (Cat) entity;
+        Utl.sendPluginMessage(plg, player, "CatType:" + cat.getCatType());
+        Utl.sendPluginMessage(plg, player, "Color:" + cat.getCollarColor());
+    }
+
+    private void showFox() {
+        Fox fox = (Fox) entity;
+        Utl.sendPluginMessage(plg, player, "FoxType:" + fox.getFoxType());
+
+        if (fox.getFirstTrustedPlayer() != null) {
+            Utl.sendPluginMessage(plg, player, "FirstTrustedPlayer:" + fox.getFirstTrustedPlayer().getName());
+        } else {
+            Utl.sendPluginMessage(plg, player, "FirstTrustedPlayer:" + "null");
+        }
+
+        if (fox.getSecondTrustedPlayer() != null) {
+            Utl.sendPluginMessage(plg, player, "SecondTrustedPlayer:" + fox.getSecondTrustedPlayer().getName());
+        } else {
+            Utl.sendPluginMessage(plg, player, "SecondTrustedPlayer:" + "null");
+        }
+    }
+
 
     private void showOwner() {
         Tameable tame_entity = (Tameable) entity;
