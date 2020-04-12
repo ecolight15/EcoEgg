@@ -442,6 +442,15 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public MushroomCow.Variant getMushroomCowVariant() {
+        return MushroomCow.Variant.valueOf(list.getString("mushroomcowvariant"));
+    }
+
+    public void setMushroomCowVariant(MushroomCow.Variant variant) {
+        list.set("mushroomcowvariant", variant.name());
+        saveCnf();
+    }
+
     public String getPluginVersion() {
         return list.getString("gen_plugin_version");
     }

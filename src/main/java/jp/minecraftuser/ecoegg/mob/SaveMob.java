@@ -83,6 +83,9 @@ public class SaveMob {
         if (entity instanceof Tameable) {
             saveTame();
         }
+        if (entity instanceof  MushroomCow){
+            saveMushroomCow();
+        }
 
         //動物なら年齢を登録
         if (entity instanceof Animals) {
@@ -226,6 +229,10 @@ public class SaveMob {
         if(fox.getSecondTrustedPlayer() != null){
             save.setFoxSecondTrustedPlayer(fox.getSecondTrustedPlayer().getName());
         }
+    }
+    private void saveMushroomCow(){
+        MushroomCow mushroomCow = (MushroomCow)entity;
+        save.setMushroomCowVariant(mushroomCow.getVariant());
     }
 
     private void saveTame() {

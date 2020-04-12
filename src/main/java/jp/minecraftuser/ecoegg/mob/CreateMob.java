@@ -17,6 +17,7 @@ import org.bukkit.potion.PotionEffect;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class CreateMob {
     private LivingEntity entity;
@@ -58,7 +59,7 @@ public class CreateMob {
             if (material == Material.SOUL_SAND) {
             Utl.sendPluginMessage(plg, player, "ノーマルのモンスターエッグとして使用しました");
             return entity;
-        }
+            }
 
 
             entity.setMaxHealth(load.getMaxHealth());
@@ -105,6 +106,9 @@ public class CreateMob {
             if(entity instanceof Fox){
                 createFox();
             }
+            if(entity instanceof MushroomCow ){
+                createMushroomCow();
+            }
 
             if (entity instanceof Tameable) {
                 setTame();
@@ -122,9 +126,11 @@ public class CreateMob {
             createPotionEffect();
         }catch (Exception e){
             if(!isOldFormatEgg()) {
-                //新村人の復元に失敗した場合はキャンセルする
+                //復元に失敗した場合はキャンセルする
+                plg.getLogger().log(Level.SEVERE, "Mobの復元に失敗しました");
+                e.printStackTrace();
+
                 cancel = true;
-                throw e;
             }
         }
 
@@ -309,7 +315,15 @@ public class CreateMob {
                 fox.setSecondTrustedPlayer(plg.getServer().getOfflinePlayer(secondTrustedPlayer));
             }
         }
+    }
 
+    private void createMushroomCow(){
+        if (Version.compare("1.0", load.getPluginVersion())) {
+            MushroomCow mushroomCow = (MushroomCow) entity;
+            mushroomCow.setVariant(load.getMushroomCowVariant());
+        }else {
+            Utl.sendPluginMessage(plg,player,"MushroomCowVariant 復元処理をスキップしました");
+        }
 
     }
 

@@ -7,7 +7,6 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
 
-
 import jp.minecraftuser.ecoframework.PluginFrame;
 import jp.minecraftuser.ecoframework.Utl;
 
@@ -64,6 +63,9 @@ public class InfoMob {
         }
         if (entity instanceof Fox) {
             showFox();
+        }
+        if (entity instanceof MushroomCow) {
+            showMushroomCow();
         }
         if (entity instanceof Tameable) {
             showOwner();
@@ -208,6 +210,12 @@ public class InfoMob {
         Cat cat = (Cat) entity;
         Utl.sendPluginMessage(plg, player, "CatType:" + cat.getCatType());
         Utl.sendPluginMessage(plg, player, "Color:" + cat.getCollarColor());
+    }
+
+    private void showMushroomCow() {
+        MushroomCow mushroomCow = (MushroomCow) entity;
+        Utl.sendPluginMessage(plg,player,"Variant:"+mushroomCow.getVariant());
+
     }
 
     private void showFox() {
