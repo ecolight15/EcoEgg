@@ -1,14 +1,11 @@
 package jp.minecraftuser.ecoegg.mob;
 
-import net.minecraft.server.v1_13_R2.EntityVillager;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
 
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
-import java.lang.reflect.Field;
 
 import jp.minecraftuser.ecoframework.PluginFrame;
 import jp.minecraftuser.ecoframework.Utl;
@@ -57,6 +54,18 @@ public class InfoMob {
         }
         if (entity instanceof TropicalFish) {
             showTropicalFish();
+        }
+        if (entity instanceof Panda) {
+            showPanda();
+        }
+        if (entity instanceof Cat) {
+            showCat();
+        }
+        if (entity instanceof Fox) {
+            showFox();
+        }
+        if (entity instanceof MushroomCow) {
+            showMushroomCow();
         }
         if (entity instanceof Tameable) {
             showOwner();
@@ -120,7 +129,7 @@ public class InfoMob {
         Utl.sendPluginMessage(plg, player, "Variant:" + parrot.getVariant());
     }
 
-    public void showTropicalFish() {
+    private void showTropicalFish() {
         TropicalFish tropicalFish = (TropicalFish) entity;
         Utl.sendPluginMessage(plg, player, "Pattern:" + tropicalFish.getPattern());
         Utl.sendPluginMessage(plg, player, "BodyColor:" + tropicalFish.getBodyColor());
@@ -181,23 +190,51 @@ public class InfoMob {
         Utl.sendPluginMessage(plg, player, "----トレード内容ここまで----");
 
         try {
-            Utl.sendPluginMessage(plg, player, "Career:" + villager.getCareer());
             Utl.sendPluginMessage(plg, player, "Profession:" + villager.getProfession());
-            Utl.sendPluginMessage(plg, player, "Riches:" + villager.getRiches());
-
         } catch (IllegalArgumentException e) {
             Utl.sendPluginMessage(plg, player, "旧タイプの村人な為､職業を取得できませんでした");
             Utl.sendPluginMessage(plg, player, "取引を更新すると職業を取得できます");
             return;
         }
+        Utl.sendPluginMessage(plg, player, "VillagerLevel:" + villager.getVillagerLevel());
 
+    }
 
-        try {
-            Utl.sendPluginMessage(plg, player, "CareerLevel:" + getVillagerCareerLevel(villager));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            Utl.sendPluginMessage(plg, player, "CareerLevelの取得に失敗しました 管理者に報告してください");
+    private void showPanda() {
+        Panda panda = (Panda) entity;
+        Utl.sendPluginMessage(plg, player, "MainGene:" + panda.getMainGene());
+        Utl.sendPluginMessage(plg, player, "HiddenGene:" + panda.getHiddenGene());
+    }
+
+    private void showCat() {
+        Cat cat = (Cat) entity;
+        Utl.sendPluginMessage(plg, player, "CatType:" + cat.getCatType());
+        Utl.sendPluginMessage(plg, player, "Color:" + cat.getCollarColor());
+    }
+
+    private void showMushroomCow() {
+        MushroomCow mushroomCow = (MushroomCow) entity;
+        Utl.sendPluginMessage(plg,player,"Variant:"+mushroomCow.getVariant());
+
+    }
+
+    private void showFox() {
+        Fox fox = (Fox) entity;
+        Utl.sendPluginMessage(plg, player, "FoxType:" + fox.getFoxType());
+
+        if (fox.getFirstTrustedPlayer() != null) {
+            Utl.sendPluginMessage(plg, player, "FirstTrustedPlayer:" + fox.getFirstTrustedPlayer().getName());
+        } else {
+            Utl.sendPluginMessage(plg, player, "FirstTrustedPlayer:" + "null");
+        }
+
+        if (fox.getSecondTrustedPlayer() != null) {
+            Utl.sendPluginMessage(plg, player, "SecondTrustedPlayer:" + fox.getSecondTrustedPlayer().getName());
+        } else {
+            Utl.sendPluginMessage(plg, player, "SecondTrustedPlayer:" + "null");
         }
     }
+
 
     private void showOwner() {
         Tameable tame_entity = (Tameable) entity;
@@ -217,10 +254,4 @@ public class InfoMob {
         Utl.sendPluginMessage(plg, player, "isChild:" + !animals.isAdult());
     }
 
-    private int getVillagerCareerLevel(Villager villager) throws NoSuchFieldException, IllegalAccessException {
-        EntityVillager entityVillager = ((CraftVillager) villager).getHandle();
-        Field careerLevelField = EntityVillager.class.getDeclaredField("careerLevel");
-        careerLevelField.setAccessible(true);
-        return careerLevelField.getInt(entityVillager);
-    }
 }

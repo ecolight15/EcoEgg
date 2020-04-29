@@ -22,10 +22,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Tameable;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
@@ -75,7 +72,7 @@ public class HatchingListener extends ListenerFrame {
         Entity entity = event.getRightClicked();
 
         //LivienEntity以外はキャンセル
-        if(!(entity instanceof LivingEntity)){
+        if (!(entity instanceof LivingEntity)) {
             return;
         }
         LivingEntity le = (LivingEntity) entity;
@@ -120,7 +117,7 @@ public class HatchingListener extends ListenerFrame {
             com.sk89q.worldedit.util.Location entity_loc = new com.sk89q.worldedit.util.Location(player_loc.getExtent(), entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ());
 
             if (!query.testState(player_loc, localPlayer, (StateFlag) EcoEgg.USE_ECO_EGG_FLAG) || !query.testState(entity_loc, localPlayer, (StateFlag) EcoEgg.USE_ECO_EGG_FLAG)) {
-                Utl.sendPluginMessage(plg,player,("この場所ではえこたまごを使用できません"));
+                Utl.sendPluginMessage(plg, player, ("この場所ではえこたまごを使用できません"));
                 return;
             }
         }
@@ -138,6 +135,24 @@ public class HatchingListener extends ListenerFrame {
             if (tame_entity.getOwner() != null && tame_entity.getOwner().getName() != null) {
                 if (!(tame_entity.getOwner().getName().equals(player.getName()))) {
                     reject = true;
+                }
+            }
+        }
+        if (le instanceof Fox) {
+
+            Fox fox = (Fox) le;
+            //信頼できるプレイヤーが存在していてかつ他人のMOBだった場合はリジェクト
+            if(fox.getFirstTrustedPlayer() != null || fox.getSecondTrustedPlayer() != null) {
+                reject = true;
+                if (fox.getFirstTrustedPlayer() != null) {
+                    if (fox.getFirstTrustedPlayer().getName().equals(player.getName())) {
+                        reject = false;
+                    }
+                }
+                if (fox.getSecondTrustedPlayer() != null) {
+                    if (fox.getSecondTrustedPlayer().getName().equals(player.getName())) {
+                        reject = false;
+                    }
                 }
             }
         }
@@ -203,7 +218,7 @@ public class HatchingListener extends ListenerFrame {
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
         save.saveGen(player.getName(), entity.getType().name(), sdf1.format(date), plg.getDescription().getVersion());
-        save.saveDate(date.getTime());
+        save.setDate(date.getTime());
 
         le.remove();
         player.getWorld().strikeLightningEffect(loc);
@@ -222,7 +237,7 @@ public class HatchingListener extends ListenerFrame {
     public void PlayerInteract(PlayerInteractEvent event) {
 
         //右クリック(ブロック)以外は無視
-        if(event.getAction() != Action.RIGHT_CLICK_BLOCK){
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
 
@@ -262,7 +277,7 @@ public class HatchingListener extends ListenerFrame {
             com.sk89q.worldedit.util.Location block_loc = new com.sk89q.worldedit.util.Location(player_loc.getExtent(), block.getX(), block.getY(), block.getZ());
 
             if (!query.testState(player_loc, localPlayer, (StateFlag) EcoEgg.USE_ECO_EGG_FLAG) || !query.testState(block_loc, localPlayer, (StateFlag) EcoEgg.USE_ECO_EGG_FLAG)) {
-                Utl.sendPluginMessage(plg,player,("この場所ではえこたまごを使用できません"));
+                Utl.sendPluginMessage(plg, player, ("この場所ではえこたまごを使用できません"));
                 return;
             }
         }

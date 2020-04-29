@@ -5,15 +5,12 @@ import jp.minecraftuser.ecoegg.SimpleEquipment;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
 import jp.minecraftuser.ecoframework.PluginFrame;
 import jp.minecraftuser.ecoframework.Utl;
-import net.minecraft.server.v1_13_R2.EntityVillager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 public class SaveMob {
@@ -58,6 +55,7 @@ public class SaveMob {
         if (entity instanceof Ocelot) {
             saveOcelot();
         }
+
         if (entity instanceof Rabbit) {
             saveRabbit();
         }
@@ -73,9 +71,20 @@ public class SaveMob {
         if (entity instanceof Villager) {
             saveVillager();
         }
-
+        if (entity instanceof  Panda) {
+            savePanda();
+        }
+        if(entity instanceof Cat){
+            saveCat();
+        }
+        if (entity instanceof Fox) {
+            saveFox();
+        }
         if (entity instanceof Tameable) {
             saveTame();
+        }
+        if (entity instanceof  MushroomCow){
+            saveMushroomCow();
         }
 
         //動物なら年齢を登録
@@ -113,13 +122,13 @@ public class SaveMob {
 
     private void saveWolf() {
         Wolf wolf = (Wolf) entity;
-        save.setCollar(wolf.getCollarColor());
+        save.setDyeColor(wolf.getCollarColor());
         save.setAngry(wolf.isAngry());
     }
 
     private void saveOcelot() {
         Ocelot ocelot = (Ocelot) entity;
-        save.setCatType(ocelot.getCatType());
+        save.setOcelotType(ocelot.getCatType());
     }
 
     private void saveParrot() {
@@ -178,7 +187,7 @@ public class SaveMob {
         save.setEntityEquipment(tmp);
     }
 
-    public void saveVillager() {
+    private void saveVillager() {
         Villager villager = (Villager) entity;
         List<Map> simpleTradeRecipeList = new LinkedList<>();
 
@@ -187,8 +196,6 @@ public class SaveMob {
         // 保存
         save.setVillagerTradeList(simpleTradeRecipeList);
         try {
-            save.setVillagerCareer(villager.getCareer());
-            save.setVillagerRiches(villager.getRiches());
             save.setVillagerProfession(villager.getProfession());
         } catch (IllegalArgumentException e) {
             Utl.sendPluginMessage(plg, player, "旧タイプの村人な為､職業の取得に失敗しました｡");
@@ -196,13 +203,36 @@ public class SaveMob {
             cancel = true;
             return;
         }
+        save.setVillagerLevel(villager.getVillagerLevel());
 
-        try {
-            save.setVillagerCareerLevel(getVillagerCareerLevel(villager));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            Utl.sendPluginMessage(plg, player, "CareerLevelの取得に失敗しました 管理者に報告してください");
-            cancel = true;
+    }
+
+    private void savePanda(){
+        Panda panda = (Panda)entity;
+        save.setPandaMainGene(panda.getMainGene());
+        save.setPandaHiddenGene(panda.getHiddenGene());
+    }
+
+    private void saveCat(){
+        Cat cat = (Cat)entity;
+        save.setCatType(cat.getCatType());
+        save.setDyeColor(cat.getCollarColor());
+    }
+
+
+    private void saveFox(){
+        Fox fox = (Fox)entity;
+        save.setFoxType(fox.getFoxType());
+        if(fox.getFirstTrustedPlayer() != null){
+            save.setFoxFirstTrustedPlayer(fox.getFirstTrustedPlayer().getName());
         }
+        if(fox.getSecondTrustedPlayer() != null){
+            save.setFoxSecondTrustedPlayer(fox.getSecondTrustedPlayer().getName());
+        }
+    }
+    private void saveMushroomCow(){
+        MushroomCow mushroomCow = (MushroomCow)entity;
+        save.setMushroomCowVariant(mushroomCow.getVariant());
     }
 
     private void saveTame() {
@@ -226,13 +256,6 @@ public class SaveMob {
         List<Map> potionList = new LinkedList<>();
         entity.getActivePotionEffects().forEach(effect -> potionList.add(effect.serialize()));
         save.savePotionEffectList(potionList);
-    }
-
-    private int getVillagerCareerLevel(Villager villager) throws NoSuchFieldException, IllegalAccessException {
-        EntityVillager entityVillager = ((CraftVillager) villager).getHandle();
-        Field careerLevelField = EntityVillager.class.getDeclaredField("careerLevel");
-        careerLevelField.setAccessible(true);
-        return careerLevelField.getInt(entityVillager);
     }
 
     public boolean isCancel() {

@@ -37,6 +37,14 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public boolean getUsed() {
+        return list.getBoolean("used");
+    }
+
+    public String getGenType() {
+        return list.getString("gen_type");
+    }
+
     public void saveUse(String name, String type, String date) {
         list.set("use_user", name);
         list.set("use_type", type);
@@ -44,7 +52,12 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
-    public void saveDate(long date) {
+
+    public long getDate() {
+        return list.getLong("date");
+    }
+
+    public void setDate(long date) {
         list.set("date", date);
         saveCnf();
     }
@@ -54,9 +67,17 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public short getMobType() {
+        return (short) list.getInt("mobid");
+    }
+
     public void setMobType(short typeid) {
         list.set("mobid", typeid);
         saveCnf();
+    }
+
+    public String getCustomName() {
+        return list.getString("name");
     }
 
     public void setCustomName(String str) {
@@ -64,9 +85,17 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public double getMaxHealth() {
+        return list.getDouble("maxhealth");
+    }
+
     public void setMaxHealth(double num) {
         list.set("maxhealth", num);
         saveCnf();
+    }
+
+    public double getHealth() {
+        return list.getDouble("health");
     }
 
     public void setHealth(double num) {
@@ -74,9 +103,17 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public String getOwner() {
+        return list.getString("owner");
+    }
+
     public void setOwner(String str) {
         list.set("owner", str);
         saveCnf();
+    }
+
+    public int getMaxDomestication() {
+        return list.getInt("maxdomestication");
     }
 
     public void setMaxDomestication(int num) {
@@ -84,9 +121,17 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public int getDomestication() {
+        return list.getInt("domestication");
+    }
+
     public void setDomestication(int num) {
         list.set("domestication", num);
         saveCnf();
+    }
+
+    public int getAge() {
+        return list.getInt("age");
     }
 
     public void setAge(int num) {
@@ -94,9 +139,17 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public DyeColor getSheepColor() {
+        return DyeColor.valueOf(list.getString("sheepcolor"));
+    }
+
     public void setSheepColor(DyeColor color) {
         list.set("sheepcolor", color.name());
         saveCnf();
+    }
+
+    public Llama.Color getLlamaColor() {
+        return Llama.Color.valueOf(list.getString("color"));
     }
 
     public void setLlamaColor(Llama.Color color) {
@@ -104,9 +157,17 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public int getLlamaStrength() {
+        return list.getInt("strength");
+    }
+
     public void setLlamaStrength(int strength) {
         list.set("strength", strength);
         saveCnf();
+    }
+
+    public Horse.Style getStyle() {
+        return Horse.Style.valueOf(list.getString("style"));
     }
 
     public void setStyle(Horse.Style style) {
@@ -114,9 +175,17 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public Horse.Color getHorseColor() {
+        return Horse.Color.valueOf(list.getString("color"));
+    }
+
     public void setHorseColor(Horse.Color color) {
         list.set("color", color.name());
         saveCnf();
+    }
+
+    public Horse.Variant getHorseVariant() {
+        return Horse.Variant.valueOf(list.getString("variant"));
     }
 
     public void SetHorseVariant(Horse.Variant var) {
@@ -124,9 +193,17 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public double getJumpStrength() {
+        return list.getDouble("jumpstrength");
+    }
+
     public void setJumpStrength(double num) {
         list.set("jumpstrength", num);
         saveCnf();
+    }
+
+    public double getSpeed() {
+        return list.getDouble("speed");
     }
 
     public void setSpeed(double num) {
@@ -134,19 +211,35 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
-    public void setCollar(DyeColor collar) {
-        list.set("collar", collar.name());
+    public DyeColor getDyeColor() {
+        return DyeColor.valueOf(list.getString("collar"));
+    }
+
+    public void setDyeColor(DyeColor color) {
+        list.set("collar", color.name());
         saveCnf();
     }
 
-    public void setCatType(Ocelot.Type cattype) {
+    public Ocelot.Type getOcelotType() {
+        return Ocelot.Type.valueOf(list.getString("cattype"));
+    }
+
+    public void setOcelotType(Ocelot.Type cattype) {
         list.set("cattype", cattype.name());
         saveCnf();
+    }
+
+    public boolean getPower() {
+        return list.getBoolean("power");
     }
 
     public void setPower(boolean power) {
         list.set("power", power);
         saveCnf();
+    }
+
+    public Rabbit.Type getRabbitType() {
+        return Rabbit.Type.valueOf(list.getString("rabbittype"));
     }
 
     public void setRabbitType(Rabbit.Type rabbittype) {
@@ -155,26 +248,47 @@ public class LoaderMob extends LoaderYaml {
     }
 
     //typoしてる
+    public boolean getBreed() {
+        return list.getBoolean("bleed");
+    }
+
+    //typoしてる
     public void setBreed(boolean breed) {
         list.set("bleed", breed);
         saveCnf();
     }
+
+    public Parrot.Variant getParrotVariant() {
+        return Parrot.Variant.valueOf(list.getString("parrotvariant"));
+    }
+
 
     public void setParrotVariant(Parrot.Variant variant) {
         list.set("parrotvariant", variant.name());
         saveCnf();
     }
 
+    public TropicalFish.Pattern getTropicalFishPattern() {
+        return TropicalFish.Pattern.valueOf(list.getString("tropicalfishpattern"));
+    }
+
+
     public void setTropicalFishPattern(TropicalFish.Pattern pattern) {
         list.set("tropicalfishpattern", pattern.name());
         saveCnf();
+    }
 
+    public DyeColor getTropicalFishBodyColor() {
+        return DyeColor.valueOf(list.getString("tropicalfishbodycolor"));
     }
 
     public void setTropicalFishBodyColor(DyeColor color) {
         list.set("tropicalfishbodycolor", color.name());
         saveCnf();
+    }
 
+    public DyeColor getTropicalFishPatternColor() {
+        return DyeColor.valueOf(list.getString("tropicalfishpatterncolor"));
     }
 
     public void setTropicalFishPatternColor(DyeColor color) {
@@ -182,10 +296,20 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public List<Map<?, ?>> getEntityEquipment() {
+        return list.getMapList("entityequipment");
+    }
+
+
     public void setEntityEquipment(List<Map> entityEquipment) {
         list.set("entityequipment", entityEquipment);
         saveCnf();
     }
+
+    public List<Map<?, ?>> getPotionEffectList() {
+        return list.getMapList("potioneffectlist");
+    }
+
 
     public void savePotionEffectList(List<Map> potionEffectList) {
         list.set("potioneffectlist", potionEffectList);
@@ -193,14 +317,33 @@ public class LoaderMob extends LoaderYaml {
 
     }
 
+    public List<Map<?, ?>> getTradeList() {
+        return list.getMapList("villagersimpletradelist");
+    }
+
     public void setVillagerTradeList(List<Map> recipes) {
         list.set("villagersimpletradelist", recipes);
         saveCnf();
     }
 
-    public void setVillagerRiches(int villagerRiches) {
-        list.set("villagerriches", villagerRiches);
-        saveCnf();
+    /**
+     * @deprecated 1.13以前の村人復元用メソッド 1.14以降は{@link LoaderMob#getVillagerProfession()}を使うこと｡
+     */
+    @Deprecated
+    public String getVillagerCareer() {
+        return (list.getString("villagercareer"));
+    }
+
+    /**
+     * @deprecated 1.13以前の村人復元用メソッド 1.14以降は{@link LoaderMob#getVillagerLevel()}を使うこと｡
+     */
+    @Deprecated
+    public int getVillagerCareerLevel() {
+        return list.getInt("villagercareerlevel");
+    }
+
+    public Villager.Profession getVillagerProfession() {
+        return Villager.Profession.valueOf(list.getString("villagerprofession"));
     }
 
     public void setVillagerProfession(Villager.Profession profession) {
@@ -208,14 +351,17 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
-    public void setVillagerCareer(Villager.Career career) {
-        list.set("villagercareer", career.name());
+    public int getVillagerLevel() {
+        return list.getInt("villagerlevel");
+    }
+
+    public void setVillagerLevel(int villagerlevel) {
+        list.set("villagerlevel", villagerlevel);
         saveCnf();
     }
 
-    public void setVillagerCareerLevel(int careerLevel) {
-        list.set("villagercareerlevel", careerLevel);
-        saveCnf();
+    public boolean getChild() {
+        return list.getBoolean("child");
     }
 
     public void setChild(boolean child) {
@@ -223,9 +369,18 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public boolean getAngry() {
+        return list.getBoolean("angry");
+    }
+
+
     public void setAngry(boolean angry) {
         list.set("angry", angry);
         saveCnf();
+    }
+
+    public boolean getTamed() {
+        return list.getBoolean("tamed");
     }
 
     public void setTamed(boolean tamed) {
@@ -233,170 +388,70 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
-
-    //--------------------------------------------------------------------------
-    public boolean getUsed() {
-        return list.getBoolean("used");
+    public Panda.Gene getPandaMainGene() {
+        return Panda.Gene.valueOf(list.getString("pandamaingene"));
     }
 
-    public short getMobType() {
-        return (short) list.getInt("mobid");
+    public void setPandaMainGene(Panda.Gene gene) {
+        list.set("pandamaingene", gene.name());
+        saveCnf();
     }
 
-    public String getCustomName() {
-        return list.getString("name");
+    public Panda.Gene getPandaHiddenGene() {
+        return Panda.Gene.valueOf(list.getString("pandahiddengene"));
     }
 
-    public double getMaxHealth() {
-        return list.getDouble("maxhealth");
+    public void setPandaHiddenGene(Panda.Gene gene) {
+        list.set("pandahiddengene", gene.name());
+        saveCnf();
     }
 
-    public double getHealth() {
-        return list.getDouble("health");
+    public Cat.Type getCatType() {
+        return Cat.Type.valueOf(list.getString("cattype"));
     }
 
-    public String getOwner() {
-        return list.getString("owner");
+    public void setCatType(Cat.Type type) {
+        list.set("cattype", type.name());
+        saveCnf();
     }
 
-    public int getMaxDomestication() {
-        return list.getInt("maxdomestication");
+    public Fox.Type getFoxType() {
+        return Fox.Type.valueOf(list.getString("foxtype"));
     }
 
-    public int getDomestication() {
-        return list.getInt("domestication");
+    public void setFoxType(Fox.Type type) {
+        list.set("foxtype", type.name());
+        saveCnf();
     }
 
-    public int getAge() {return list.getInt("age");}
-
-
-    public DyeColor getSheepColor() {
-        return DyeColor.valueOf(list.getString("sheepcolor"));
+    public String getFoxFirstTrustedPlayer() {
+        return list.getString("foxfirsttrustedplayer");
     }
 
-    public Llama.Color getLlamaColor() {
-        return Llama.Color.valueOf(list.getString("color"));
+    public void setFoxFirstTrustedPlayer(String name) {
+        list.set("foxfirsttrustedplayer", name);
+        saveCnf();
     }
 
-    public int getLlamaStrength() {
-        return list.getInt("strength");
+    public String getFoxSecondTrustedPlayer() {
+        return list.getString("foxsecondtrustedplayer");
     }
 
-
-    public Horse.Style getStyle() {
-        return Horse.Style.valueOf(list.getString("style"));
+    public void setFoxSecondTrustedPlayer(String name) {
+        list.set("foxsecondtrustedplayer", name);
+        saveCnf();
     }
 
-    public Horse.Color getHorseColor() {
-        return Horse.Color.valueOf(list.getString("color"));
+    public MushroomCow.Variant getMushroomCowVariant() {
+        return MushroomCow.Variant.valueOf(list.getString("mushroomcowvariant"));
     }
 
-    public Horse.Variant getHorseVariant() {
-        return Horse.Variant.valueOf(list.getString("variant"));
-    }
-
-    public double getJumpStrength() {
-        return list.getDouble("jumpstrength");
-    }
-
-    public double getSpeed() {
-        return list.getDouble("speed");
-    }
-
-    public DyeColor getCollar() {
-        return DyeColor.valueOf(list.getString("collar"));
-    }
-
-    public Ocelot.Type getCatType() {
-        return Ocelot.Type.valueOf(list.getString("cattype"));
-    }
-
-    public boolean getPower() {
-        return list.getBoolean("power");
-    }
-
-    public Rabbit.Type getRabbitType() {
-        return Rabbit.Type.valueOf(list.getString("rabbittype"));
-    }
-
-    //typoしてる
-    public boolean getBreed() {
-        return list.getBoolean("bleed");
-    }
-
-    public Parrot.Variant getParrotVariant() {
-        return Parrot.Variant.valueOf(list.getString("parrotvariant"));
-    }
-
-    public TropicalFish.Pattern getTropicalFishPattern() {
-
-        return TropicalFish.Pattern.valueOf(list.getString("tropicalfishpattern"));
-
-    }
-
-    public DyeColor getTropicalFishBodyColor() {
-        return DyeColor.valueOf(list.getString("tropicalfishbodycolor"));
-
-    }
-
-    public DyeColor getTropicalFishPatternColor() {
-        return DyeColor.valueOf(list.getString("tropicalfishpatterncolor"));
-    }
-
-    public List<Map<?, ?>> getEntityEquipment() {
-        return list.getMapList("entityequipment");
-    }
-
-    public List<Map<?, ?>> getPotionEffectList() {
-        return list.getMapList("potioneffectlist");
-    }
-
-    public List<Map<?, ?>> getTradeList() {
-        return list.getMapList("villagersimpletradelist");
-    }
-
-    public int getVillagerRiches() {
-        return list.getInt("villagerriches");
-    }
-
-    public Villager.Profession getVillagerProfession() {
-        return Villager.Profession.valueOf(list.getString("villagerprofession"));
-    }
-
-    public Villager.Career getVillagerCareer() {
-        return Villager.Career.valueOf(list.getString("villagercareer"));
-    }
-
-
-    public boolean getChild() {
-        return list.getBoolean("child");
-    }
-
-    public boolean getAngry() {
-        return list.getBoolean("angry");
-    }
-
-    public long getDate() {
-        return list.getLong("date");
-    }
-
-    public String getGenType() {
-        return list.getString("gen_type");
-    }
-
-
-    public int getVillagerCareerLevel() {
-        return list.getInt("villagercareerlevel");
-    }
-
-
-    public boolean getTamed() {
-        return list.getBoolean("tamed");
+    public void setMushroomCowVariant(MushroomCow.Variant variant) {
+        list.set("mushroomcowvariant", variant.name());
+        saveCnf();
     }
 
     public String getPluginVersion() {
         return list.getString("gen_plugin_version");
     }
-
-
 }
