@@ -1,7 +1,7 @@
 name: EcoEgg
 main: jp.minecraftuser.ecoegg.EcoEgg
 version: ${project.version}
-api-version: 1.13
+api-version: 1.15
 depend: [EcoFramework]
 softdepend: [WorldGuard]
 commands:
