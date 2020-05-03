@@ -276,7 +276,6 @@ public class CreateMob {
             Utl.sendPluginMessage(plg, player, "level: " + old_level + "->" + new_level );
             villager.setProfession(Villager.Profession.valueOf(new_profession));
             villager.setVillagerLevel(new_level);
-            player.getWorld().spawnEntity(loc,EntityType.COW).addPassenger(villager);
 
 
         }
