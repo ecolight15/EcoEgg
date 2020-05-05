@@ -24,7 +24,7 @@ public class InfoMob {
     public void show() {
         Utl.sendPluginMessage(plg, player, "===== " + entity.getType() + "ステータス表示 =====");
         Utl.sendPluginMessage(plg, player, "EntityName:" + entity.getType());
-        Utl.sendPluginMessage(plg, player, "CustomName:" + entity.getName());
+        Utl.sendPluginMessage(plg, player, "CustomName:" + entity.getCustomName());
         Utl.sendPluginMessage(plg, player, "MaxHealth:" + entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
         Utl.sendPluginMessage(plg, player, "Health:" + entity.getHealth());
 

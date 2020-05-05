@@ -67,7 +67,10 @@ public class CreateMob {
 
             String name = load.getCustomName();
 
-            if (name != null) entity.setCustomName(name);
+            if (name != null) {
+                entity.setCustomName(name);
+                entity.setRemoveWhenFarAway(false);
+            }
 
 
             if (entity instanceof Zombie) {
