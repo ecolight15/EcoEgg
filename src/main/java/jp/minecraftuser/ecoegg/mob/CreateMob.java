@@ -57,8 +57,8 @@ public class CreateMob {
         entity = (LivingEntity) player.getWorld().spawnEntity(loc, entityType);
         try {
             if (material == Material.SOUL_SAND) {
-            Utl.sendPluginMessage(plg, player, "ノーマルのモンスターエッグとして使用しました");
-            return entity;
+                Utl.sendPluginMessage(plg, player, "ノーマルのモンスターエッグとして使用しました");
+                return entity;
             }
 
 
@@ -100,16 +100,16 @@ public class CreateMob {
             if (entity instanceof TropicalFish) {
                 createTropical_Fish();
             }
-            if(entity instanceof Panda){
+            if (entity instanceof Panda) {
                 createPanda();
             }
-            if(entity instanceof Cat){
+            if (entity instanceof Cat) {
                 createCat();
             }
-            if(entity instanceof Fox){
+            if (entity instanceof Fox) {
                 createFox();
             }
-            if(entity instanceof MushroomCow ){
+            if (entity instanceof MushroomCow) {
                 createMushroomCow();
             }
 
@@ -125,10 +125,9 @@ public class CreateMob {
             if (entity instanceof Zombie || entity instanceof Skeleton) {
                 createEntityEquipment();
             }
-
             createPotionEffect();
-        }catch (Exception e){
-            if(!isOldFormatEgg()) {
+        } catch (Exception e) {
+            if (!isOldFormatEgg()) {
                 //復元に失敗した場合はキャンセルする
                 plg.getLogger().log(Level.SEVERE, "Mobの復元に失敗しました");
                 e.printStackTrace();
@@ -250,56 +249,69 @@ public class CreateMob {
             trade_list.add(merchantRecipe);
         });
 
+        Villager.Profession villagerProfession = null;
+        int villagerLevel = 0;
+        int villagerExperience = 0;
+
         if (Version.compare("1.0", load.getPluginVersion())) {
-            villager.setProfession(load.getVillagerProfession());
-            villager.setVillagerLevel(Math.max(Math.min(load.getVillagerLevel(),5),1));
+            villagerProfession = load.getVillagerProfession();
+            villagerLevel = load.getVillagerLevel();
+            if (Version.compare("1.3", load.getPluginVersion())) {
+                villagerExperience = load.getVillagerExperience();
+            }
         } else {
-
-            Utl.sendPluginMessage(plg, player, "1.15以前の村人です変換処理を行います");
-
+            Utl.sendPluginMessage(plg, player, "1.15以前の村人です､変換処理を行います");
             String old_profession = load.getVillagerCareer();
-            String new_profession = "";
-
-            int old_level = load.getVillagerCareerLevel();
-            int new_level = 0;
-
             switch (old_profession) {
                 case "WEAPON_SMITH":
-                    new_profession = "WEAPONSMITH";
+                    villagerProfession = Villager.Profession.valueOf("WEAPONSMITH");
                     break;
                 case "TOOL_SMITH":
-                    new_profession = "TOOLSMITH";
+                    villagerProfession = Villager.Profession.valueOf("TOOLSMITH");
                     break;
                 default:
-                    new_profession = old_profession;
+                    villagerProfession = Villager.Profession.valueOf(old_profession);
             }
-            new_level = Math.max(Math.min(old_level,5),1);
 
-            Utl.sendPluginMessage(plg, player, "profession: " + old_profession + "->" + new_profession );
-            Utl.sendPluginMessage(plg, player, "level: " + old_level + "->" + new_level );
-            villager.setProfession(Villager.Profession.valueOf(new_profession));
-            villager.setVillagerLevel(new_level);
-
+            villagerLevel = load.getVillagerCareerLevel();
+            Utl.sendPluginMessage(plg, player, "profession: " + old_profession + "->" + villagerProfession);
 
         }
+        //1~5の範囲に収めないとエラーが発生するので設定
+        if (villagerLevel <= 0 || villagerLevel >= 6) {
+            int oldVillagerLevel = villagerLevel;
+            villagerLevel = Math.max(Math.min(villagerLevel, 5), 1);
+            Utl.sendPluginMessage(plg, player, "VillagerLevel: " + oldVillagerLevel + "->" + villagerLevel);
+        }
+        //villagerExperience復元用処理､Level1=0,2=10,3=50,4=100,5=150
+        if (villagerExperience == 0) {
+            int oldVillagerExperience = villagerExperience;
+            int[] exp = {0, 0, 10, 50, 100, 150};
+            villagerExperience = exp[villagerLevel];
+            Utl.sendPluginMessage(plg, player, "VillagerExperience: " + oldVillagerExperience + "->" + villagerExperience);
+        }
+        villager.setProfession(villagerProfession);
+        villager.setVillagerExperience(villagerExperience);
+        villager.setVillagerLevel(villagerLevel);
 
         villager.setRecipes(trade_list);
     }
-    private void createPanda(){
-        Panda panda = (Panda)entity;
+
+    private void createPanda() {
+        Panda panda = (Panda) entity;
         panda.setMainGene(load.getPandaMainGene());
         panda.setHiddenGene(load.getPandaHiddenGene());
     }
 
-    private void createCat(){
-        Cat cat = (Cat)entity;
+    private void createCat() {
+        Cat cat = (Cat) entity;
         cat.setCatType(load.getCatType());
         cat.setCollarColor(load.getDyeColor());
     }
 
 
-    private void createFox(){
-        Fox fox = (Fox)entity;
+    private void createFox() {
+        Fox fox = (Fox) entity;
         boolean ownerreset = false;
         String firstTrustedPlayer = load.getFoxFirstTrustedPlayer();
         String secondTrustedPlayer = load.getFoxSecondTrustedPlayer();
@@ -307,24 +319,24 @@ public class CreateMob {
 
         if (material == Material.CARROTS) ownerreset = true;
 
-        if(ownerreset){
+        if (ownerreset) {
             fox.setFirstTrustedPlayer(player);
-        }else{
-            if(firstTrustedPlayer != null){
+        } else {
+            if (firstTrustedPlayer != null) {
                 fox.setFirstTrustedPlayer(plg.getServer().getOfflinePlayer(firstTrustedPlayer));
             }
-            if(secondTrustedPlayer != null){
+            if (secondTrustedPlayer != null) {
                 fox.setSecondTrustedPlayer(plg.getServer().getOfflinePlayer(secondTrustedPlayer));
             }
         }
     }
 
-    private void createMushroomCow(){
+    private void createMushroomCow() {
         if (Version.compare("1.0", load.getPluginVersion())) {
             MushroomCow mushroomCow = (MushroomCow) entity;
             mushroomCow.setVariant(load.getMushroomCowVariant());
-        }else {
-            Utl.sendPluginMessage(plg,player,"MushroomCowVariant 復元処理をスキップしました");
+        } else {
+            Utl.sendPluginMessage(plg, player, "MushroomCowVariant 復元処理をスキップしました");
         }
 
     }

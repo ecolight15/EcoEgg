@@ -359,6 +359,12 @@ public class LoaderMob extends LoaderYaml {
         list.set("villagerlevel", villagerlevel);
         saveCnf();
     }
+    public int getVillagerExperience() { return list.getInt("villagerexperience"); }
+
+    public void setVillagerExperience(int villagerexperience) {
+        list.set("villagerexperience",villagerexperience);
+        saveCnf();
+    }
 
     public boolean getChild() {
         return list.getBoolean("child");
