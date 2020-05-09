@@ -203,6 +203,7 @@ public class SaveMob {
             cancel = true;
             return;
         }
+        save.setVillagerExperience(villager.getVillagerExperience());
         save.setVillagerLevel(villager.getVillagerLevel());
 
     }
