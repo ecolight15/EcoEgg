@@ -94,14 +94,9 @@ public class HatchingListener extends ListenerFrame {
             }
         }
         if (bookcheck) {
-            ItemStack itemStack = player.getItemInHand();
-            if (itemStack.getType() != Material.WRITTEN_BOOK) return;
-            // 魔道書の記述が正しいか
-            BookMeta blockMeta = (BookMeta) itemStack.getItemMeta();
-
-            if (!blockMeta.getAuthor().equals(eceConf.getAuthor())) return;
-            if (!blockMeta.getTitle().equals(eceConf.getTitle())) return;
-            if (!blockMeta.getDisplayName().equals(eceConf.getDispName())) return;
+            if(!((EcoEgg) plg).isBook(player.getInventory().getItemInMainHand())){
+                return;
+            }
         }
         //----------------------------------------------------------------------
         // WorldGuardで保護されていないかチェック
