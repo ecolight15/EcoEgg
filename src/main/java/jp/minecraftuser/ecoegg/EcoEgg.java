@@ -74,7 +74,9 @@ public class EcoEgg extends PluginFrame {
 
     @Override
     public void initializeConfig() {
-        registerPluginConfig(new EcoEggConfig(this));
+        EcoEggConfig con = new EcoEggConfig(this);
+        con.registerBoolean("WorldGuard.Enabled");
+        registerPluginConfig(con);
     }
 
     @Override
