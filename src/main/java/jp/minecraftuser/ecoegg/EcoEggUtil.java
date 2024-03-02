@@ -1,9 +1,7 @@
 package jp.minecraftuser.ecoegg;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -30,7 +28,7 @@ public class EcoEggUtil {
             return false;
         }
         String item_name = itemMeta.getDisplayName();
-        if (StringUtils.isEmpty(item_name)) return false;
+        if (item_name.isEmpty()) return false;
 
         return item_name.startsWith("[EcoEgg]");
     }

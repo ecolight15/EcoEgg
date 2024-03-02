@@ -94,14 +94,9 @@ public class HatchingListener extends ListenerFrame {
             }
         }
         if (bookcheck) {
-            ItemStack itemStack = player.getItemInHand();
-            if (itemStack.getType() != Material.WRITTEN_BOOK) return;
-            // 魔道書の記述が正しいか
-            BookMeta blockMeta = (BookMeta) itemStack.getItemMeta();
-
-            if (!blockMeta.getAuthor().equals(eceConf.getAuthor())) return;
-            if (!blockMeta.getTitle().equals(eceConf.getTitle())) return;
-            if (!blockMeta.getDisplayName().equals(eceConf.getDispName())) return;
+            if(!((EcoEgg) plg).isBook(player.getInventory().getItemInMainHand())){
+                return;
+            }
         }
         //----------------------------------------------------------------------
         // WorldGuardで保護されていないかチェック
@@ -297,11 +292,14 @@ public class HatchingListener extends ListenerFrame {
         LoaderMob load = new LoaderMob((EcoEgg) plg, new UUID(Long.parseLong(most), Long.parseLong(least)));
 
         // 使用済みなら不正アイテム、ただしOPは問題なし
-        if (load.getUsed() && (!event.getPlayer().isOp())) {
-            log.info("使用済みたまご利用:" + most + "," + least + "[" + event.getPlayer().getName() + "]");
-            Utl.sendPluginMessage(plg, event.getPlayer(), "管理者に通報されました：使用済みたまご利用:" + most + "," + least + "[" + event.getPlayer().getName() + "]");
-
-            return;
+        if (load.getUsed()) {
+            if(!event.getPlayer().isOp()) {
+                log.info("使用済みたまご利用:" + most + "," + least + "[" + event.getPlayer().getName() + "]");
+                Utl.sendPluginMessage(plg, event.getPlayer(), "管理者に通報されました：使用済みたまご利用:" + most + "," + least + "[" + event.getPlayer().getName() + "]");
+                return;
+            }else{
+                Utl.sendPluginMessage(plg, event.getPlayer(), "使用済みたまご利用:" + most + "," + least + "[" + event.getPlayer().getName() + "]");
+            }
         }
 
         // インターバルの監視

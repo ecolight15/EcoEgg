@@ -88,6 +88,7 @@ public class EcoEgg extends PluginFrame {
         cmd.addCommand(new EceGetCommand(this, "get"));
         cmd.addCommand(new EceSetCommand(this, "set"));
         cmd.addCommand(new EceBookCommand(this, "book"));
+        cmd.addCommand(new EceBookUpdateCommand(this,"bookupdate"));
         cmd.addCommand(new EceEggCommand(this, "egg"));
         registerPluginCommand(cmd);
     }
@@ -99,6 +100,17 @@ public class EcoEgg extends PluginFrame {
         registerPluginListener(new DamageCancelListener(this, "damage"));
         registerPluginListener(new EcoEggDropListener(this, "drop"));
         registerPluginListener(new HatchingListener(this, "hatching"));
+    }
+    public boolean isBook(ItemStack itemStack) {
+        if(itemStack == null) return false;
+        if (itemStack.getType() != Material.WRITTEN_BOOK) return false;
+        // 魔道書の記述が正しいか
+        BookMeta blockMeta = (BookMeta) itemStack.getItemMeta();
+
+        if (!blockMeta.getAuthor().equals(eceConf.getAuthor())) return false;
+        if (!blockMeta.getTitle().equals(eceConf.getTitle())) return false;
+        if (!blockMeta.getDisplayName().equals(eceConf.getDispName())) return false;
+        return true;
     }
 
     public ItemStack makeBook() {

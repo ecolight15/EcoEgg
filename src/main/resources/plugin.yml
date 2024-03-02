@@ -33,6 +33,10 @@ commands:
     description: ecoegg command.
     usage: /<command> xxx
     permission: ecoegg.book
+  ece bookupdate:
+    description: ecoegg command.
+    usage: /<command> xxx
+    permission: ecoegg.bookupdate
   ece egg:
     description: ecoegg command.
     usage: /<command> xxx
