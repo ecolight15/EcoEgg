@@ -286,11 +286,14 @@ public class HatchingListener extends ListenerFrame {
         LoaderMob load = new LoaderMob((EcoEgg) plg, new UUID(Long.parseLong(most), Long.parseLong(least)));
 
         // 使用済みなら不正アイテム、ただしOPは問題なし
-        if (load.getUsed() && (!event.getPlayer().isOp())) {
-            log.info("使用済みたまご利用:" + most + "," + least + "[" + event.getPlayer().getName() + "]");
-            Utl.sendPluginMessage(plg, event.getPlayer(), "管理者に通報されました：使用済みたまご利用:" + most + "," + least + "[" + event.getPlayer().getName() + "]");
-
-            return;
+        if (load.getUsed()) {
+            if(!event.getPlayer().isOp()) {
+                log.info("使用済みたまご利用:" + most + "," + least + "[" + event.getPlayer().getName() + "]");
+                Utl.sendPluginMessage(plg, event.getPlayer(), "管理者に通報されました：使用済みたまご利用:" + most + "," + least + "[" + event.getPlayer().getName() + "]");
+                return;
+            }else{
+                Utl.sendPluginMessage(plg, event.getPlayer(), "使用済みたまご利用:" + most + "," + least + "[" + event.getPlayer().getName() + "]");
+            }
         }
 
         // インターバルの監視

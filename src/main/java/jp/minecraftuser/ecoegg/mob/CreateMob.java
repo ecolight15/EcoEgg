@@ -63,7 +63,12 @@ public class CreateMob {
 
 
             entity.setMaxHealth(load.getMaxHealth());
-            entity.setHealth(load.getHealth());
+            if(load.getHealth() <= 1){
+                entity.setHealth(1);
+            }else{
+                entity.setHealth(load.getHealth());
+            }
+
 
             String name = load.getCustomName();
 
@@ -179,7 +184,7 @@ public class CreateMob {
 
     private void createOcelot() {
         Ocelot ocelot = (Ocelot) entity;
-        ocelot.setCatType(load.getOcelotType());
+        //ocelot.setCatType(load.getOcelotType());
     }
 
     private void createParrot() {
