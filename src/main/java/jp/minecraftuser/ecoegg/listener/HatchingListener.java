@@ -101,19 +101,22 @@ public class HatchingListener extends ListenerFrame {
         //----------------------------------------------------------------------
         // WorldGuardで保護されていないかチェック
         //----------------------------------------------------------------------
-        WorldGuardPlugin wgp = ((EcoEgg) plg).getWorldGuard();
-        if (wgp != null) {
-            LocalPlayer localPlayer = wgp.wrapPlayer(player);
+        if (conf.getBoolean("WorldGuard.Enabled")) {
+            log.info("Check world guard plugin...");
+            WorldGuardPlugin wgp = ((EcoEgg) plg).getWorldGuard();
+            if (wgp != null) {
+                LocalPlayer localPlayer = wgp.wrapPlayer(player);
 
-            RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-            RegionQuery query = container.createQuery();
+                RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+                RegionQuery query = container.createQuery();
 
-            com.sk89q.worldedit.util.Location player_loc = localPlayer.getLocation();
-            com.sk89q.worldedit.util.Location entity_loc = new com.sk89q.worldedit.util.Location(player_loc.getExtent(), entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ());
+                com.sk89q.worldedit.util.Location player_loc = localPlayer.getLocation();
+                com.sk89q.worldedit.util.Location entity_loc = new com.sk89q.worldedit.util.Location(player_loc.getExtent(), entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ());
 
-            if (!query.testState(player_loc, localPlayer, (StateFlag) EcoEgg.USE_ECO_EGG_FLAG) || !query.testState(entity_loc, localPlayer, (StateFlag) EcoEgg.USE_ECO_EGG_FLAG)) {
-                Utl.sendPluginMessage(plg, player, ("この場所ではえこたまごを使用できません"));
-                return;
+                if (!query.testState(player_loc, localPlayer, (StateFlag) EcoEgg.USE_ECO_EGG_FLAG) || !query.testState(entity_loc, localPlayer, (StateFlag) EcoEgg.USE_ECO_EGG_FLAG)) {
+                    Utl.sendPluginMessage(plg, player, ("この場所ではえこたまごを使用できません"));
+                    return;
+                }
             }
         }
 
@@ -262,18 +265,21 @@ public class HatchingListener extends ListenerFrame {
         //----------------------------------------------------------------------
         // WorldGuardで保護されていないかチェック
         //----------------------------------------------------------------------
-        WorldGuardPlugin wgp = ((EcoEgg) plg).getWorldGuard();
-        if (wgp != null) {
-            LocalPlayer localPlayer = wgp.wrapPlayer(player);
-            RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-            RegionQuery query = container.createQuery();
+        if (conf.getBoolean("WorldGuard.Enabled")) {
+            log.info("Check world guard plugin...");
+            WorldGuardPlugin wgp = ((EcoEgg) plg).getWorldGuard();
+            if (wgp != null) {
+                LocalPlayer localPlayer = wgp.wrapPlayer(player);
+                RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+                RegionQuery query = container.createQuery();
 
-            com.sk89q.worldedit.util.Location player_loc = localPlayer.getLocation();
-            com.sk89q.worldedit.util.Location block_loc = new com.sk89q.worldedit.util.Location(player_loc.getExtent(), block.getX(), block.getY(), block.getZ());
+                com.sk89q.worldedit.util.Location player_loc = localPlayer.getLocation();
+                com.sk89q.worldedit.util.Location block_loc = new com.sk89q.worldedit.util.Location(player_loc.getExtent(), block.getX(), block.getY(), block.getZ());
 
-            if (!query.testState(player_loc, localPlayer, (StateFlag) EcoEgg.USE_ECO_EGG_FLAG) || !query.testState(block_loc, localPlayer, (StateFlag) EcoEgg.USE_ECO_EGG_FLAG)) {
-                Utl.sendPluginMessage(plg, player, ("この場所ではえこたまごを使用できません"));
-                return;
+                if (!query.testState(player_loc, localPlayer, (StateFlag) EcoEgg.USE_ECO_EGG_FLAG) || !query.testState(block_loc, localPlayer, (StateFlag) EcoEgg.USE_ECO_EGG_FLAG)) {
+                    Utl.sendPluginMessage(plg, player, ("この場所ではえこたまごを使用できません"));
+                    return;
+                }
             }
         }
 

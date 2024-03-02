@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import jp.minecraftuser.ecoegg.DropParam;
-import jp.minecraftuser.ecoegg.EcoEggUtil;
 import jp.minecraftuser.ecoframework.ConfigFrame;
 import jp.minecraftuser.ecoframework.PluginFrame;
 import org.bukkit.configuration.Configuration;
