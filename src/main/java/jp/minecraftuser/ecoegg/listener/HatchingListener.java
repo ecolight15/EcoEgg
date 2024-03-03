@@ -35,7 +35,9 @@ import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -126,38 +128,50 @@ public class HatchingListener extends ListenerFrame {
 
         Location loc = le.getLocation();
         boolean reject = false;
+        String rejectMsg = "";
 
-        // テイム可能なMOBの場合はリジェクト
-        if (le instanceof Tameable) {
-            Tameable tame_entity = (Tameable) le;
-            if (tame_entity.getOwner() != null && tame_entity.getOwner().getName() != null) {
-                if (!(tame_entity.getOwner().getName().equals(player.getName()))) {
+        // Ignore 設定のMOBの場合はリジェクトし魔道書のみ消滅
+        log.info("EcoEgg interact entyti: " + le.getType().toString());
+        List<String> list = conf.getArrayList("IgnoreEntity");
+        if (list.indexOf(le.getType().toString()) != -1) {
+            reject = true;
+            rejectMsg = "プラグインで該当のMOBに対するえこたまごの使用が禁止されています";
+        }
+
+        // テイム可能なMOBかつ別オーナーの場合はリジェクトし魔道書のみ消滅
+        if (!reject) {
+            if (le instanceof Tameable) {
+                Tameable tame_entity = (Tameable) le;
+                if (tame_entity.getOwner() != null && tame_entity.getOwner().getName() != null) {
+                    if (!(tame_entity.getOwner().getName().equals(player.getName()))) {
+                        reject = true;
+                        rejectMsg = "他のプレイヤーの動物には力が及びませんでした";
+                    }
+                }
+            }
+            if (le instanceof Fox) {
+                Fox fox = (Fox) le;
+                //信頼できるプレイヤーが存在していてかつ他人のMOBだった場合はリジェクト
+                if(fox.getFirstTrustedPlayer() != null || fox.getSecondTrustedPlayer() != null) {
                     reject = true;
+                    if (fox.getFirstTrustedPlayer() != null) {
+                        if (fox.getFirstTrustedPlayer().getName().equals(player.getName())) {
+                            reject = false;
+                        }
+                    }
+                    if (fox.getSecondTrustedPlayer() != null) {
+                        if (fox.getSecondTrustedPlayer().getName().equals(player.getName())) {
+                            reject = false;
+                        }
+                    }
                 }
             }
         }
-        if (le instanceof Fox) {
 
-            Fox fox = (Fox) le;
-            //信頼できるプレイヤーが存在していてかつ他人のMOBだった場合はリジェクト
-            if(fox.getFirstTrustedPlayer() != null || fox.getSecondTrustedPlayer() != null) {
-                reject = true;
-                if (fox.getFirstTrustedPlayer() != null) {
-                    if (fox.getFirstTrustedPlayer().getName().equals(player.getName())) {
-                        reject = false;
-                    }
-                }
-                if (fox.getSecondTrustedPlayer() != null) {
-                    if (fox.getSecondTrustedPlayer().getName().equals(player.getName())) {
-                        reject = false;
-                    }
-                }
-            }
-        }
         PlayerInventory playerInventory = player.getInventory();
         ItemStack itemStack = playerInventory.getItemInMainHand();
         if ((reject) && (!player.isOp())) {
-            Utl.sendPluginMessage(plg, event.getPlayer(), "他のプレイヤーの動物には力が及びませんでした");
+            Utl.sendPluginMessage(plg, event.getPlayer(), rejectMsg);
             if (player.getGameMode() != GameMode.CREATIVE) {
                 if (itemStack.getAmount() == 1) {
                     playerInventory.setItemInMainHand(new ItemStack(Material.AIR));

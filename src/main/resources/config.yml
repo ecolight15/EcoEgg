@@ -47,3 +47,5 @@ pages:
   - 'ZOMBIE_PIGMAN, ZOMBIE_VILLAGER'
 WorldGuard:
   Enabled: false
+IgnoreEntity:
+  - 'WARDEN'

@@ -76,6 +76,7 @@ public class EcoEgg extends PluginFrame {
     public void initializeConfig() {
         EcoEggConfig con = new EcoEggConfig(this);
         con.registerBoolean("WorldGuard.Enabled");
+        con.registerArrayString("IgnoreEntity");
         registerPluginConfig(con);
     }
 
