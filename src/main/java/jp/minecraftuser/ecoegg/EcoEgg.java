@@ -10,13 +10,9 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import java.util.logging.Level;
 import jp.minecraftuser.ecoegg.command.*;
+import jp.minecraftuser.ecoegg.listener.*;
 import jp.minecraftuser.ecoframework.CommandFrame;
 import jp.minecraftuser.ecoegg.config.EcoEggConfig;
-import jp.minecraftuser.ecoegg.listener.CancelUseEggListener;
-import jp.minecraftuser.ecoegg.listener.EcoEggDropListener;
-import jp.minecraftuser.ecoegg.listener.CommandListener;
-import jp.minecraftuser.ecoegg.listener.DamageCancelListener;
-import jp.minecraftuser.ecoegg.listener.HatchingListener;
 import jp.minecraftuser.ecoframework.ConfigFrame;
 import jp.minecraftuser.ecoframework.PluginFrame;
 import org.bukkit.Material;
@@ -101,6 +97,7 @@ public class EcoEgg extends PluginFrame {
         registerPluginListener(new DamageCancelListener(this, "damage"));
         registerPluginListener(new EcoEggDropListener(this, "drop"));
         registerPluginListener(new HatchingListener(this, "hatching"));
+        registerPluginListener(new CancelRenameListener(this, "cancelrename"));
     }
     public boolean isBook(ItemStack itemStack) {
         if(itemStack == null) return false;
