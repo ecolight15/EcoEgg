@@ -80,13 +80,20 @@ public class SaveMob {
         if (entity instanceof Fox) {
             saveFox();
         }
-        if (entity instanceof Tameable) {
-            saveTame();
-        }
+
         if (entity instanceof  MushroomCow){
             saveMushroomCow();
         }
+        if (entity instanceof Axolotl) {
+            saveAxolotl();
+        }
+        if (entity instanceof Frog){
+            saveFrog();
+        }
 
+        if (entity instanceof Tameable) {
+            saveTame();
+        }
         //動物なら年齢を登録
         if (entity instanceof Animals) {
             saveAnimal();
@@ -234,6 +241,16 @@ public class SaveMob {
     private void saveMushroomCow(){
         MushroomCow mushroomCow = (MushroomCow)entity;
         save.setMushroomCowVariant(mushroomCow.getVariant());
+    }
+
+    private void saveAxolotl(){
+        Axolotl axolotl = (Axolotl) entity;
+        save.setAxolotlVariant(axolotl.getVariant());
+    }
+
+    private void saveFrog(){
+        Frog frog = (Frog)entity;
+        save.setFrogVariant(frog.getVariant());
     }
 
     private void saveTame() {

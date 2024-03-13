@@ -67,6 +67,13 @@ public class InfoMob {
         if (entity instanceof MushroomCow) {
             showMushroomCow();
         }
+        if (entity instanceof  Axolotl){
+            showAxolotl();
+        }
+        if (entity instanceof Frog){
+            showFrog();
+        }
+
         if (entity instanceof Tameable) {
             showOwner();
         }
@@ -219,6 +226,14 @@ public class InfoMob {
         MushroomCow mushroomCow = (MushroomCow) entity;
         Utl.sendPluginMessage(plg,player,"Variant:"+mushroomCow.getVariant());
 
+    }
+    private void showAxolotl() {
+        Axolotl axolotl = (Axolotl) entity;
+        Utl.sendPluginMessage(plg,player,"Variant:"+axolotl.getVariant());
+    }
+    private void showFrog() {
+        Frog frog = (Frog) entity;
+        Utl.sendPluginMessage(plg,player,"Variant:"+frog.getVariant());
     }
 
     private void showFox() {
