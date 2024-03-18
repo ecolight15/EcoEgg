@@ -109,10 +109,10 @@ public class EcoEgg extends PluginFrame {
         if (!bookMeta.getAuthor().equals(eceConf.getAuthor())) return false;
         if (!bookMeta.getTitle().equals(eceConf.getTitle())) return false;
         if (!bookMeta.getDisplayName().equals(eceConf.getDispName())) return false;
-        //オリジナルだとgenerationはnull
+        //現状えこたまごのオリジナルのgenerationはnull
         if (bookMeta.getGeneration() != null) {
-            //複製だとgenerationは0以外
-            if (!bookMeta.getGeneration().name().equals("0")) return false;
+            //オリジナルでなければFalse
+            if (bookMeta.getGeneration() != BookMeta.Generation.ORIGINAL) return false;
         }
         return true;
     }
