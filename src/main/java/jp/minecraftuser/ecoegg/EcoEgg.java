@@ -46,7 +46,7 @@ public class EcoEgg extends PluginFrame {
             USE_ECO_EGG_FLAG = new StateFlag("use-ecoegg", true);
             FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
             try {
-                registry.register((Flag)USE_ECO_EGG_FLAG);
+                registry.register((Flag) USE_ECO_EGG_FLAG);
             } catch (Exception e) { // FlagConflictException
                 e.printStackTrace();
             }
@@ -85,7 +85,7 @@ public class EcoEgg extends PluginFrame {
         cmd.addCommand(new EceGetCommand(this, "get"));
         cmd.addCommand(new EceSetCommand(this, "set"));
         cmd.addCommand(new EceBookCommand(this, "book"));
-        cmd.addCommand(new EceBookUpdateCommand(this,"bookupdate"));
+        cmd.addCommand(new EceBookUpdateCommand(this, "bookupdate"));
         cmd.addCommand(new EceEggCommand(this, "egg"));
         registerPluginCommand(cmd);
     }
@@ -99,15 +99,21 @@ public class EcoEgg extends PluginFrame {
         registerPluginListener(new HatchingListener(this, "hatching"));
         registerPluginListener(new CancelRenameListener(this, "cancelrename"));
     }
+
     public boolean isBook(ItemStack itemStack) {
-        if(itemStack == null) return false;
+        if (itemStack == null) return false;
         if (itemStack.getType() != Material.WRITTEN_BOOK) return false;
         // 魔道書の記述が正しいか
-        BookMeta blockMeta = (BookMeta) itemStack.getItemMeta();
+        BookMeta bookMeta = (BookMeta) itemStack.getItemMeta();
 
-        if (!blockMeta.getAuthor().equals(eceConf.getAuthor())) return false;
-        if (!blockMeta.getTitle().equals(eceConf.getTitle())) return false;
-        if (!blockMeta.getDisplayName().equals(eceConf.getDispName())) return false;
+        if (!bookMeta.getAuthor().equals(eceConf.getAuthor())) return false;
+        if (!bookMeta.getTitle().equals(eceConf.getTitle())) return false;
+        if (!bookMeta.getDisplayName().equals(eceConf.getDispName())) return false;
+        //オリジナルだとgenerationはnull
+        if (bookMeta.getGeneration() != null) {
+            //複製だとgenerationは0以外
+            if (!bookMeta.getGeneration().name().equals("0")) return false;
+        }
         return true;
     }
 
