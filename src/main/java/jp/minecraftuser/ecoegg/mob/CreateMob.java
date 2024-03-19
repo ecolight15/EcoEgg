@@ -117,6 +117,13 @@ public class CreateMob {
             if (entity instanceof MushroomCow) {
                 createMushroomCow();
             }
+            //ウーパールーパー
+            if (entity instanceof Axolotl){
+                createAxolotl();
+            }
+            if (entity instanceof Frog){
+                createFrog();
+            }
 
             if (entity instanceof Tameable) {
                 setTame();
@@ -130,6 +137,7 @@ public class CreateMob {
             if (entity instanceof Zombie || entity instanceof Skeleton) {
                 createEntityEquipment();
             }
+
             createPotionEffect();
         } catch (Exception e) {
             if (!isOldFormatEgg()) {
@@ -344,6 +352,22 @@ public class CreateMob {
             Utl.sendPluginMessage(plg, player, "MushroomCowVariant 復元処理をスキップしました");
         }
 
+    }
+    private void createAxolotl(){
+        if (Version.compare("1.7", load.getPluginVersion())) {
+            Axolotl axolotl = (Axolotl) entity;
+            axolotl.setVariant(load.getAxolotlVariant());
+        } else {
+            Utl.sendPluginMessage(plg, player, "MushroomCowVariant 復元処理をスキップしました");
+        }
+    }
+    private void createFrog() {
+        if (Version.compare("1.7", load.getPluginVersion())) {
+            Frog frog = (Frog) entity;
+            frog.setVariant(load.getFrogVariant());
+        } else {
+            Utl.sendPluginMessage(plg, player, "MushroomCowVariant 復元処理をスキップしました");
+        }
     }
 
     private void setTame() {

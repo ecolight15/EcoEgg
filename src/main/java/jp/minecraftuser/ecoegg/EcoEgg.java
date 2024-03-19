@@ -10,13 +10,9 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import java.util.logging.Level;
 import jp.minecraftuser.ecoegg.command.*;
+import jp.minecraftuser.ecoegg.listener.*;
 import jp.minecraftuser.ecoframework.CommandFrame;
 import jp.minecraftuser.ecoegg.config.EcoEggConfig;
-import jp.minecraftuser.ecoegg.listener.CancelUseEggListener;
-import jp.minecraftuser.ecoegg.listener.EcoEggDropListener;
-import jp.minecraftuser.ecoegg.listener.CommandListener;
-import jp.minecraftuser.ecoegg.listener.DamageCancelListener;
-import jp.minecraftuser.ecoegg.listener.HatchingListener;
 import jp.minecraftuser.ecoframework.ConfigFrame;
 import jp.minecraftuser.ecoframework.PluginFrame;
 import org.bukkit.Material;
@@ -50,7 +46,7 @@ public class EcoEgg extends PluginFrame {
             USE_ECO_EGG_FLAG = new StateFlag("use-ecoegg", true);
             FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
             try {
-                registry.register((Flag)USE_ECO_EGG_FLAG);
+                registry.register((Flag) USE_ECO_EGG_FLAG);
             } catch (Exception e) { // FlagConflictException
                 e.printStackTrace();
             }
@@ -89,7 +85,7 @@ public class EcoEgg extends PluginFrame {
         cmd.addCommand(new EceGetCommand(this, "get"));
         cmd.addCommand(new EceSetCommand(this, "set"));
         cmd.addCommand(new EceBookCommand(this, "book"));
-        cmd.addCommand(new EceBookUpdateCommand(this,"bookupdate"));
+        cmd.addCommand(new EceBookUpdateCommand(this, "bookupdate"));
         cmd.addCommand(new EceEggCommand(this, "egg"));
         registerPluginCommand(cmd);
     }
@@ -101,16 +97,23 @@ public class EcoEgg extends PluginFrame {
         registerPluginListener(new DamageCancelListener(this, "damage"));
         registerPluginListener(new EcoEggDropListener(this, "drop"));
         registerPluginListener(new HatchingListener(this, "hatching"));
+        registerPluginListener(new CancelRenameListener(this, "cancelrename"));
     }
+
     public boolean isBook(ItemStack itemStack) {
-        if(itemStack == null) return false;
+        if (itemStack == null) return false;
         if (itemStack.getType() != Material.WRITTEN_BOOK) return false;
         // 魔道書の記述が正しいか
-        BookMeta blockMeta = (BookMeta) itemStack.getItemMeta();
+        BookMeta bookMeta = (BookMeta) itemStack.getItemMeta();
 
-        if (!blockMeta.getAuthor().equals(eceConf.getAuthor())) return false;
-        if (!blockMeta.getTitle().equals(eceConf.getTitle())) return false;
-        if (!blockMeta.getDisplayName().equals(eceConf.getDispName())) return false;
+        if (!bookMeta.getAuthor().equals(eceConf.getAuthor())) return false;
+        if (!bookMeta.getTitle().equals(eceConf.getTitle())) return false;
+        if (!bookMeta.getDisplayName().equals(eceConf.getDispName())) return false;
+        //現状えこたまごのオリジナルのgenerationはnull
+        if (bookMeta.getGeneration() != null) {
+            //オリジナルでなければFalse
+            if (bookMeta.getGeneration() != BookMeta.Generation.ORIGINAL) return false;
+        }
         return true;
     }
 

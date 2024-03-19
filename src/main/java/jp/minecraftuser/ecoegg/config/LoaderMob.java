@@ -457,6 +457,22 @@ public class LoaderMob extends LoaderYaml {
         saveCnf();
     }
 
+    public Axolotl.Variant getAxolotlVariant() {
+        return Axolotl.Variant.valueOf(list.getString("axolotlvariant"));
+    }
+    public void setAxolotlVariant(Axolotl.Variant variant) {
+        list.set("axolotlvariant", variant.name());
+        saveCnf();
+    }
+
+    public Frog.Variant getFrogVariant() {
+        return Frog.Variant.valueOf(list.getString("frogvariant"));
+    }
+    public void setFrogVariant(Frog.Variant variant) {
+        list.set("frogvariant", variant.name());
+        saveCnf();
+    }
+
     public String getPluginVersion() {
         return list.getString("gen_plugin_version");
     }

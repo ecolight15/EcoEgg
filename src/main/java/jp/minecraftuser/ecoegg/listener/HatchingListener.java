@@ -318,7 +318,7 @@ public class HatchingListener extends ListenerFrame {
 
         // インターバルの監視
         Date date = new Date();
-        int wait_time = 10;
+        int wait_time = 3;
         if (date.getTime() < load.getDate() + 1000 * wait_time) {
             Utl.sendPluginMessage(plg, event.getPlayer(), "再使用まであと " + (wait_time - (date.getTime() - load.getDate()) / 1000) + " 秒必要です");
 
