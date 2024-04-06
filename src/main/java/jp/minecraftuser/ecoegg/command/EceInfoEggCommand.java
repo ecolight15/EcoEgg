@@ -55,7 +55,7 @@ public class EceInfoEggCommand extends CommandFrame {
     public boolean worker(CommandSender sender, String[] args) {
         // モンスターエッグ以外は処理しない
         Player player = ((Player) sender).getPlayer();
-        ItemStack item = player.getItemInHand();
+        ItemStack item = player.getInventory().getItemInMainHand();
         if (!EcoEggUtil.isMonsterEgg(item)) {
             Utl.sendPluginMessage(plg, sender, "モンスターエッグを持った状態でコマンドを入力してください");
             return true;
