@@ -327,15 +327,15 @@ public class HatchingListener extends ListenerFrame {
 
 
         // MOBスポーン処理
-
         Location loc = block.getLocation();
+        Location site_loc = block.getLocation();
         BlockFace blockface = event.getBlockFace();
 
         loc.add(blockface.getModX(), blockface.getModY(), blockface.getModZ());
         loc.setX(loc.getX() + 0.5);
         loc.setZ(loc.getZ() + 0.5);
 
-        CreateMob createMob = new CreateMob(player, block.getType(), loc, load, plg);
+        CreateMob createMob = new CreateMob(player, block.getType(), loc, site_loc, load, plg);
         LivingEntity livingEntity = createMob.create();
         if (createMob.isCancel()) {
             Utl.sendPluginMessage(plg, event.getPlayer(), "モンスター復元処理に失敗しました");

@@ -69,7 +69,7 @@ public class EceInfoEggCommand extends CommandFrame {
         // MOBのyaml情報を取得
         LoaderMob load = new LoaderMob((EcoEgg) plg, new UUID(Long.parseLong(most), Long.parseLong(least)));
 
-        CreateMob createMob = new CreateMob(player, Material.STONE, player.getLocation(), load, plg);
+        CreateMob createMob = new CreateMob(player, Material.STONE, player.getLocation(), player.getLocation(), load, plg);
         LivingEntity entity = createMob.create();
 
         InfoMob infoMob = new InfoMob(entity, player, plg);

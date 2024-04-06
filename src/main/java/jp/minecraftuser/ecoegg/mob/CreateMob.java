@@ -6,6 +6,7 @@ import jp.minecraftuser.ecoegg.Version;
 import jp.minecraftuser.ecoegg.config.LoaderMob;
 import jp.minecraftuser.ecoframework.PluginFrame;
 import jp.minecraftuser.ecoframework.Utl;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -25,14 +26,16 @@ public class CreateMob {
     private Player player;
     private Material material;
     private Location loc;
+    private Location site_loc;
     private LoaderMob load;
     private PluginFrame plg;
     private boolean cancel = false;
 
-    public CreateMob(Player player, Material material, Location loc, LoaderMob load, PluginFrame plg) {
+    public CreateMob(Player player, Material material, Location loc, Location site_loc, LoaderMob load, PluginFrame plg) {
         this.player = player;
         this.material = material;
         this.loc = loc;
+        this.site_loc = site_loc;
         this.load = load;
         this.plg = plg;
     }
@@ -63,9 +66,9 @@ public class CreateMob {
 
 
             entity.setMaxHealth(load.getMaxHealth());
-            if(load.getHealth() <= 1){
+            if (load.getHealth() <= 1) {
                 entity.setHealth(1);
-            }else{
+            } else {
                 entity.setHealth(load.getHealth());
             }
 
@@ -118,10 +121,10 @@ public class CreateMob {
                 createMushroomCow();
             }
             //ウーパールーパー
-            if (entity instanceof Axolotl){
+            if (entity instanceof Axolotl) {
                 createAxolotl();
             }
-            if (entity instanceof Frog){
+            if (entity instanceof Frog) {
                 createFrog();
             }
 
@@ -306,6 +309,17 @@ public class CreateMob {
         villager.setProfession(villagerProfession);
         villager.setVillagerExperience(villagerExperience);
         villager.setVillagerLevel(villagerLevel);
+
+        //カーソルを当てているブロックを職業ブロックに設定する
+        //関係ないブロックの場合は反映されない模様
+        long mostSigBits = villager.getUniqueId().getMostSignificantBits();
+        long leastSigBits = villager.getUniqueId().getLeastSignificantBits();
+        String UUID_NBT = "[I;" + (int) (mostSigBits >> 32) + "," + (int) mostSigBits + "," + (int) (leastSigBits >> 32) + "," + (int) leastSigBits + "]";
+        int site_loc_x = site_loc.getBlockX();
+        int site_loc_Y = site_loc.getBlockY();
+        int site_loc_z = site_loc.getBlockZ();
+        String command = "data merge entity @e[nbt={UUID:" + UUID_NBT + "},limit=1] {Brain:{memories:{\"minecraft:job_site\":{value:{pos:[I;" + site_loc_x + "," + site_loc_Y + "," + site_loc_z + "]}}}}}";
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
 
         villager.setRecipes(trade_list);
     }
