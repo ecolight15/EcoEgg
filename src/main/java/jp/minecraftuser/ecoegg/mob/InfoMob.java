@@ -3,6 +3,7 @@ package jp.minecraftuser.ecoegg.mob;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
 
+import org.bukkit.entity.memory.MemoryKey;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
@@ -207,6 +208,10 @@ public class InfoMob {
         }
         Utl.sendPluginMessage(plg, player, "VillagerExperience" + villager.getVillagerExperience());
         Utl.sendPluginMessage(plg, player, "VillagerLevel:" + villager.getVillagerLevel());
+
+        Utl.sendPluginMessage(plg, player, "JOB_SITE:" + villager.getMemory(MemoryKey.JOB_SITE));
+        Utl.sendPluginMessage(plg, player, "VillagerHome:" + villager.getMemory(MemoryKey.HOME));
+
 
     }
 
