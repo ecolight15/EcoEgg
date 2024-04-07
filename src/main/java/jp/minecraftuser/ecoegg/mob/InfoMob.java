@@ -23,6 +23,7 @@ public class InfoMob {
     }
 
     public void show() {
+        Utl.sendPluginMessage(plg, player, "UUID:" + entity.getUniqueId() + "");
         Utl.sendPluginMessage(plg, player, "===== " + entity.getType() + "ステータス表示 =====");
         Utl.sendPluginMessage(plg, player, "EntityName:" + entity.getType());
         Utl.sendPluginMessage(plg, player, "CustomName:" + entity.getCustomName());
@@ -68,10 +69,10 @@ public class InfoMob {
         if (entity instanceof MushroomCow) {
             showMushroomCow();
         }
-        if (entity instanceof  Axolotl){
+        if (entity instanceof Axolotl) {
             showAxolotl();
         }
-        if (entity instanceof Frog){
+        if (entity instanceof Frog) {
             showFrog();
         }
 
@@ -194,8 +195,8 @@ public class InfoMob {
             trade_recipe.append(resultItem.getType()).append(" * ").append(resultItem.getAmount());
             trade_recipe.append("(").append(merchantRecipe.getUses()).append("/").append(merchantRecipe.getMaxUses()).append(")");
             Utl.sendPluginMessage(plg, player, trade_recipe.toString());
-            Utl.sendPluginMessage(plg,player,"PriceMultiplier :"+merchantRecipe.getPriceMultiplier());
-            Utl.sendPluginMessage(plg,player,"VillagerExperience :"+merchantRecipe.getVillagerExperience());
+            Utl.sendPluginMessage(plg, player, "PriceMultiplier :" + merchantRecipe.getPriceMultiplier());
+            Utl.sendPluginMessage(plg, player, "VillagerExperience :" + merchantRecipe.getVillagerExperience());
         });
         Utl.sendPluginMessage(plg, player, "----トレード内容ここまで----");
 
@@ -209,8 +210,8 @@ public class InfoMob {
         Utl.sendPluginMessage(plg, player, "VillagerExperience" + villager.getVillagerExperience());
         Utl.sendPluginMessage(plg, player, "VillagerLevel:" + villager.getVillagerLevel());
 
-        Utl.sendPluginMessage(plg, player, "JOB_SITE:" + villager.getMemory(MemoryKey.JOB_SITE));
-        Utl.sendPluginMessage(plg, player, "VillagerHome:" + villager.getMemory(MemoryKey.HOME));
+        Utl.sendPluginMessage(plg, player, "JobBlockPos:" + villager.getMemory(MemoryKey.JOB_SITE));
+        Utl.sendPluginMessage(plg, player, "BedBlockPos:" + villager.getMemory(MemoryKey.HOME));
 
 
     }
@@ -229,16 +230,18 @@ public class InfoMob {
 
     private void showMushroomCow() {
         MushroomCow mushroomCow = (MushroomCow) entity;
-        Utl.sendPluginMessage(plg,player,"Variant:"+mushroomCow.getVariant());
+        Utl.sendPluginMessage(plg, player, "Variant:" + mushroomCow.getVariant());
 
     }
+
     private void showAxolotl() {
         Axolotl axolotl = (Axolotl) entity;
-        Utl.sendPluginMessage(plg,player,"Variant:"+axolotl.getVariant());
+        Utl.sendPluginMessage(plg, player, "Variant:" + axolotl.getVariant());
     }
+
     private void showFrog() {
         Frog frog = (Frog) entity;
-        Utl.sendPluginMessage(plg,player,"Variant:"+frog.getVariant());
+        Utl.sendPluginMessage(plg, player, "Variant:" + frog.getVariant());
     }
 
     private void showFox() {

@@ -318,7 +318,23 @@ public class CreateMob {
         int site_loc_x = site_loc.getBlockX();
         int site_loc_Y = site_loc.getBlockY();
         int site_loc_z = site_loc.getBlockZ();
-        String command = "data merge entity @e[nbt={UUID:" + UUID_NBT + "},limit=1] {Brain:{memories:{\"minecraft:job_site\":{value:{pos:[I;" + site_loc_x + "," + site_loc_Y + "," + site_loc_z + "]}}}}}";
+        String dimension_name = "overworld";
+        switch (loc.getWorld().getName()) {
+            case "world":
+                dimension_name = "overworld";
+                break;
+            case "world_nether":
+                dimension_name = "the_nether";
+                break;
+            case "world_the_end":
+                dimension_name = "the_end";
+                break;
+            default:
+                dimension_name = loc.getWorld().getName();
+                break;
+        }
+
+        String command = "data merge entity @e[nbt={UUID:" + UUID_NBT + "},limit=1] {Brain:{memories:{\"minecraft:job_site\":{value:{pos:[I;" + site_loc_x + "," + site_loc_Y + "," + site_loc_z + "],dimension:\"minecraft:" + dimension_name + "\"}}}}}";
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
 
         villager.setRecipes(trade_list);
@@ -367,7 +383,8 @@ public class CreateMob {
         }
 
     }
-    private void createAxolotl(){
+
+    private void createAxolotl() {
         if (Version.compare("1.7", load.getPluginVersion())) {
             Axolotl axolotl = (Axolotl) entity;
             axolotl.setVariant(load.getAxolotlVariant());
@@ -375,6 +392,7 @@ public class CreateMob {
             Utl.sendPluginMessage(plg, player, "MushroomCowVariant 復元処理をスキップしました");
         }
     }
+
     private void createFrog() {
         if (Version.compare("1.7", load.getPluginVersion())) {
             Frog frog = (Frog) entity;
