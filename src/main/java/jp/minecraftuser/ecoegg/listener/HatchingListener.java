@@ -31,11 +31,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -64,7 +62,7 @@ public class HatchingListener extends ListenerFrame {
      *
      * @param event
      */
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void PlayerInteractEntity(PlayerInteractEntityEvent event) {
 
         //----------------------------------------------------------------------
@@ -245,7 +243,7 @@ public class HatchingListener extends ListenerFrame {
      *
      * @param event
      */
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOW)
     public void PlayerInteract(PlayerInteractEvent event) {
 
         //右クリック(ブロック)以外は無視
