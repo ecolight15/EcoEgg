@@ -17,9 +17,9 @@ BAT, BEE, BLAZE, CAVE_SPIDER, CHICKEN, CAT, COD, COW, CREEPER, DOLPHIN, DONKEY, 
 ## インストール
 
 ### 必要条件
-- **Minecraft**: 1.15以上
+- **Minecraft**: 1.20.4以上
 - **Spigot/Paper**: 1.20.4以上
-- **Java**: 8以上
+- **Java**: 17以上
 - **EcoFramework**: 必須依存関係
 - **WorldGuard**: オプション（地域保護機能を使用する場合）
 
@@ -137,7 +137,7 @@ A: `/ece reload`コマンドで設定を再読み込みしてください
 - **作者**: ecolight
 - **ライセンス**: GNU Lesser General Public License v3.0
 - **依存関係**: EcoFramework 0.21+
-- **対応API**: Bukkit API 1.15+
+- **対応API**: Bukkit API 1.20.4+
 
 ## ライセンス
 
